@@ -1,12 +1,12 @@
 {
-  "name": "@lumine-code/spellchecker",
+  "name": "@lumine-code/native-spelling",
   "author": "lumine-code",
   "version": "1.0.0",
   "description": "Provides native system and Hunspell dictionary bindings.",
   "main": "./lib/spellchecker.js",
-  "repository": "https://github.com/lumine-code/node-spellchecker",
-  "bugs": "https://github.com/lumine-code/node-spellchecker/issues",
-  "homepage": "https://github.com/lumine-code/node-spellchecker",
+  "repository": "https://github.com/lumine-code/native-spelling",
+  "bugs": "https://github.com/lumine-code/native-spelling/issues",
+  "homepage": "https://github.com/lumine-code/native-spelling",
   "license": "MIT",
   "gypfile": true,
   "engines": {

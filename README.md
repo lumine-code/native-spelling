@@ -1,4 +1,4 @@
-# spellchecker
+# native-spelling
 
 Provides native system and Hunspell dictionary bindings.
 
@@ -15,7 +15,7 @@ The library uses the platform spelling API on macOS and Windows, with bundled Hu
 ## Installation
 
 ```sh
-npm install @lumine-code/spellchecker
+npm install @lumine-code/native-spelling
 ```
 
 The package builds from source during installation and requires a C++17 toolchain supported by Node.js.
@@ -23,7 +23,7 @@ The package builds from source during installation and requires a C++17 toolchai
 ## Usage
 
 ```js
-const spellchecker = require("@lumine-code/spellchecker");
+const spellchecker = require("@lumine-code/native-spelling");
 
 async function main() {
   spellchecker.setDictionary("en_US", spellchecker.getDictionaryPath());
