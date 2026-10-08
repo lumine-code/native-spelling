@@ -2,6 +2,8 @@
 
 Provides native system and Hunspell dictionary bindings.
 
+Fork of [pulsar-edit/node-spellchecker](https://github.com/pulsar-edit/node-spellchecker).
+
 The library uses the platform spelling API on macOS and Windows, with bundled Hunspell support as a portable fallback. The native addon is implemented with Node-API for ABI stability.
 
 ## Features
