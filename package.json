@@ -23,7 +23,8 @@
     "binding.gyp",
     "lib",
     "src",
-    "vendor"
+    "vendor",
+    "THIRD_PARTY_NOTICES"
   ],
   "scripts": {
     "build": "node-gyp rebuild",
