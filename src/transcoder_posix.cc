@@ -66,7 +66,7 @@ bool TranscodeUTF16ToUTF8(const Transcoder *transcoder, char *out, size_t out_by
   char *utf16_word = reinterpret_cast<char *>(const_cast<uint16_t *>(in));
   size_t utf16_bytes = in_length * (sizeof(uint16_t) / sizeof(char));
 
-  iconv(transcoder->conversion, NULL, NULL, NULL, NULL);
+  if (iconv(transcoder->conversion, NULL, NULL, NULL, NULL) != 0) return false;
   size_t iconv_result = iconv(
     transcoder->conversion,
     &utf16_word,
@@ -75,12 +75,14 @@ bool TranscodeUTF16ToUTF8(const Transcoder *transcoder, char *out, size_t out_by
     &out_bytes
   );
 
-  if (iconv_result == static_cast<size_t>(-1) || utf16_bytes != 0) {
+  // A positive result counts lossy substitutions, even when all input was
+  // consumed. Only a reversible conversion preserves dictionary identity.
+  if (iconv_result != 0 || utf16_bytes != 0) {
     output_start[0] = '\0';
     return false;
   }
 
-  if (iconv(transcoder->conversion, NULL, NULL, &out, &out_bytes) == static_cast<size_t>(-1)) {
+  if (iconv(transcoder->conversion, NULL, NULL, &out, &out_bytes) != 0) {
     output_start[0] = '\0';
     return false;
   }
@@ -103,7 +105,7 @@ bool Transcode8to8(const Transcoder *transcoder, char *out, size_t out_length, c
   } else {
     char *const output_start = out;
     --out_length;
-    iconv(transcoder->conversion, NULL, NULL, NULL, NULL);
+    if (iconv(transcoder->conversion, NULL, NULL, NULL, NULL) != 0) return false;
     size_t iconv_result = iconv(
       transcoder->conversion,
       &utf8_word,
@@ -112,12 +114,12 @@ bool Transcode8to8(const Transcoder *transcoder, char *out, size_t out_length, c
       &out_length
     );
 
-    if (iconv_result == static_cast<size_t>(-1) || in_length != 0) {
+    if (iconv_result != 0 || in_length != 0) {
       output_start[0] = '\0';
       return false;
     }
 
-    if (iconv(transcoder->conversion, NULL, NULL, &out, &out_length) == static_cast<size_t>(-1)) {
+    if (iconv(transcoder->conversion, NULL, NULL, &out, &out_length) != 0) {
       output_start[0] = '\0';
       return false;
     }

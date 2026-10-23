@@ -43,5 +43,4 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run test:memory
-        if: runner.os != 'macOS'
       - run: npm pack --dry-run

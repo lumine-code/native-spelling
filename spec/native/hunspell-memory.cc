@@ -114,6 +114,13 @@ void CheckTranscoders() {
   Require(std::string(output) == "café", "Legacy result lost Unicode");
   Require(!Transcode8to8(toLatin.get(), output, sizeof(output), "żółw", 7),
           "Unrepresentable Unicode must fail without substitution");
+  const std::string bestFit = "qłzx";
+  Require(!Transcode8to8(toLatin.get(), output, sizeof(output), bestFit.data(), bestFit.size()),
+          "A non-reversible best-fit conversion must fail");
+  Require(output[0] == '\0', "A failed best-fit conversion must clear its partial output");
+  Require(Transcode8to8(toLatin.get(), output, sizeof(output), "café", 5) &&
+              std::string(output) == "caf\xe9",
+          "A failed best-fit conversion must not poison the next conversion");
   const char malformed[] = {static_cast<char>(0xc3), '('};
   Require(!Transcode8to8(toLatin.get(), output, sizeof(output), malformed, sizeof(malformed)),
           "Malformed UTF-8 must fail conversion");
