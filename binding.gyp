@@ -13,9 +13,14 @@
     ],
   },
   'target_defaults': {
-    'cflags_cc': ['-std=c++17'],
+    'cflags_cc': ['-std=c++20'],
     'conditions': [
       ['OS=="win"', {
+        'msvs_settings': {
+          'VCCLCompilerTool': {
+            'AdditionalOptions': ['/utf-8'],
+          },
+        },
         'msvs_disabled_warnings': [
           4267,  # conversion from 'size_t' to 'int', possible loss of data
           4530,  # C++ exception handler used, but unwind semantics are not enabled
@@ -25,7 +30,7 @@
       ['OS=="mac"', {
         'xcode_settings': {
            'CLANG_CXX_LIBRARY': 'libc++',
-           'CLANG_CXX_LANGUAGE_STANDARD': 'c++17'
+           'CLANG_CXX_LANGUAGE_STANDARD': 'c++20'
         }
       }]
     ],
@@ -94,8 +99,6 @@
             'vendor/hunspell/src/hunspell/baseaffix.hxx',
             'vendor/hunspell/src/hunspell/csutil.cxx',
             'vendor/hunspell/src/hunspell/csutil.hxx',
-            'vendor/hunspell/src/hunspell/dictmgr.cxx',
-            'vendor/hunspell/src/hunspell/dictmgr.hxx',
             'vendor/hunspell/src/hunspell/filemgr.cxx',
             'vendor/hunspell/src/hunspell/filemgr.hxx',
             'vendor/hunspell/src/hunspell/hashmgr.cxx',
@@ -104,6 +107,10 @@
             'vendor/hunspell/src/hunspell/hunspell.cxx',
             'vendor/hunspell/src/hunspell/hunspell.h',
             'vendor/hunspell/src/hunspell/hunspell.hxx',
+            'vendor/hunspell/src/hunspell/hunspelltrace.cxx',
+            'vendor/hunspell/src/hunspell/hunspelltrace.hxx',
+            'vendor/hunspell/src/hunspell/hunversion.h',
+            'vendor/hunspell/src/hunspell/hunvisapi.h',
             'vendor/hunspell/src/hunspell/hunzip.cxx',
             'vendor/hunspell/src/hunspell/hunzip.hxx',
             'vendor/hunspell/src/hunspell/langnum.hxx',
@@ -113,9 +120,8 @@
             'vendor/hunspell/src/hunspell/replist.hxx',
             'vendor/hunspell/src/hunspell/suggestmgr.cxx',
             'vendor/hunspell/src/hunspell/suggestmgr.hxx',
+            'vendor/hunspell/src/hunspell/utf_info.hxx',
             'vendor/hunspell/src/hunspell/w_char.hxx',
-            'vendor/hunspell/src/parsers/textparser.cxx',
-            'vendor/hunspell/src/parsers/textparser.hxx',
           ],
           'direct_dependent_settings': {
             'defines': [

@@ -2,7 +2,8 @@
 #include <iconv.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include "buffers.h"
+#include <limits>
+#include "transcoder.h"
 
 namespace spellchecker {
 
@@ -46,14 +47,26 @@ Transcoder *NewTranscoder8to8(const char *from_encoding, const char *to_encoding
 }
 
 void FreeTranscoder(Transcoder *transcoder) {
+  if (!transcoder) return;
   iconv_close(transcoder->conversion);
   delete transcoder;
 }
 
 bool TranscodeUTF16ToUTF8(const Transcoder *transcoder, char *out, size_t out_bytes, const uint16_t *in, size_t in_length) {
+  if (!out || out_bytes == 0) return false;
+  out[0] = '\0';
+  if (in_length == 0) return true;
+  if (!transcoder || !in || in_length > std::numeric_limits<size_t>::max() / sizeof(uint16_t)) {
+    return false;
+  }
+
+  char *const output_start = out;
+  // iconv does not terminate its output. Keep that byte outside its capacity.
+  --out_bytes;
   char *utf16_word = reinterpret_cast<char *>(const_cast<uint16_t *>(in));
   size_t utf16_bytes = in_length * (sizeof(uint16_t) / sizeof(char));
 
+  iconv(transcoder->conversion, NULL, NULL, NULL, NULL);
   size_t iconv_result = iconv(
     transcoder->conversion,
     &utf16_word,
@@ -62,28 +75,35 @@ bool TranscodeUTF16ToUTF8(const Transcoder *transcoder, char *out, size_t out_by
     &out_bytes
   );
 
-  if (iconv_result == static_cast<size_t>(-1)) {
+  if (iconv_result == static_cast<size_t>(-1) || utf16_bytes != 0) {
+    output_start[0] = '\0';
     return false;
   }
 
+  if (iconv(transcoder->conversion, NULL, NULL, &out, &out_bytes) == static_cast<size_t>(-1)) {
+    output_start[0] = '\0';
+    return false;
+  }
   *out = '\0';
-
-  // Make sure the transcoded length doesn't exceed our buffers.
-  return strlen(out) <= MAX_UTF8_BUFFER;
+  return true;
 }
 
 bool Transcode8to8(const Transcoder *transcoder, char *out, size_t out_length, const char *in, size_t in_length) {
-  // If the transcoder is NULL, then we just copy the input buffer into the
-  // output buffer and return the results without transcoding. We assume that
-  // the callers had made sure the word is not longer than the output buffer.
+  if (!out || out_length == 0) return false;
+  out[0] = '\0';
+  if (in_length == 0) return true;
+  if (!in) return false;
+
   char *utf8_word = reinterpret_cast<char *>(const_cast<char *>(in));
 
   if (!transcoder) {
-    // Copy the string and add the terminating character.
+    if (in_length >= out_length) return false;
     std::memcpy(out, in, in_length);
     out[in_length] = '\0';
   } else {
-    // We have a transcoder, so transcode the contents.
+    char *const output_start = out;
+    --out_length;
+    iconv(transcoder->conversion, NULL, NULL, NULL, NULL);
     size_t iconv_result = iconv(
       transcoder->conversion,
       &utf8_word,
@@ -92,15 +112,20 @@ bool Transcode8to8(const Transcoder *transcoder, char *out, size_t out_length, c
       &out_length
     );
 
-    if (iconv_result == static_cast<size_t>(-1)) {
+    if (iconv_result == static_cast<size_t>(-1) || in_length != 0) {
+      output_start[0] = '\0';
+      return false;
+    }
+
+    if (iconv(transcoder->conversion, NULL, NULL, &out, &out_length) == static_cast<size_t>(-1)) {
+      output_start[0] = '\0';
       return false;
     }
 
     *out = '\0';
   }
 
-  // Make sure the transcoded length doesn't exceed our buffers.
-  return strlen(out) <= MAX_UTF8_BUFFER;
+  return true;
 }
 
 }  // namespace spellchecker

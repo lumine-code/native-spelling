@@ -1,0 +1,3 @@
+# Keep imported source and dictionary checksums independent of checkout settings.
+vendor/hunspell/** -text
+vendor/hunspell_dictionaries/* -text

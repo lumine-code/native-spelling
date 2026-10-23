@@ -22,13 +22,17 @@
   "files": [
     "binding.gyp",
     "lib",
+    "script",
+    "spec",
     "src",
     "vendor",
+    "LICENSE",
     "THIRD_PARTY_NOTICES"
   ],
   "scripts": {
     "build": "node-gyp rebuild",
     "test": "jasmine",
+    "test:memory": "node script/test-native-memory.js",
     "lint": "eslint . --max-warnings 0 && prettier --check .",
     "format": "prettier --write ."
   },

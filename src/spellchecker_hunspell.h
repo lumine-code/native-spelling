@@ -3,6 +3,7 @@
 
 #include "spellchecker.h"
 #include "transcoder.h"
+#include <mutex>
 
 class Hunspell;
 
@@ -22,6 +23,8 @@ public:
   void Remove(const std::string& word);
 
 private:
+  // Workers and the JavaScript thread share one dictionary and its converters.
+  std::mutex mutex;
   Hunspell* hunspell;
   Transcoder *transcoder;
   Transcoder *toDictionaryTranscoder;

@@ -1,5 +1,4 @@
 build/
-spec/
 .npmignore
 .gitignore
 .DS_Store

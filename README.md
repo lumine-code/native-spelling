@@ -20,7 +20,13 @@ The library uses the platform spelling API on macOS and Windows, with bundled Hu
 npm install @lumine-code/native-spelling
 ```
 
-The package builds from source during installation and requires a C++17 toolchain supported by Node.js.
+The package builds from source during installation and requires a C++20 toolchain supported by Node.js.
+
+## Bundled sources
+
+The portable backend uses [Hunspell 1.7.5](https://github.com/hunspell/hunspell/releases/tag/v1.7.5) and the standard American English dictionary from [SCOWL 2026.02.25](https://github.com/en-wl/wordlist/releases/tag/rel-2026.02.25). The engine and the matched `en_US.aff`/`en_US.dic` pair are vendored separately; their revisions and SHA-256 checksums are recorded in `vendor/sources.json`. The older dictionaries under `spec/dictionaries` remain test fixtures for legacy encodings and behavior.
+
+Run `npm run build`, `npm test`, and `npm run test:memory` after changing the bundled sources. The standalone memory harness checks the native backend with AddressSanitizer; on Linux it also enables UndefinedBehaviorSanitizer and leak detection. It requires a compiler with sanitizer support, including the C++ AddressSanitizer component on Windows.
 
 ## Usage
 

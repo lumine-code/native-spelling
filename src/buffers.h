@@ -7,7 +7,7 @@
 
 // When converting UTF-16 to UTF-8, we still have 1-byte characters
 // but it can double the length when going from a wide to two bytes.
-#define MAX_UTF16_TO_UTF8_BUFFER MAX_UTF8_BUFFER
+#define MAX_UTF16_TO_UTF8_BUFFER (MAX_UTF8_BUFFER + 1)
 
 // Converting between buffers needs a bit of space also. We need this because
 // Windows need to convert a UTF8 buffer to UTF16 and then back to UTF8.

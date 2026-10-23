@@ -589,10 +589,12 @@ for (i = 0, len = ref.length; i < len; i++) {
         });
         it("returns an array of possible corrections for a correct English word", function () {
           var correction, corrections;
-          correction = ["cheese", "chaise", "cheesy"][spellIndex];
+          expect(this.fixture.isMisspelled("cheese")).toBe(false);
+          correction = ["cheeses", "chaise", "cheesy"][spellIndex];
           corrections = this.fixture.getCorrectionsForMisspelling("cheese");
           expect(corrections.length).toBeGreaterThan(0);
-          return expect(corrections[0]).toEqual(correction);
+          expect(corrections).toContain(correction);
+          return expect(this.fixture.isMisspelled(correction)).toBe(false);
         });
         it("returns an array of possible corrections for a correct Latin German word with ISO8859-1 file", function () {
           var correction, corrections;
@@ -647,18 +649,22 @@ for (i = 0, len = ref.length; i < len; i++) {
             return;
           }
           expect(this.fixture.setDictionary("de_DE_frami", dictionaryDirectory)).toBe(true);
-          correction = ["vermöchten", "vermochten", "vermochte"][spellIndex];
+          expect(this.fixture.isMisspelled("vermöchten")).toBe(false);
+          correction = ["vermöchte", "vermochten", "vermochte"][spellIndex];
           corrections = this.fixture.getCorrectionsForMisspelling("vermöchten");
           expect(corrections.length).toBeGreaterThan(0);
-          return expect(corrections[0]).toEqual(correction);
+          expect(corrections).toContain(correction);
+          return expect(this.fixture.isMisspelled(correction)).toBe(false);
         });
         it("returns an array of possible corrections for correct Unicode German word with UTF-8 file", function () {
           var correction, corrections;
           expect(this.fixture.setDictionary("de_DE", dictionaryDirectory)).toBe(true);
-          correction = ["vermöchten", "vermochten", "vermochte"][spellIndex];
+          expect(this.fixture.isMisspelled("vermöchten")).toBe(false);
+          correction = ["vermöchte", "vermochten", "vermochte"][spellIndex];
           corrections = this.fixture.getCorrectionsForMisspelling("vermöchten");
           expect(corrections.length).toBeGreaterThan(0);
-          return expect(corrections[0]).toEqual(correction);
+          expect(corrections).toContain(correction);
+          return expect(this.fixture.isMisspelled(correction)).toBe(false);
         });
         it("returns an array of possible corrections for incorrect Unicode German word with ISO8859-1 file", function () {
           var correction, corrections;

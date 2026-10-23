@@ -3,6 +3,13 @@
 #include <cwctype>
 #include <clocale>
 #include <algorithm>
+#include <filesystem>
+#include <fstream>
+#include <locale.h>
+#ifdef __APPLE__
+#include <xlocale.h>
+#endif
+#include <memory>
 #include <string>
 #include "../vendor/hunspell/src/hunspell/hunspell.hxx"
 #include "spellchecker_hunspell.h"
@@ -12,22 +19,77 @@ namespace spellchecker {
 
 namespace {
 
-// `iswalpha` and friends answer according to the locale, and the word scan
-// below assumes a UTF-8 one.
-//
-// This has to run on whichever thread is doing the scanning: a C runtime
-// configured for per-thread locales gives each worker thread its own, so
-// setting it once for the process would leave every other thread classifying
-// under "C" and the scan would stop recognising accented letters. Ask before
-// setting, so the common case does not keep rewriting state the whole process
-// may be sharing.
-void EnsureCTypeLocale() {
-  static const char kLocale[] = "en_US.UTF-8";
+// Classify Unicode without changing the process locale from worker threads.
+class CharacterClassifier {
+ public:
+  CharacterClassifier() {
+#ifdef _WIN32
+    locale = _create_locale(LC_CTYPE, "en_US.UTF-8");
+    if (!locale) locale = _create_locale(LC_CTYPE, "");
+#else
+    locale = newlocale(LC_CTYPE_MASK, "C.UTF-8", nullptr);
+    if (!locale) locale = newlocale(LC_CTYPE_MASK, "en_US.UTF-8", nullptr);
+    if (!locale) locale = newlocale(LC_CTYPE_MASK, "", nullptr);
+#endif
+  }
+  ~CharacterClassifier() {
+#ifdef _WIN32
+    if (locale) _free_locale(locale);
+#else
+    if (locale) freelocale(locale);
+#endif
+  }
+  bool Alpha(uint16_t c) const {
+#ifdef _WIN32
+    return locale ? _iswalpha_l(c, locale) != 0 : iswalpha(c) != 0;
+#else
+    return locale ? iswalpha_l(c, locale) != 0 : iswalpha(c) != 0;
+#endif
+  }
+  bool Separator(uint16_t c) const {
+#ifdef _WIN32
+    return locale ? (_iswpunct_l(c, locale) || _iswspace_l(c, locale))
+                  : (iswpunct(c) || iswspace(c));
+#else
+    return locale ? (iswpunct_l(c, locale) || iswspace_l(c, locale))
+                  : (iswpunct(c) || iswspace(c));
+#endif
+  }
+ private:
+#ifdef _WIN32
+  _locale_t locale;
+#else
+  locale_t locale;
+#endif
+};
 
-  const char* current = setlocale(LC_CTYPE, NULL);
-  if (current && strcmp(current, kLocale) == 0) return;
+std::filesystem::path Utf8Path(const std::string& path) {
+#ifdef __cpp_char8_t
+  return std::filesystem::path(std::u8string(path.begin(), path.end()));
+#else
+  return std::filesystem::u8path(path);
+#endif
+}
 
-  setlocale(LC_CTYPE, kLocale);
+std::string DictionaryPath(const std::string& path) {
+  std::error_code error;
+  const auto absolute = std::filesystem::absolute(Utf8Path(path), error);
+  if (error) return path;
+  const auto utf8 = absolute.lexically_normal().u8string();
+  std::string result(utf8.begin(), utf8.end());
+#ifdef _WIN32
+  // Hunspell's MSVC file opener recognizes UTF-8 through this prefix.
+  if (result.compare(0, 4, "\\\\?\\") != 0) {
+    result = result.compare(0, 2, "\\\\") == 0
+        ? "\\\\?\\UNC\\" + result.substr(2) : "\\\\?\\" + result;
+  }
+#endif
+  return result;
+}
+
+bool ReadableDictionaryFile(const std::string& path) {
+  std::ifstream file(Utf8Path(path), std::ios::binary);
+  return file.is_open();
 }
 
 // Remembers what `Hunspell::spell` said about a word for the rest of one check.
@@ -112,36 +174,42 @@ HunspellSpellchecker::~HunspellSpellchecker() {
 }
 
 bool HunspellSpellchecker::SetDictionary(const std::string& language, const std::string& dirname) {
-  if (hunspell) {
-    delete hunspell;
-    hunspell = NULL;
-  }
+  std::lock_guard<std::mutex> lock(mutex);
 
   // NB: Hunspell uses underscore to separate language and locale, and Win8 uses
   // dash - if they use the wrong one, just silently replace it for them
   std::string lang = language;
   std::replace(lang.begin(), lang.end(), '-', '_');
 
-  std::string affixpath = dirname + "/" + lang + ".aff";
-  std::string dpath = dirname + "/" + lang + ".dic";
+  std::string affixpath = DictionaryPath(dirname + "/" + lang + ".aff");
+  std::string dpath = DictionaryPath(dirname + "/" + lang + ".dic");
 
-  // TODO: This code is almost certainly jacked on Win32 for non-ASCII paths
-  FILE* handle = fopen(dpath.c_str(), "r");
-  if (!handle) {
+  if (!ReadableDictionaryFile(affixpath) || !ReadableDictionaryFile(dpath)) {
     return false;
   }
-  fclose(handle);
 
   // Create the hunspell object with our dictionary.
-  hunspell = new Hunspell(affixpath.c_str(), dpath.c_str());
+  std::unique_ptr<Hunspell> next(new Hunspell(affixpath.c_str(), dpath.c_str()));
 
   // Once we have the dictionary, then we check to see if we need
   // an internal conversion. This is needed because Hunspell has
   // two modes: in UTF-8 mode, everything is treated as a UTF-8
   // string which is what we have. Otherwise, it needs the specific
   // encoding of the file.
-  std::string encoding = hunspell->get_dic_encoding();
+  std::string encoding = next->get_dic_encoding();
   bool isUTF8 = encoding.compare("UTF-8") == 0;
+
+  Transcoder* toDictionary = nullptr;
+  Transcoder* fromDictionary = nullptr;
+  if (!isUTF8) {
+    toDictionary = NewTranscoder8to8("UTF-8", encoding.c_str());
+    fromDictionary = NewTranscoder8to8(encoding.c_str(), "UTF-8");
+    if (!toDictionary || !fromDictionary) {
+      if (toDictionary) FreeTranscoder(toDictionary);
+      if (fromDictionary) FreeTranscoder(fromDictionary);
+      return false;
+    }
+  }
 
   if (toDictionaryTranscoder) {
     FreeTranscoder(toDictionaryTranscoder);
@@ -153,10 +221,10 @@ bool HunspellSpellchecker::SetDictionary(const std::string& language, const std:
     fromDictionaryTranscoder = NULL;
   }
 
-  if (!isUTF8) {
-    toDictionaryTranscoder = NewTranscoder8to8("UTF8", encoding.c_str());
-    fromDictionaryTranscoder = NewTranscoder8to8(encoding.c_str(), "UTF8");
-  }
+  delete hunspell;
+  hunspell = next.release();
+  toDictionaryTranscoder = toDictionary;
+  fromDictionaryTranscoder = fromDictionary;
 
   // Return that we successfully created the components.
   return true;
@@ -167,12 +235,13 @@ std::vector<std::string> HunspellSpellchecker::GetAvailableDictionaries(const st
 }
 
 bool HunspellSpellchecker::IsMisspelled(const std::string& word) {
+  std::lock_guard<std::mutex> lock(mutex);
   if (!hunspell) {
     return false;
   }
 
   // If the word is too long, then don't do anything.
-  if (word.length() > MAX_UTF8_BUFFER) {
+  if (word.length() > MAX_UTF8_BUFFER || word.find('\0') != std::string::npos) {
     return false;
   }
 
@@ -186,10 +255,11 @@ bool HunspellSpellchecker::IsMisspelled(const std::string& word) {
   }
 
   // Process the call on the transcoded data.
-  return hunspell->spell(dict_buffer.data()) == 0;
+  return !hunspell->spell(std::string(dict_buffer.data()));
 }
 
 std::vector<MisspelledRange> HunspellSpellchecker::CheckSpelling(const uint16_t *utf16_text, size_t utf16_length) {
+  std::lock_guard<std::mutex> lock(mutex);
   std::vector<MisspelledRange> result;
 
   if (!hunspell || !transcoder) {
@@ -212,11 +282,7 @@ std::vector<MisspelledRange> HunspellSpellchecker::CheckSpelling(const uint16_t 
     in_word,
   } state = in_separator;
 
-  // Because all of the strings are UTF-8 because we got them from Chrome that
-  // way, we need to make sure our iswalpha works on UTF-8 strings. We picked a
-  // generic locale because we don't pass the locale in. Sadly, "C.utf8" doesn't
-  // work so we assume that US English is available everywhere.
-  EnsureCTypeLocale();
+  static const CharacterClassifier characters;
 
   // Go through the UTF-16 characters and look for breaks.
   for (size_t word_start = 0, i = 0; i < utf16_length; i++) {
@@ -224,24 +290,24 @@ std::vector<MisspelledRange> HunspellSpellchecker::CheckSpelling(const uint16_t 
 
     switch (state) {
       case unknown:
-        if (iswpunct(c) || iswspace(c)) {
+        if (characters.Separator(c)) {
           state = in_separator;
         }
         break;
 
       case in_separator:
-        if (iswalpha(c)) {
+        if (characters.Alpha(c)) {
           word_start = i;
           state = in_word;
-        } else if (!iswpunct(c) && !iswspace(c)) {
+        } else if (!characters.Separator(c)) {
           state = unknown;
         }
         break;
 
       case in_word:
-        if (c == '\'' && iswalpha(utf16_text[i + 1])) {
+        if ((c == '\'' || c == 0x2019) && i + 1 < utf16_length && characters.Alpha(utf16_text[i + 1])) {
           i++;
-        } else if (c == 0 || iswpunct(c) || iswspace(c)) {
+        } else if (c == 0 || characters.Separator(c)) {
           state = in_separator;
           bool converted = TranscodeUTF16ToUTF8(transcoder, (char *)utf8_buffer.data(), utf8_buffer.size(), utf16_text + word_start, i - word_start);
 
@@ -267,7 +333,7 @@ std::vector<MisspelledRange> HunspellSpellchecker::CheckSpelling(const uint16_t 
               if (cached) {
                 misspelled = *cached;
               } else {
-                misspelled = hunspell->spell(word) == 0;
+                misspelled = !hunspell->spell(std::string(word));
                 seen.Store(word, word_length, misspelled);
               }
 
@@ -279,7 +345,7 @@ std::vector<MisspelledRange> HunspellSpellchecker::CheckSpelling(const uint16_t 
               }
             }
           }
-        } else if (!iswalpha(c)) {
+        } else if (!characters.Alpha(c)) {
           state = unknown;
         }
         break;
@@ -290,49 +356,51 @@ std::vector<MisspelledRange> HunspellSpellchecker::CheckSpelling(const uint16_t 
 }
 
 void HunspellSpellchecker::Add(const std::string& word) {
-  if (hunspell) {
-    hunspell->add(word.c_str());
+  std::lock_guard<std::mutex> lock(mutex);
+  if (hunspell && word.size() <= MAX_UTF8_BUFFER && word.find('\0') == std::string::npos) {
+    std::vector<char> buffer(MAX_TRANSCODE_BUFFER);
+    if (Transcode8to8(toDictionaryTranscoder, buffer.data(), buffer.size(), word.data(), word.size())) {
+      hunspell->add(std::string(buffer.data()));
+    }
   }
 }
 
 void HunspellSpellchecker::Remove(const std::string& word) {
-  if (hunspell) {
-    hunspell->remove(word.c_str());
+  std::lock_guard<std::mutex> lock(mutex);
+  if (hunspell && word.size() <= MAX_UTF8_BUFFER && word.find('\0') == std::string::npos) {
+    std::vector<char> buffer(MAX_TRANSCODE_BUFFER);
+    if (Transcode8to8(toDictionaryTranscoder, buffer.data(), buffer.size(), word.data(), word.size())) {
+      hunspell->remove(std::string(buffer.data()));
+    }
   }
 }
 
 std::vector<std::string> HunspellSpellchecker::GetCorrectionsForMisspelling(const std::string& word) {
+  std::lock_guard<std::mutex> lock(mutex);
   std::vector<std::string> corrections;
 
-  if (hunspell) {
+  if (hunspell && word.size() <= MAX_UTF8_BUFFER && word.find('\0') == std::string::npos) {
     // Convert the buffer into a dictionary-specific encoding.
     std::vector<char> dict_buffer(MAX_TRANSCODE_BUFFER);
     bool converted = Transcode8to8(toDictionaryTranscoder, dict_buffer.data(), dict_buffer.size(), word.data(), word.size());
 
     if (converted) {
-      // Get the suggested on the dictionary-encoded word.
-      char** slist;
-      int size = hunspell->suggest(&slist, dict_buffer.data());
+      // The C++ API owns suggestion storage, including on early returns.
+      const auto suggestions = hunspell->suggest(std::string(dict_buffer.data()));
+      corrections.reserve(suggestions.size());
 
-      corrections.reserve(size);
-
-      for (int i = 0; i < size; ++i) {
-        // The items in the `slist` are still in dictionary encoding. We need to
+      for (const auto& suggestion : suggestions) {
+        // Suggestions are still in dictionary encoding. We need to
         // convert them back to UTF-8 so Chrome/V8 can play with them properly.
-        std::string word = slist[i];
-        bool converted = Transcode8to8(fromDictionaryTranscoder, dict_buffer.data(), dict_buffer.size(), word.data(), word.size());
-
-        if (converted) {
-          // Put this one back in encoded format.
-          corrections.push_back(dict_buffer.data());
+        if (!fromDictionaryTranscoder) {
+          corrections.push_back(suggestion);
         } else {
-          // If we couldn't convert, we need to put the poorly encoded one so
-          // they can see it.
-          corrections.push_back(slist[i]);
+          std::vector<char> output(suggestion.size() * 4 + 1);
+          if (Transcode8to8(fromDictionaryTranscoder, output.data(), output.size(), suggestion.data(), suggestion.size())) {
+            corrections.emplace_back(output.data());
+          }
         }
       }
-
-      hunspell->free_list(&slist, size);
     }
   }
 

@@ -28,33 +28,621 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ----- END THIRD-PARTY LICENSE: upstream:pulsar-edit_node-spellchecker -----
 
------ BEGIN THIRD-PARTY LICENSE: retained:lumine-code_native-spelling -----
-Source: https://github.com/lumine-code/native-spelling
-Revision: e8af28facb298c08971776d557b15af65f9a90a8
+----- BEGIN THIRD-PARTY LICENSE: upstream:hunspell_hunspell -----
+Component: Hunspell 1.7.5 (C++ engine, phonetic code and Unicode case tables)
+Affected files: vendor/hunspell/
+Source: https://github.com/hunspell/hunspell
+Revision: e8342700b4dde06130cdbba75f7e6500ffa58864 (v1.7.5)
+License: MPL-1.1 OR GPL-2.0-or-later OR LGPL-2.1-or-later; inherited MySpell notices retained below.
 
-Original file: vendor/hunspell/COPYING
+Original file: AUTHORS
 
-GPL 2.0/LGPL 2.1/MPL 1.1 tri-license
+Author: László Németh
 
-The contents of this software may be used under the terms of
-the GNU General Public License Version 2 or later (the "GPL"), or
-the GNU Lesser General Public License Version 2.1 or later (the "LGPL",
-see COPYING.LGPL) or (excepting the LGPLed GNU gettext library in the
-intl/ directory) the Mozilla Public License Version 1.1 or later
-(the "MPL", see COPYING.MPL).
+MySpell's (Hunspell's code base) author: Kevin Hendricks
 
-Software distributed under these licenses is distributed on an "AS IS" basis,
-WITHOUT WARRANTY OF ANY KIND, either express or implied. See the licences
-for the specific language governing rights and limitations under the licenses.
+Maintainer, distinguished contributor: Caolán McNamara
 
-Original file: vendor/hunspell/COPYING.LGPL
+Author of rule-based transformation code for phonetic suggestions
+(PHONE/phonet.cxx, used by English dictionaries): Björn Jacke
 
+
+Hunspell/MySpell code base is result of work of several
+contributors. See git log, ./THANKS, ./Changelog, ./Changelog.O,
+MySpell's README and CONTRIBUTORS files for their contributions.
+
+
+Note: Following contributors are not owners and
+not representatives of Hunspell, and they haven't got
+permission from Hunspell's author to act on the behalf
+of Hunspell project: Sander van Geloven, Dimitri Mijoski
+
+
+If you would like to support Hunspell, join the
+development or contact the author.
+
+Original file: license.hunspell
+
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * Copyright (C) 2002-2022 Németh László
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * Hunspell is based on MySpell which is Copyright (C) 2002 Kevin Hendricks.
+ *
+ * Contributor(s):
+ * David Einstein
+ * Davide Prina
+ * Giuseppe Modugno
+ * Gianluca Turconi
+ * Simon Brouwer
+ * Noll János
+ * Bíró Árpád
+ * Goldman Eleonóra
+ * Sarlós Tamás
+ * Bencsáth Boldizsár
+ * Halácsy Péter
+ * Dvornik László
+ * Gefferth András
+ * Nagy Viktor
+ * Varga Dániel
+ * Chris Halls
+ * Rene Engelhard
+ * Bram Moolenaar
+ * Dafydd Jones
+ * Harri Pitkänen
+ * Andras Timar
+ * Tor Lillqvist
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+Original file: license.myspell
+
+/*
+ * Copyright 2002 Kevin B. Hendricks, Stratford, Ontario, Canada
+ * And Contributors.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * 3. All modifications to the source code must be clearly marked as
+ *    such.  Binary redistributions based on modified source code
+ *    must be clearly marked as modified versions in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY KEVIN B. HENDRICKS AND CONTRIBUTORS
+ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+ * KEVIN B. HENDRICKS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ *
+ *
+ * NOTE: A special thanks and credit goes to Geoff Kuenning
+ * the creator of ispell.  MySpell's affix algorithms were
+ * based on those of ispell which should be noted is
+ * copyright Geoff Kuenning et.al. and now available
+ * under a BSD style license. For more information on ispell
+ * and affix compression in general, please see:
+ * http://www.cs.ucla.edu/ficus-members/geoff/ispell.html
+ * (the home page for ispell)
+ *
+ * An almost complete rewrite  of MySpell for use by
+ * the Mozilla project has been developed by David Einstein
+ * (Deinst@world.std.com).  David and I are now
+ * working on parallel development tracks to help
+ * our respective projects (Mozilla and OpenOffice.org
+ * and we will maintain full affix file and dictionary
+ * file compatibility and work on merging our versions
+ * of MySpell back into a single tree. David has been
+ * a significant help in improving MySpell.
+ *
+ * Special thanks also go to La'szlo' Ne'meth
+ * <nemethl@gyorsposta.hu> who is the author of the
+ * Hungarian dictionary and who developed and contributed
+ * the code to support compound words in MySpell
+ * and fixed numerous problems with the encoding
+ * case conversion tables.
+ *
+ */
+
+Original file: src/hunspell/hunspell.h (license block)
+
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Hunspell, based on MySpell.
+ *
+ * The Initial Developers of the Original Code are
+ * Kevin Hendricks (MySpell) and Németh László (Hunspell).
+ * Portions created by the Initial Developers are Copyright (C) 2002-2005
+ * the Initial Developers. All Rights Reserved.
+ *
+ * Contributor(s): David Einstein, Davide Prina, Giuseppe Modugno,
+ * Gianluca Turconi, Simon Brouwer, Noll János, Bíró Árpád,
+ * Goldman Eleonóra, Sarlós Tamás, Bencsáth Boldizsár, Halácsy Péter,
+ * Dvornik László, Gefferth András, Nagy Viktor, Varga Dániel, Chris Halls,
+ * Rene Engelhard, Bram Moolenaar, Dafydd Jones, Harri Pitkänen
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+Original file: src/hunspell/phonet.cxx and phonet.hxx (shared license block)
+
+/*  phonetic.c - generic replacement aglogithms for phonetic transformation
+    Copyright (C) 2000 Bjoern Jacke
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License version 2.1 as published by the Free Software Foundation;
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; If not, see
+    <http://www.gnu.org/licenses/>.
+
+    Changelog:
+
+    2000-01-05  Bjoern Jacke <bjoern at j3e.de>
+                Initial Release insprired by the article about phonetic
+                transformations out of c't 25/1999
+
+    2007-07-26  Bjoern Jacke <bjoern at j3e.de>
+                Released under MPL/GPL/LGPL tri-license for Hunspell
+
+    2007-08-23  Laszlo Nemeth <nemeth at OOo>
+                Porting from Aspell to Hunspell using C-like structs
+*/
+
+Original file: src/hunspell/utf_info.hxx (license block for the imported Unicode tables)
+
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * Copyright (C) 2002-2022 Németh László
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * Hunspell is based on MySpell which is Copyright (C) 2002 Kevin Hendricks.
+ *
+ * Contributor(s): David Einstein, Davide Prina, Giuseppe Modugno,
+ * Gianluca Turconi, Simon Brouwer, Noll János, Bíró Árpád,
+ * Goldman Eleonóra, Sarlós Tamás, Bencsáth Boldizsár, Halácsy Péter,
+ * Dvornik László, Gefferth András, Nagy Viktor, Varga Dániel, Chris Halls,
+ * Rene Engelhard, Bram Moolenaar, Dafydd Jones, Harri Pitkänen
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+Original file: COPYING (GNU GPL version 2)
+
+                    GNU GENERAL PUBLIC LICENSE
+                       Version 2, June 1991
+
+ Copyright (C) 1989, 1991 Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
+                            Preamble
+
+  The licenses for most software are designed to take away your
+freedom to share and change it.  By contrast, the GNU General Public
+License is intended to guarantee your freedom to share and change free
+software--to make sure the software is free for all its users.  This
+General Public License applies to most of the Free Software
+Foundation's software and to any other program whose authors commit to
+using it.  (Some other Free Software Foundation software is covered by
+the GNU Lesser General Public License instead.)  You can apply it to
+your programs, too.
+
+  When we speak of free software, we are referring to freedom, not
+price.  Our General Public Licenses are designed to make sure that you
+have the freedom to distribute copies of free software (and charge for
+this service if you wish), that you receive source code or can get it
+if you want it, that you can change the software or use pieces of it
+in new free programs; and that you know you can do these things.
+
+  To protect your rights, we need to make restrictions that forbid
+anyone to deny you these rights or to ask you to surrender the rights.
+These restrictions translate to certain responsibilities for you if you
+distribute copies of the software, or if you modify it.
+
+  For example, if you distribute copies of such a program, whether
+gratis or for a fee, you must give the recipients all the rights that
+you have.  You must make sure that they, too, receive or can get the
+source code.  And you must show them these terms so they know their
+rights.
+
+  We protect your rights with two steps: (1) copyright the software, and
+(2) offer you this license which gives you legal permission to copy,
+distribute and/or modify the software.
+
+  Also, for each author's protection and ours, we want to make certain
+that everyone understands that there is no warranty for this free
+software.  If the software is modified by someone else and passed on, we
+want its recipients to know that what they have is not the original, so
+that any problems introduced by others will not reflect on the original
+authors' reputations.
+
+  Finally, any free program is threatened constantly by software
+patents.  We wish to avoid the danger that redistributors of a free
+program will individually obtain patent licenses, in effect making the
+program proprietary.  To prevent this, we have made it clear that any
+patent must be licensed for everyone's free use or not licensed at all.
+
+  The precise terms and conditions for copying, distribution and
+modification follow.
+
+                    GNU GENERAL PUBLIC LICENSE
+   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+
+  0. This License applies to any program or other work which contains
+a notice placed by the copyright holder saying it may be distributed
+under the terms of this General Public License.  The "Program", below,
+refers to any such program or work, and a "work based on the Program"
+means either the Program or any derivative work under copyright law:
+that is to say, a work containing the Program or a portion of it,
+either verbatim or with modifications and/or translated into another
+language.  (Hereinafter, translation is included without limitation in
+the term "modification".)  Each licensee is addressed as "you".
+
+Activities other than copying, distribution and modification are not
+covered by this License; they are outside its scope.  The act of
+running the Program is not restricted, and the output from the Program
+is covered only if its contents constitute a work based on the
+Program (independent of having been made by running the Program).
+Whether that is true depends on what the Program does.
+
+  1. You may copy and distribute verbatim copies of the Program's
+source code as you receive it, in any medium, provided that you
+conspicuously and appropriately publish on each copy an appropriate
+copyright notice and disclaimer of warranty; keep intact all the
+notices that refer to this License and to the absence of any warranty;
+and give any other recipients of the Program a copy of this License
+along with the Program.
+
+You may charge a fee for the physical act of transferring a copy, and
+you may at your option offer warranty protection in exchange for a fee.
+
+  2. You may modify your copy or copies of the Program or any portion
+of it, thus forming a work based on the Program, and copy and
+distribute such modifications or work under the terms of Section 1
+above, provided that you also meet all of these conditions:
+
+    a) You must cause the modified files to carry prominent notices
+    stating that you changed the files and the date of any change.
+
+    b) You must cause any work that you distribute or publish, that in
+    whole or in part contains or is derived from the Program or any
+    part thereof, to be licensed as a whole at no charge to all third
+    parties under the terms of this License.
+
+    c) If the modified program normally reads commands interactively
+    when run, you must cause it, when started running for such
+    interactive use in the most ordinary way, to print or display an
+    announcement including an appropriate copyright notice and a
+    notice that there is no warranty (or else, saying that you provide
+    a warranty) and that users may redistribute the program under
+    these conditions, and telling the user how to view a copy of this
+    License.  (Exception: if the Program itself is interactive but
+    does not normally print such an announcement, your work based on
+    the Program is not required to print an announcement.)
+
+These requirements apply to the modified work as a whole.  If
+identifiable sections of that work are not derived from the Program,
+and can be reasonably considered independent and separate works in
+themselves, then this License, and its terms, do not apply to those
+sections when you distribute them as separate works.  But when you
+distribute the same sections as part of a whole which is a work based
+on the Program, the distribution of the whole must be on the terms of
+this License, whose permissions for other licensees extend to the
+entire whole, and thus to each and every part regardless of who wrote it.
+
+Thus, it is not the intent of this section to claim rights or contest
+your rights to work written entirely by you; rather, the intent is to
+exercise the right to control the distribution of derivative or
+collective works based on the Program.
+
+In addition, mere aggregation of another work not based on the Program
+with the Program (or with a work based on the Program) on a volume of
+a storage or distribution medium does not bring the other work under
+the scope of this License.
+
+  3. You may copy and distribute the Program (or a work based on it,
+under Section 2) in object code or executable form under the terms of
+Sections 1 and 2 above provided that you also do one of the following:
+
+    a) Accompany it with the complete corresponding machine-readable
+    source code, which must be distributed under the terms of Sections
+    1 and 2 above on a medium customarily used for software interchange; or,
+
+    b) Accompany it with a written offer, valid for at least three
+    years, to give any third party, for a charge no more than your
+    cost of physically performing source distribution, a complete
+    machine-readable copy of the corresponding source code, to be
+    distributed under the terms of Sections 1 and 2 above on a medium
+    customarily used for software interchange; or,
+
+    c) Accompany it with the information you received as to the offer
+    to distribute corresponding source code.  (This alternative is
+    allowed only for noncommercial distribution and only if you
+    received the program in object code or executable form with such
+    an offer, in accord with Subsection b above.)
+
+The source code for a work means the preferred form of the work for
+making modifications to it.  For an executable work, complete source
+code means all the source code for all modules it contains, plus any
+associated interface definition files, plus the scripts used to
+control compilation and installation of the executable.  However, as a
+special exception, the source code distributed need not include
+anything that is normally distributed (in either source or binary
+form) with the major components (compiler, kernel, and so on) of the
+operating system on which the executable runs, unless that component
+itself accompanies the executable.
+
+If distribution of executable or object code is made by offering
+access to copy from a designated place, then offering equivalent
+access to copy the source code from the same place counts as
+distribution of the source code, even though third parties are not
+compelled to copy the source along with the object code.
+
+  4. You may not copy, modify, sublicense, or distribute the Program
+except as expressly provided under this License.  Any attempt
+otherwise to copy, modify, sublicense or distribute the Program is
+void, and will automatically terminate your rights under this License.
+However, parties who have received copies, or rights, from you under
+this License will not have their licenses terminated so long as such
+parties remain in full compliance.
+
+  5. You are not required to accept this License, since you have not
+signed it.  However, nothing else grants you permission to modify or
+distribute the Program or its derivative works.  These actions are
+prohibited by law if you do not accept this License.  Therefore, by
+modifying or distributing the Program (or any work based on the
+Program), you indicate your acceptance of this License to do so, and
+all its terms and conditions for copying, distributing or modifying
+the Program or works based on it.
+
+  6. Each time you redistribute the Program (or any work based on the
+Program), the recipient automatically receives a license from the
+original licensor to copy, distribute or modify the Program subject to
+these terms and conditions.  You may not impose any further
+restrictions on the recipients' exercise of the rights granted herein.
+You are not responsible for enforcing compliance by third parties to
+this License.
+
+  7. If, as a consequence of a court judgment or allegation of patent
+infringement or for any other reason (not limited to patent issues),
+conditions are imposed on you (whether by court order, agreement or
+otherwise) that contradict the conditions of this License, they do not
+excuse you from the conditions of this License.  If you cannot
+distribute so as to satisfy simultaneously your obligations under this
+License and any other pertinent obligations, then as a consequence you
+may not distribute the Program at all.  For example, if a patent
+license would not permit royalty-free redistribution of the Program by
+all those who receive copies directly or indirectly through you, then
+the only way you could satisfy both it and this License would be to
+refrain entirely from distribution of the Program.
+
+If any portion of this section is held invalid or unenforceable under
+any particular circumstance, the balance of the section is intended to
+apply and the section as a whole is intended to apply in other
+circumstances.
+
+It is not the purpose of this section to induce you to infringe any
+patents or other property right claims or to contest validity of any
+such claims; this section has the sole purpose of protecting the
+integrity of the free software distribution system, which is
+implemented by public license practices.  Many people have made
+generous contributions to the wide range of software distributed
+through that system in reliance on consistent application of that
+system; it is up to the author/donor to decide if he or she is willing
+to distribute software through any other system and a licensee cannot
+impose that choice.
+
+This section is intended to make thoroughly clear what is believed to
+be a consequence of the rest of this License.
+
+  8. If the distribution and/or use of the Program is restricted in
+certain countries either by patents or by copyrighted interfaces, the
+original copyright holder who places the Program under this License
+may add an explicit geographical distribution limitation excluding
+those countries, so that distribution is permitted only in or among
+countries not thus excluded.  In such case, this License incorporates
+the limitation as if written in the body of this License.
+
+  9. The Free Software Foundation may publish revised and/or new versions
+of the General Public License from time to time.  Such new versions will
+be similar in spirit to the present version, but may differ in detail to
+address new problems or concerns.
+
+Each version is given a distinguishing version number.  If the Program
+specifies a version number of this License which applies to it and "any
+later version", you have the option of following the terms and conditions
+either of that version or of any later version published by the Free
+Software Foundation.  If the Program does not specify a version number of
+this License, you may choose any version ever published by the Free Software
+Foundation.
+
+  10. If you wish to incorporate parts of the Program into other free
+programs whose distribution conditions are different, write to the author
+to ask for permission.  For software which is copyrighted by the Free
+Software Foundation, write to the Free Software Foundation; we sometimes
+make exceptions for this.  Our decision will be guided by the two goals
+of preserving the free status of all derivatives of our free software and
+of promoting the sharing and reuse of software generally.
+
+                            NO WARRANTY
+
+  11. BECAUSE THE PROGRAM IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
+FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW.  EXCEPT WHEN
+OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
+PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED
+OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE ENTIRE RISK AS
+TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU.  SHOULD THE
+PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING,
+REPAIR OR CORRECTION.
+
+  12. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
+REDISTRIBUTE THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES,
+INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING
+OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED
+TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY
+YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
+PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGES.
+
+                     END OF TERMS AND CONDITIONS
+
+            How to Apply These Terms to Your New Programs
+
+  If you develop a new program, and you want it to be of the greatest
+possible use to the public, the best way to achieve this is to make it
+free software which everyone can redistribute and change under these terms.
+
+  To do so, attach the following notices to the program.  It is safest
+to attach them to the start of each source file to most effectively
+convey the exclusion of warranty; and each file should have at least
+the "copyright" line and a pointer to where the full notice is found.
+
+    <one line to give the program's name and a brief idea of what it does.>
+    Copyright (C) <year>  <name of author>
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+Also add information on how to contact you by electronic and paper mail.
+
+If the program is interactive, make it output a short notice like this
+when it starts in an interactive mode:
+
+    Gnomovision version 69, Copyright (C) year name of author
+    Gnomovision comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+    This is free software, and you are welcome to redistribute it
+    under certain conditions; type `show c' for details.
+
+The hypothetical commands `show w' and `show c' should show the appropriate
+parts of the General Public License.  Of course, the commands you use may
+be called something other than `show w' and `show c'; they could even be
+mouse-clicks or menu items--whatever suits your program.
+
+You should also get your employer (if you work as a programmer) or your
+school, if any, to sign a "copyright disclaimer" for the program, if
+necessary.  Here is a sample; alter the names:
+
+  Yoyodyne, Inc., hereby disclaims all copyright interest in the program
+  `Gnomovision' (which makes passes at compilers) written by James Hacker.
+
+  <signature of Ty Coon>, 1 April 1989
+  Ty Coon, President of Vice
+
+This General Public License does not permit incorporating your program into
+proprietary programs.  If your program is a subroutine library, you may
+consider it more useful to permit linking proprietary applications with the
+library.  If this is what you want to do, use the GNU Lesser General
+Public License instead of this License.
+
+Original file: COPYING.LESSER (GNU LGPL version 2.1)
 
                   GNU LESSER GENERAL PUBLIC LICENSE
                        Version 2.1, February 1999
 
  Copyright (C) 1991, 1999 Free Software Foundation, Inc.
-     59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  Everyone is permitted to copy and distribute verbatim copies
  of this license document, but changing it is not allowed.
 
@@ -74,8 +662,7 @@ specially designated software packages--typically libraries--of the
 Free Software Foundation and other authors who decide to use it.  You
 can use it too, but we suggest you first think carefully about whether
 this license or the ordinary General Public License is the better
-strategy to use in any particular case, based on the explanations
-below.
+strategy to use in any particular case, based on the explanations below.
 
   When we speak of free software, we are referring to freedom of use,
 not price.  Our General Public Licenses are designed to make sure that
@@ -108,7 +695,7 @@ modified by someone else and passed on, the recipients should know
 that what they have is not the original version, so that the original
 author's reputation will not be affected by problems that might be
 introduced by others.
-^L
+
   Finally, software patents pose a constant threat to the existence of
 any free program.  We wish to make sure that a company cannot
 effectively restrict the users of a free program by obtaining a
@@ -140,8 +727,7 @@ libraries.  However, the Lesser license provides advantages in certain
 special circumstances.
 
   For example, on rare occasions, there may be a special need to
-encourage the widest possible use of a certain library, so that it
-becomes
+encourage the widest possible use of a certain library, so that it becomes
 a de-facto standard.  To achieve this, non-free programs must be
 allowed to use the library.  A more frequent case is that a free
 library does the same job as widely used non-free libraries.  In this
@@ -165,7 +751,7 @@ modification follow.  Pay close attention to the difference between a
 "work based on the library" and a "work that uses the library".  The
 former contains code derived from the library, whereas the latter must
 be combined with the library in order to run.
-^L
+
                   GNU LESSER GENERAL PUBLIC LICENSE
    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
@@ -190,8 +776,7 @@ included without limitation in the term "modification".)
   "Source code" for a work means the preferred form of the work for
 making modifications to it.  For a library, complete source code means
 all the source code for all modules it contains, plus any associated
-interface definition files, plus the scripts used to control
-compilation
+interface definition files, plus the scripts used to control compilation
 and installation of the library.
 
   Activities other than copying, distribution and modification are not
@@ -271,7 +856,7 @@ instead of to this License.  (If a newer version than version 2 of the
 ordinary GNU General Public License has appeared, then you can specify
 that version instead if you wish.)  Do not make any other change in
 these notices.
-^L
+
   Once this change is made in a given copy, it is irreversible for
 that copy, so the ordinary GNU General Public License applies to all
 subsequent copies and derivative works made from that copy.
@@ -322,7 +907,7 @@ Library will still fall under Section 6.)
 distribute the object code for the work under the terms of Section 6.
 Any executables containing that work also fall under Section 6,
 whether or not they are linked directly with the Library itself.
-^L
+
   6. As an exception to the Sections above, you may also combine or
 link a "work that uses the Library" with the Library to produce a
 work containing portions of the Library, and distribute that work
@@ -384,7 +969,7 @@ restrictions of other proprietary libraries that do not normally
 accompany the operating system.  Such a contradiction means you cannot
 use both them and the Library together in an executable that you
 distribute.
-^L
+
   7. You may place library facilities that are a work based on the
 Library side-by-side in a single library together with other library
 facilities not covered by this License, and distribute such a combined
@@ -425,7 +1010,7 @@ subject to these terms and conditions.  You may not impose any further
 restrictions on the recipients' exercise of the rights granted herein.
 You are not responsible for enforcing compliance by third parties with
 this License.
-^L
+
   11. If, as a consequence of a court judgment or allegation of patent
 infringement or for any other reason (not limited to patent issues),
 conditions are imposed on you (whether by court order, agreement or
@@ -439,10 +1024,9 @@ all those who receive copies directly or indirectly through you, then
 the only way you could satisfy both it and this License would be to
 refrain entirely from distribution of the Library.
 
-If any portion of this section is held invalid or unenforceable under
-any particular circumstance, the balance of the section is intended to
-apply, and the section as a whole is intended to apply in other
-circumstances.
+If any portion of this section is held invalid or unenforceable under any
+particular circumstance, the balance of the section is intended to apply,
+and the section as a whole is intended to apply in other circumstances.
 
 It is not the purpose of this section to induce you to infringe any
 patents or other property right claims or to contest validity of any
@@ -460,11 +1044,11 @@ be a consequence of the rest of this License.
 
   12. If the distribution and/or use of the Library is restricted in
 certain countries either by patents or by copyrighted interfaces, the
-original copyright holder who places the Library under this License
-may add an explicit geographical distribution limitation excluding those
-countries, so that distribution is permitted only in or among
-countries not thus excluded.  In such case, this License incorporates
-the limitation as if written in the body of this License.
+original copyright holder who places the Library under this License may add
+an explicit geographical distribution limitation excluding those countries,
+so that distribution is permitted only in or among countries not thus
+excluded.  In such case, this License incorporates the limitation as if
+written in the body of this License.
 
   13. The Free Software Foundation may publish revised and/or new
 versions of the Lesser General Public License from time to time.
@@ -478,7 +1062,7 @@ conditions either of that version or of any later version published by
 the Free Software Foundation.  If the Library does not specify a
 license version number, you may choose any version ever published by
 the Free Software Foundation.
-^L
+
   14. If you wish to incorporate parts of the Library into other free
 programs whose distribution conditions are incompatible with these,
 write to the author to ask for permission.  For software which is
@@ -512,30 +1096,27 @@ SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
 DAMAGES.
 
                      END OF TERMS AND CONDITIONS
-^L
+
            How to Apply These Terms to Your New Libraries
 
   If you develop a new library, and you want it to be of the greatest
 possible use to the public, we recommend making it free software that
 everyone can redistribute and change.  You can do so by permitting
-redistribution under these terms (or, alternatively, under the terms
-of the ordinary General Public License).
+redistribution under these terms (or, alternatively, under the terms of the
+ordinary General Public License).
 
-  To apply these terms, attach the following notices to the library.
-It is safest to attach them to the start of each source file to most
-effectively convey the exclusion of warranty; and each file should
-have at least the "copyright" line and a pointer to where the full
-notice is found.
+  To apply these terms, attach the following notices to the library.  It is
+safest to attach them to the start of each source file to most effectively
+convey the exclusion of warranty; and each file should have at least the
+"copyright" line and a pointer to where the full notice is found.
 
-
-    <one line to give the library's name and a brief idea of what it
-does.>
+    <one line to give the library's name and a brief idea of what it does.>
     Copyright (C) <year>  <name of author>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
+    version 2.1 of the License, or (at your option) any later version.
 
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -544,26 +1125,23 @@ does.>
 
     You should have received a copy of the GNU Lesser General Public
     License along with this library; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-Also add information on how to contact you by electronic and paper
-mail.
+Also add information on how to contact you by electronic and paper mail.
 
-You should also get your employer (if you work as a programmer) or
-your
+You should also get your employer (if you work as a programmer) or your
 school, if any, to sign a "copyright disclaimer" for the library, if
 necessary.  Here is a sample; alter the names:
 
   Yoyodyne, Inc., hereby disclaims all copyright interest in the
-  library `Frob' (a library for tweaking knobs) written by James
-Random Hacker.
+  library `Frob' (a library for tweaking knobs) written by James Random Hacker.
 
   <signature of Ty Coon>, 1 April 1990
   Ty Coon, President of Vice
 
 That's all there is to it!
 
-Original file: vendor/hunspell/COPYING.MPL
+Original file: COPYING.MPL (Mozilla Public License version 1.1)
 
                           MOZILLA PUBLIC LICENSE
                                 Version 1.1
@@ -1034,128 +1612,3064 @@ EXHIBIT A -Mozilla Public License.
      the notices in the Source Code files of the Original Code. You should
      use the text of this Exhibit A rather than the text found in the
      Original Code Source Code for Your Modifications.]
+----- END THIRD-PARTY LICENSE: upstream:hunspell_hunspell -----
 
-Original file: vendor/hunspell/src/hunspell/license.hunspell
+----- BEGIN THIRD-PARTY LICENSE: upstream:en-wl_wordlist_en_US -----
+Component: Production en_US Hunspell dictionary, standard size 60
+Affected files: vendor/hunspell_dictionaries/en_US.dic and en_US.aff
+Source: https://github.com/en-wl/wordlist
+Revision: 7e99edab8e32f9f9ea2b15f249ca8d4d67237410 (rel-2026.02.25)
+Archive: https://github.com/en-wl/wordlist/releases/download/rel-2026.02.25/hunspell-en_US-2026.02.25.zip
+Archive SHA-256: ac8e73310e951d88c52c2cf2ba54ceaca34f8486a81630ac8a75dc5f931179f9
+The matched dictionary and affix files are imported without modification. The complete upstream README, including the SCOWLv2 permission, all source credits and the Ispell affix license, follows.
 
-/* ***** BEGIN LICENSE BLOCK *****
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * The contents of this file are subject to the Mozilla Public License Version
- * 1.1 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
- * for the specific language governing rights and limitations under the
- * License.
- *
- * The Original Code is Hunspell, based on MySpell.
- *
- * The Initial Developers of the Original Code are
- * Kevin Hendricks (MySpell) and Laszlo Nemeth (Hunspell).
- * Portions created by the Initial Developers are Copyright (C) 2002-2005
- * the Initial Developers. All Rights Reserved.
- *
- * Contributor(s):
- * David Einstein 
- * Davide Prina
- * Giuseppe Modugno 
- * Gianluca Turconi
- * Simon Brouwer
- * Noll Janos
- * Biro Arpad
- * Goldman Eleonora
- * Sarlos Tamas
- * Bencsath Boldizsar
- * Halacsy Peter
- * Dvornik Laszlo
- * Gefferth Andras
- * Nagy Viktor
- * Varga Daniel
- * Chris Halls
- * Rene Engelhard
- * Bram Moolenaar
- * Dafydd Jones
- * Harri Pitkanen
- * Andras Timar
- * Tor Lillqvist
- *
- * Alternatively, the contents of this file may be used under the terms of
- * either the GNU General Public License Version 2 or later (the "GPL"), or
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
- * in which case the provisions of the GPL or the LGPL are applicable instead
- * of those above. If you wish to allow use of your version of this file only
- * under the terms of either the GPL or the LGPL, and not to allow others to
- * use your version of this file under the terms of the MPL, indicate your
- * decision by deleting the provisions above and replace them with the notice
- * and other provisions required by the GPL or the LGPL. If you do not delete
- * the provisions above, a recipient may use your version of this file under
- * the terms of any one of the MPL, the GPL or the LGPL.
- *
- * ***** END LICENSE BLOCK ***** */
+Original file: README_en_US.txt (stored as vendor/hunspell_dictionaries/README.txt)
 
-Original file: vendor/hunspell/src/hunspell/license.myspell
+en_US Hunspell Dictionary
+Version 2026.02.25
+Wed Feb 25 15:37:24 2026 -0500 [7e99eda]
 
-/*
- * Copyright 2002 Kevin B. Hendricks, Stratford, Ontario, Canada
- * And Contributors.  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- *
- * 3. All modifications to the source code must be clearly marked as
- *    such.  Binary redistributions based on modified source code
- *    must be clearly marked as modified versions in the documentation
- *    and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY KEVIN B. HENDRICKS AND CONTRIBUTORS 
- * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL 
- * KEVIN B. HENDRICKS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
- * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
- *
- *
- * NOTE: A special thanks and credit goes to Geoff Kuenning
- * the creator of ispell.  MySpell's affix algorithms were
- * based on those of ispell which should be noted is
- * copyright Geoff Kuenning et.al. and now available
- * under a BSD style license. For more information on ispell
- * and affix compression in general, please see:
- * http://www.cs.ucla.edu/ficus-members/geoff/ispell.html
- * (the home page for ispell)
- *
- * An almost complete rewrite  of MySpell for use by  
- * the Mozilla project has been developed by David Einstein 
- * (Deinst@world.std.com).  David and I are now 
- * working on parallel development tracks to help 
- * our respective projects (Mozilla and OpenOffice.org 
- * and we will maintain full affix file and dictionary 
- * file compatibility and work on merging our versions 
- * of MySpell back into a single tree. David has been 
- * a significant help in improving MySpell.
- * 
- * Special thanks also go to La'szlo' Ne'meth 
- * <nemethl@gyorsposta.hu> who is the author of the 
- * Hungarian dictionary and who developed and contributed 
- * the code to support compound words in MySpell 
- * and fixed numerous problems with the encoding 
- * case conversion tables.
- *
- */
------ END THIRD-PARTY LICENSE: retained:lumine-code_native-spelling -----
+https://wordlist.aspell.net
+
+README file for English Hunspell dictionaries derived from SCOWL.
+
+These dictionaries are created using the speller/make-hunspell-dict
+script in SCOWL.
+
+The following dictionaries are available:
+
+  en_US (American)
+  en_CA (Canadian)
+  en_GB-ise (British with -ise/traditional spelling)
+  en_GB-ize (British with -ize/Oxford spelling)
+  en_AU (Australian)
+
+  en_US-large
+  en_CA-large
+  en_GB-large (with both -ise and -ize spelling)
+  en_AU-large
+
+The default dictionaries correspond to SCOWL size 60 and, to encourage
+consistent spelling, generally only include one spelling variant for a word.
+The large dictionaries correspond to SCOWL size 70 and include common
+spelling variants.  The larger dictionaries, however, (1) have not been as
+carefully checked for errors as the normal dictionaries and thus may contain
+misspelled or invalid words; and (2) contain uncommon, yet valid, words that
+might cause problems as they are likely to be misspellings of more common
+words (for example, "ort" and "calender").
+
+The American, Canadian, and Australian dictionaries are considered the
+official version for Hunspell.  The British ones are considered an
+alternative version.  The official ones are maintained by Marco A.G.Pinto at
+https://proofingtoolgui.org.
+
+For additional information, including information on how to contribute, see
+https://wordlist.aspell.net/dicts/.
+
+IMPORTANT CHANGES INTRODUCED ON 2026-02-22:
+
+The Unicode "’" (U+2019) character was added to WORDCHARS so that Hunspell can
+recognize words with the apostrophe.  Based on testing, this should allow
+Hunspell to recognize both "can't" and "can’t".  The ASCII single quote at the
+end of the word won't be considered part of the word, but the Unicode
+character will.  This means "'color'" is okay, but "‘color’" will get flagged
+when Hunspell does the tokenization.
+
+IMPORTANT CHANGES INTRODUCED IN 2016.11.20:
+
+New Australian dictionaries thanks to the work of Benjamin Titze
+(btitze@protonmail.ch).
+
+IMPORTANT CHANGES INTRODUCED IN 2016.04.24:
+
+The dictionaries are now in UTF-8 format instead of ISO-8859-1.  This
+was required to handle smart quotes correctly.
+
+IMPORTANT CHANGES INTRODUCED IN 2016.01.19:
+
+"SET UTF8" was changes to "SET UTF-8" in the affix file as some
+versions of Hunspell do not recognize "UTF8".
+
+ADDITIONAL NOTES:
+
+The NOSUGGEST flag was added to certain taboo words.  While I made an
+honest attempt to flag the strongest taboo words with the NOSUGGEST
+flag, I MAKE NO GUARANTEE THAT I FLAGGED EVERY POSSIBLE TABOO WORD.
+The list was originally derived from Németh László, however I removed
+some words which, while being considered taboo by some dictionaries,
+are not really considered swear words in today's society.
+
+COPYRIGHT, SOURCES, and CREDITS:
+
+The English dictionaries come directly from SCOWL and is thus under
+the same copyright terms as SCOWL.  The affix file is a heavily
+modified version of the original english.aff file, which was
+released as part of Geoff Kuenning's Ispell and as such is covered by
+his BSD license.
+
+Copyright 2000-2026 by Kevin Atkinson
+
+Permission to use, copy, modify, distribute, and sell any part of SCOWLv2, or
+word lists created from it, is hereby granted without fee, provided that the
+above copyright notice appears in all copies and that both the above
+copyright notice and this notice appear in supporting documentation.  Kevin
+Atkinson makes no representations about the suitability of this database for
+any purpose.  It is provided "as is" without express or implied warranty.
+
+SCOWL is derived from many sources, most of which are in the Public Domain.
+Data from the Corpus of Contemporary American English (COCA) was also used.
+
+All data from COCA comes from 3-gram data that is not freely available;
+however, the usage is within the rights given by the NDA that was signed when
+purchasing the data.  More information on COCA is available at
+https://www.english-corpora.org/coca/.
+
+The primary source of words for SCOWL comes from 12dicts and ENABLE2K.  Both
+are in the Public Domain, but Alan Beale <biljir@pobox.com> deserves special
+credit as he is the author of 12dicts and a major contributor to ENABLE2K.  In
+addition, he gave me an incredible amount of feedback and created a number of
+special lists in order to help improve the overall quality of SCOWL.
+
+The initial information for Australian English comes from Benjamin Titze:
+
+  Copyright 2016 by Benjamin Titze
+
+  Permission to use, copy, modify, distribute and sell this array, the
+  associated software, and its documentation for any purpose is hereby
+  granted without fee, provided that the above copyright notice appears
+  in all copies and that both that copyright notice and this permission
+  notice appear in supporting documentation. Benjamin Titze makes no
+  representations about the suitability of this array for any
+  purpose. It is provided "as is" without express or implied warranty.
+
+Affix file Copyright:
+
+  Copyright 1993, Geoff Kuenning, Granada Hills, CA
+  All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  1. Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+  2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+  3. All modifications to the source code must be clearly marked as
+     such.  Binary redistributions based on modified source code
+     must be clearly marked as modified versions in the documentation
+     and/or other materials provided with the distribution.
+  (clause 4 removed with permission from Geoff Kuenning)
+  5. The name of Geoff Kuenning may not be used to endorse or promote
+     products derived from this software without specific prior
+     written permission.
+
+  THIS SOFTWARE IS PROVIDED BY GEOFF KUENNING AND CONTRIBUTORS ``AS IS'' AND
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  ARE DISCLAIMED.  IN NO EVENT SHALL GEOFF KUENNING OR CONTRIBUTORS BE LIABLE
+  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
+
+Build Date: Wed Feb 25 15:40:53 EST 2026
+Wordlist Command: mk-list --accents=strip en_US 60
+----- END THIRD-PARTY LICENSE: upstream:en-wl_wordlist_en_US -----
+
+----- BEGIN THIRD-PARTY LICENSE: retained:legacy-production_en_US_2007 -----
+Component: Historical production en_US dictionary notice retained for provenance
+Former affected files: vendor/hunspell_dictionaries/en_US.dic and en_US.aff before the 2026.02.25 replacement
+Source: https://github.com/lumine-code/native-spelling
+Revision: ef43c7cc1254a3b797c82d3f972f038b2550d8e0
+This notice describes the retired 2007 production dictionary. The separate unchanged regression fixtures have their own upstream notices in the sections below. The GNU LGPL version 2.1 and Ispell affix terms are also reproduced in this file.
+
+Original file: vendor/hunspell_dictionaries/README.txt (historical 2007-08-29 release)
+
+OpenOffice.org Hunspell en_US dictionary
+2007-08-29 release
+--
+This dictionary is based on a subset of the original
+English wordlist created by Kevin Atkinson for Pspell
+and  Aspell and thus is covered by his original
+LGPL license.  The affix file is a heavily modified
+version of the original english.aff file which was
+released as part of Geoff Kuenning's Ispell and as
+such is covered by his BSD license.
+
+Thanks to both authors for there wonderful work.
+
+ChangeLog
+
+2007-08-29 nemeth AT OOo
+
+Mozilla 376296 - add "axe" (variant of ax)
+Mozilla 386259 - add "JavaScript"
+Mozilla 383694 - add "foci" and "octopi" (plurals of focus and octopus)
+Issue 73024 - add "gauge"
+Issue 75710 - add "foldable"
+Issue 75772 - add "GHz"
+Mozilla 379527 and Issue 62294 - add "dialogue"
+Issue 64246 - add "acknowledgement" as a variant of "acknowledgment"
+
+- TRY extended with apostrophe and dash for
+ dont -> don't
+ alltime -> all-time suggestions
+- new REP suggestions:
+- REP alot a_lot (alot ->  a lot)
+for suggestion)
+- REP nt n't (dont -> don't)
+- REP avengence -> a_vengeance (avengence -> a vengeance)
+- REP ninties 1990s
+- REP tion ssion: readmition -> readmission
+
+- add Mozilla words (blog, cafe, inline, online, eBay, PayPal, etc.)
+- add cybercafé
+- alias compression (saving 15 kB disk space + 0.8 MB memory)
+
+Mozilla 355178 - add scot-free
+Mozilla 374411 - add Scotty
+Mozilla 359305 - add archaeology, archeological, archeologist
+Mozilla 358754 - add doughnut
+Mozilla 254814 - add gauging, canoeing, *canoing, proactively
+Issue 71718 - remove *opthalmic, *opthalmology; *opthalmologic -> ophthalmologic
+Issue 68550 - *estoppal -> estoppel
+Issue 69345 - add tapenade
+Issue 67975 - add assistive
+Issue 63541 - remove *dessicate
+Issue 62599 - add toolbar
+
+2006-02-07 nemeth AT OOo
+
+Issue 48060 - add ordinal numbers with COMPOUNDRULE (1st, 11th, 101st etc.)
+Issue 29112, 55498 - add NOSUGGEST flags to taboo words
+Issue 56755 - add sequitor (non sequitor)
+Issue 50616 - add open source words (GNOME, KDE, OOo, OpenOffice.org)
+Issue 56389 - add Mozilla words (Mozilla, Firefox, Thunderbird)
+Issue 29110 - add okay
+Issue 58468 - add advisors
+Issue 58708 - add hiragana & katakana
+Issue 60240 - add arginine, histidine, monovalent, polymorphism, pyroelectric, pyroelectricity
+
+2005-11-01 dnaber AT OOo
+
+Issue 25797 - add proven, advisor, etc.
+----- END THIRD-PARTY LICENSE: retained:legacy-production_en_US_2007 -----
+
+----- BEGIN THIRD-PARTY LICENSE: upstream:libreoffice-dictionaries_en_US_fixtures -----
+Component: Unchanged English spelling and morphological regression dictionaries
+Affected files: spec/dictionaries/en_US.dic and en_US.aff
+Source: https://github.com/pulsar-edit/node-spellchecker
+Inherited revision: 198bd4ba23984d80361323f24170707a87206e1b
+Matching upstream dictionary distribution: https://github.com/LibreOffice/dictionaries
+Upstream revision: be992a0b06f4cab782a967fd5187e114c53c9d4a (libreoffice-4.4.0.3)
+The upstream en/en_US.dic and en/en_US.aff match the retained fixtures after newline normalization. This older dictionary retains the SCOWL, WordNet, Ispell and phonetic-rule notices below. The GNU LGPL version 2.1 full text is reproduced in the Hunspell section above.
+
+Original file: en/README_en_US.txt
+
+Wordlist en_US spelling and morphological dictionary for OpenOffice.org
+Version 2008-12-18
+
+Based on Wordlist Hunspell dictionaries version 2008-12-05
+and Wordlist POS and AGID data created by Kevin Atkinson
+and released on http://wordlist.sourceforge.net.
+
+Other fixes:
+
+OOo Issue 48060 - add numbers with affixes by COMPOUNDRULE (1st, 111th, 1990s etc.)
+New REP items (better suggestions for accented words and a few mistakes)
+OOo Issue 63541 - remove *dessicated, *dessication
+
+LÃ¡szlÃ³ NÃ©meth <nemeth at OO.o>
+
+Original license:
+
+2008-12-05 Release
+
+README file for en_US and en_CA Hunspell dictionaries
+
+These dictionaries are created using the speller/make-hunspell-dict
+dictionary in SCOWL, SVN revision 74.
+
+The NOSUGGEST flag was added to certain taboo words.  While I made an
+honest attempt to flag the strongest taboo words with the NOSUGGEST
+flag, I MAKE NO GUARANTEE THAT I FLAGGED EVERY POSSIBLE TABOO WORD.
+The list was originally derived from Németh László, however I removed
+some words which, while being considered taboo by some dictionaries,
+are not really considered swear words in today's society.
+
+You can find SCOWL and friend at http://wordlist.sourceforge.net/.
+Bug reports should go to the Issue Tracker found on the previously
+mentioned web site.  General discussion should go to the
+wordlist-devel at sourceforge net mailing list.
+
+COPYRIGHT, SOURCES, and CREDITS:
+
+The en_US and en_CA dictionaries come directly from SCOWL (up to level
+60) and is thus under the same copyright of SCOWL.  The affix file is
+a heavily modified version of the original english.aff file which was
+released as part of Geoff Kuenning's Ispell and as such is covered by
+his BSD license.  Part of SCOWL is also based on Ispell thus the
+Ispell copyright is included with the SCOWL copyright.
+
+The collective work is Copyright 2000-2007 by Kevin Atkinson as well
+as any of the copyrights mentioned below:
+
+  Copyright 2000-2007 by Kevin Atkinson
+
+  Permission to use, copy, modify, distribute and sell these word
+  lists, the associated scripts, the output created from the scripts,
+  and its documentation for any purpose is hereby granted without fee,
+  provided that the above copyright notice appears in all copies and
+  that both that copyright notice and this permission notice appear in
+  supporting documentation. Kevin Atkinson makes no representations
+  about the suitability of this array for any purpose. It is provided
+  "as is" without express or implied warranty.
+
+Alan Beale <biljir@pobox.com> also deserves special credit as he has,
+in addition to providing the 12Dicts package and being a major
+contributor to the ENABLE word list, given me an incredible amount of
+feedback and created a number of special lists (those found in the
+Supplement) in order to help improve the overall quality of SCOWL.
+
+The 10 level includes the 1000 most common English words (according to
+the Moby (TM) Words II [MWords] package), a subset of the 1000 most
+common words on the Internet (again, according to Moby Words II), and
+frequently class 16 from Brian Kelk's "UK English Wordlist
+with Frequency Classification".
+
+The MWords package was explicitly placed in the public domain:
+
+    The Moby lexicon project is complete and has
+    been place into the public domain. Use, sell,
+    rework, excerpt and use in any way on any platform.
+
+    Placing this material on internal or public servers is
+    also encouraged. The compiler is not aware of any
+    export restrictions so freely distribute world-wide.
+
+    You can verify the public domain status by contacting
+
+    Grady Ward
+    3449 Martha Ct.
+    Arcata, CA  95521-4884
+
+    grady@netcom.com
+    grady@northcoast.com
+
+The "UK English Wordlist With Frequency Classification" is also in the
+Public Domain:
+
+  Date: Sat, 08 Jul 2000 20:27:21 +0100
+  From: Brian Kelk <Brian.Kelk@cl.cam.ac.uk>
+
+  > I was wondering what the copyright status of your "UK English
+  > Wordlist With Frequency Classification" word list as it seems to
+  > be lacking any copyright notice.
+
+  There were many many sources in total, but any text marked
+  "copyright" was avoided. Locally-written documentation was one
+  source. An earlier version of the list resided in a filespace called
+  PUBLIC on the University mainframe, because it was considered public
+  domain.
+
+  Date: Tue, 11 Jul 2000 19:31:34 +0100
+
+  > So are you saying your word list is also in the public domain?
+
+  That is the intention.
+
+The 20 level includes frequency classes 7-15 from Brian's word list.
+
+The 35 level includes frequency classes 2-6 and words appearing in at
+least 11 of 12 dictionaries as indicated in the 12Dicts package.  All
+words from the 12Dicts package have had likely inflections added via
+my inflection database.
+
+The 12Dicts package and Supplement is in the Public Domain.
+
+The WordNet database, which was used in the creation of the
+Inflections database, is under the following copyright:
+
+  This software and database is being provided to you, the LICENSEE,
+  by Princeton University under the following license.  By obtaining,
+  using and/or copying this software and database, you agree that you
+  have read, understood, and will comply with these terms and
+  conditions.:
+
+  Permission to use, copy, modify and distribute this software and
+  database and its documentation for any purpose and without fee or
+  royalty is hereby granted, provided that you agree to comply with
+  the following copyright notice and statements, including the
+  disclaimer, and that the same appear on ALL copies of the software,
+  database and documentation, including modifications that you make
+  for internal use or for distribution.
+
+  WordNet 1.6 Copyright 1997 by Princeton University.  All rights
+  reserved.
+
+  THIS SOFTWARE AND DATABASE IS PROVIDED "AS IS" AND PRINCETON
+  UNIVERSITY MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR
+  IMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, PRINCETON
+  UNIVERSITY MAKES NO REPRESENTATIONS OR WARRANTIES OF MERCHANT-
+  ABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE
+  LICENSED SOFTWARE, DATABASE OR DOCUMENTATION WILL NOT INFRINGE ANY
+  THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS.
+
+  The name of Princeton University or Princeton may not be used in
+  advertising or publicity pertaining to distribution of the software
+  and/or database.  Title to copyright in this software, database and
+  any associated documentation shall at all times remain with
+  Princeton University and LICENSEE agrees to preserve same.
+
+The 40 level includes words from Alan's 3esl list found in version 4.0
+of his 12dicts package.  Like his other stuff the 3esl list is also in the
+public domain.
+
+The 50 level includes Brian's frequency class 1, words words appearing
+in at least 5 of 12 of the dictionaries as indicated in the 12Dicts
+package, and uppercase words in at least 4 of the previous 12
+dictionaries.  A decent number of proper names is also included: The
+top 1000 male, female, and Last names from the 1990 Census report; a
+list of names sent to me by Alan Beale; and a few names that I added
+myself.  Finally a small list of abbreviations not commonly found in
+other word lists is included.
+
+The name files form the Census report is a government document which I
+don't think can be copyrighted.
+
+The file special-jargon.50 uses common.lst and word.lst from the
+"Unofficial Jargon File Word Lists" which is derived from "The Jargon
+File".  All of which is in the Public Domain.  This file also contain
+a few extra UNIX terms which are found in the file "unix-terms" in the
+special/ directory.
+
+The 55 level includes words from Alan's 2of4brif list found in version
+4.0 of his 12dicts package.  Like his other stuff the 2of4brif is also
+in the public domain.
+
+The 60 level includes Brian's frequency class 0 and all words
+appearing in at least 2 of the 12 dictionaries as indicated by the
+12Dicts package.  A large number of names are also included: The 4,946
+female names and the 3,897 male names from the MWords package.
+
+The 70 level includes the 74,550 common dictionary words and the
+21,986 names list from the MWords package The common dictionary words,
+like those from the 12Dicts package, have had all likely inflections
+added.  The 70 level also included the 5desk list from version 4.0 of
+the 12Dics package which is the public domain
+
+The 80 level includes the ENABLE word list, all the lists in the
+ENABLE supplement package (except for ABLE), the "UK Advanced Cryptics
+Dictionary" (UKACD), the list of signature words in from YAWL package,
+and the 10,196 places list from the MWords package.
+
+The ENABLE package, mainted by M\Cooper <thegrendel@theriver.com>,
+is in the Public Domain:
+
+  The ENABLE master word list, WORD.LST, is herewith formally released
+  into the Public Domain. Anyone is free to use it or distribute it in
+  any manner they see fit. No fee or registration is required for its
+  use nor are "contributions" solicited (if you feel you absolutely
+  must contribute something for your own peace of mind, the authors of
+  the ENABLE list ask that you make a donation on their behalf to your
+  favorite charity). This word list is our gift to the Scrabble
+  community, as an alternate to "official" word lists. Game designers
+  may feel free to incorporate the WORD.LST into their games. Please
+  mention the source and credit us as originators of the list. Note
+  that if you, as a game designer, use the WORD.LST in your product,
+  you may still copyright and protect your product, but you may *not*
+  legally copyright or in any way restrict redistribution of the
+  WORD.LST portion of your product. This *may* under law restrict your
+  rights to restrict your users' rights, but that is only fair.
+
+UKACD, by J Ross Beresford <ross@bryson.demon.co.uk>, is under the
+following copyright:
+
+  Copyright (c) J Ross Beresford 1993-1999. All Rights Reserved.
+
+  The following restriction is placed on the use of this publication:
+  if The UK Advanced Cryptics Dictionary is used in a software package
+  or redistributed in any form, the copyright notice must be
+  prominently displayed and the text of this document must be included
+  verbatim.
+
+  There are no other restrictions: I would like to see the list
+  distributed as widely as possible.
+
+The 95 level includes the 354,984 single words and 256,772 compound
+words from the MWords package, ABLE.LST from the ENABLE Supplement,
+and some additional words found in my part-of-speech database that
+were not found anywhere else.
+
+Accent information was taken from UKACD.
+
+My VARCON package was used to create the American, British, and
+Canadian word list.
+
+Since the original word lists used used in the VARCON package came
+from the Ispell distribution they are under the Ispell copyright:
+
+  Copyright 1993, Geoff Kuenning, Granada Hills, CA
+  All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  1. Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+  2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+  3. All modifications to the source code must be clearly marked as
+     such.  Binary redistributions based on modified source code
+     must be clearly marked as modified versions in the documentation
+     and/or other materials provided with the distribution.
+  (clause 4 removed with permission from Geoff Kuenning)
+  5. The name of Geoff Kuenning may not be used to endorse or promote
+     products derived from this software without specific prior
+     written permission.
+
+  THIS SOFTWARE IS PROVIDED BY GEOFF KUENNING AND CONTRIBUTORS ``AS
+  IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+  FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL GEOFF
+  KUENNING OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  POSSIBILITY OF SUCH DAMAGE.
+
+Original file: en/en_US.aff (PHONE rule copyright and license block)
+
+#   PHONEtic_english.h - #PHONEtic transformation rules for use with #PHONEtic.c
+#   Copyright (C) 2000 Björn Jacke
+#
+#   This rule set is based on Lawrence Phillips original metaPHONE
+#   algorithm with modifications made by Michael Kuhn in his
+#   C implantation, more modifications by Björn Jacke when
+#   converting the algorithm to a rule set and minor
+#   touch ups by Kevin Atkinson
+#
+#   This library is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU Lesser General Public
+#   License version 2.1 as published by the Free Software Foundation;
+#
+#   This library is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#   Lesser General Public License for more details.
+#
+#   You should have received a copy of the GNU Lesser General Public
+#   License along with this library; if not, write to the Free Software
+#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#   Björn Jacke may be reached by email at bjoern.jacke@gmx.de
+#
+#   Changelog:
+#
+#   2000-01-05  Björn Jacke <bjoern.jacke@gmx.de>
+#               - first version with translation rules derived from
+#                 metaPHONE.cc distributed with aspell 0.28.3
+#               - "TH" is now representated as "@" because "0" is a
+#                 meta character
+#               - removed TH(!vowel) --> T; always use TH --> # instead
+#               - dropped "^AE" -> "E" (redundant)
+#               - "ing" is transformed to "N", not "NK"
+#               - "SCH(EO)" transforms to "SK" now
+#               - added R --> SILENT if (after a vowel) and no (vowel or
+#                 "y" follows) like in "Marcy" or "abort"
+#               - H is SILENT in RH at beginning of words
+#               - H is SILENT if vowel leads and "Y" follows
+#               - some ".OUGH.."  --> ...F exceptions added
+#               - "^V" transforms to "W"
+#   2000-01-07  Kevin Atkinson <kevinatk@home.com>
+#               Converted from header to data file.
+#
+#   2007-08-23  László Németh <nemeth AT OOo>
+#               Add PHONE header and #PHONE keywords
+#
+#   2010-03-09  László Németh <nemeth AT OOo>
+#               Temporarily removing acuted character É
+#               because of the missing UTF-8 support
+#
+# version 1.1
+
+# Documentation: http://aspell.net/man-html/PHONEtic-Code.html
+----- END THIRD-PARTY LICENSE: upstream:libreoffice-dictionaries_en_US_fixtures -----
+
+----- BEGIN THIRD-PARTY LICENSE: upstream:libreoffice-dictionaries_de_fixtures -----
+Component: Unchanged German spelling regression dictionaries
+Affected files: spec/dictionaries/de_DE_frami.dic, de_DE_frami.aff, de_DE.dic and de_DE.aff
+Source: https://github.com/pulsar-edit/node-spellchecker
+Inherited revision: 198bd4ba23984d80361323f24170707a87206e1b
+Matching upstream dictionary distribution: https://github.com/LibreOffice/dictionaries
+Upstream revision: be992a0b06f4cab782a967fd5187e114c53c9d4a (libreoffice-4.4.0.3)
+Dictionary version: 20131206+frami20131206. The _frami fixtures match the upstream ISO-8859-1 pair after newline normalization. The de_DE pair is the UTF-8 conversion used by the tests (the affix SET directive identifies that encoding).
+The GNU GPL version 2 full text is reproduced in the Hunspell section above; the alternative GNU GPL version 3 and OASIS distribution agreement are preserved below.
+
+Original file: de/de_DE_frami.dic (copyright and license header)
+
+#	This is the dictionary file of the de_DE Hunspell dictionary
+#	derived from the igerman98 dictionary
+#
+#	Version: 20131206+frami20131206 (build 20131206)
+#
+#	Copyright (C) 1998-2013
+#	Bjoern Jacke <bjoern@j3e.de>,
+#	for the addon: Franz Michael Baumann <fm.baumann@uni-muenster.de>
+#
+#	License: GPLv2, GPLv3 or OASIS distribution license agreement There
+#	should be a copy of all of this licenses included with every distribution
+#	of this dictionary. Modified versions using the GPL may only include the
+#	GPL. This dictionary is compiled from igerman98. For the purpose of the
+#	GPL modifications of this dictionary should be made public as a patch
+#	for igerman98 allowing to regenerate the modified dictionary.
+
+Original file: de/de_DE_frami.aff (copyright and license header)
+
+# this is the affix file of the de_DE Hunspell dictionary
+# derived from the igerman98 dictionary
+#
+# Version: 20131206+frami20131206 (build 20131206)
+#
+# Copyright (C) 1998-2013 Bjoern Jacke <bjoern@j3e.de>
+#
+# License: GPLv2, GPLv3 or OASIS distribution license agreement
+# There should be a copy of both of this licenses included
+# with every distribution of this dictionary. Modified
+# versions using the GPL may only include the GPL
+
+Original file: de/README_de_DE_frami.txt
+
+Bei dem Wörterbuch xxx_frami handelt es sich um ein Addon. Es enthält
+alle Wörter des Basiswörterbuchs, zusätzlich jedoch etliche, die entweder
+im Basiswörterbuch noch fehlen oder die nicht unbedingt zum Kernwortschatz
+des Deutschen gehören. Die zusätzlichen Aufnahmen sind ungeprüft.
+Dieses Wörterbuch basiert auf dem igerman98 Ispell-Wörterbuch, zu finden
+unter http://www.j3e.de/ispell/igerman98/ .
+
+Das Wörterbuch und alle enthaltenen Wortlisten sind lizenziert unter der
+GNU GPL, Version 2.
+Fehlermeldungen oder Ergänzungswünsche können gemailt werden an:
+Franz Michael Baumann <frami.baumann@web.de>
+
+Autor des Grundwörterbuchs:
+Bjoern Jacke <bjoern@j3e.de>
+
+Autor der Erweiterung
+Franz Michael Baumann <frami.baumann@web.de>
+
+Original file: de/COPYING_GPLv3
+
+                    GNU GENERAL PUBLIC LICENSE
+                       Version 3, 29 June 2007
+
+ Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
+                            Preamble
+
+  The GNU General Public License is a free, copyleft license for
+software and other kinds of works.
+
+  The licenses for most software and other practical works are designed
+to take away your freedom to share and change the works.  By contrast,
+the GNU General Public License is intended to guarantee your freedom to
+share and change all versions of a program--to make sure it remains free
+software for all its users.  We, the Free Software Foundation, use the
+GNU General Public License for most of our software; it applies also to
+any other work released this way by its authors.  You can apply it to
+your programs, too.
+
+  When we speak of free software, we are referring to freedom, not
+price.  Our General Public Licenses are designed to make sure that you
+have the freedom to distribute copies of free software (and charge for
+them if you wish), that you receive source code or can get it if you
+want it, that you can change the software or use pieces of it in new
+free programs, and that you know you can do these things.
+
+  To protect your rights, we need to prevent others from denying you
+these rights or asking you to surrender the rights.  Therefore, you have
+certain responsibilities if you distribute copies of the software, or if
+you modify it: responsibilities to respect the freedom of others.
+
+  For example, if you distribute copies of such a program, whether
+gratis or for a fee, you must pass on to the recipients the same
+freedoms that you received.  You must make sure that they, too, receive
+or can get the source code.  And you must show them these terms so they
+know their rights.
+
+  Developers that use the GNU GPL protect your rights with two steps:
+(1) assert copyright on the software, and (2) offer you this License
+giving you legal permission to copy, distribute and/or modify it.
+
+  For the developers' and authors' protection, the GPL clearly explains
+that there is no warranty for this free software.  For both users' and
+authors' sake, the GPL requires that modified versions be marked as
+changed, so that their problems will not be attributed erroneously to
+authors of previous versions.
+
+  Some devices are designed to deny users access to install or run
+modified versions of the software inside them, although the manufacturer
+can do so.  This is fundamentally incompatible with the aim of
+protecting users' freedom to change the software.  The systematic
+pattern of such abuse occurs in the area of products for individuals to
+use, which is precisely where it is most unacceptable.  Therefore, we
+have designed this version of the GPL to prohibit the practice for those
+products.  If such problems arise substantially in other domains, we
+stand ready to extend this provision to those domains in future versions
+of the GPL, as needed to protect the freedom of users.
+
+  Finally, every program is threatened constantly by software patents.
+States should not allow patents to restrict development and use of
+software on general-purpose computers, but in those that do, we wish to
+avoid the special danger that patents applied to a free program could
+make it effectively proprietary.  To prevent this, the GPL assures that
+patents cannot be used to render the program non-free.
+
+  The precise terms and conditions for copying, distribution and
+modification follow.
+
+                       TERMS AND CONDITIONS
+
+  0. Definitions.
+
+  "This License" refers to version 3 of the GNU General Public License.
+
+  "Copyright" also means copyright-like laws that apply to other kinds of
+works, such as semiconductor masks.
+
+  "The Program" refers to any copyrightable work licensed under this
+License.  Each licensee is addressed as "you".  "Licensees" and
+"recipients" may be individuals or organizations.
+
+  To "modify" a work means to copy from or adapt all or part of the work
+in a fashion requiring copyright permission, other than the making of an
+exact copy.  The resulting work is called a "modified version" of the
+earlier work or a work "based on" the earlier work.
+
+  A "covered work" means either the unmodified Program or a work based
+on the Program.
+
+  To "propagate" a work means to do anything with it that, without
+permission, would make you directly or secondarily liable for
+infringement under applicable copyright law, except executing it on a
+computer or modifying a private copy.  Propagation includes copying,
+distribution (with or without modification), making available to the
+public, and in some countries other activities as well.
+
+  To "convey" a work means any kind of propagation that enables other
+parties to make or receive copies.  Mere interaction with a user through
+a computer network, with no transfer of a copy, is not conveying.
+
+  An interactive user interface displays "Appropriate Legal Notices"
+to the extent that it includes a convenient and prominently visible
+feature that (1) displays an appropriate copyright notice, and (2)
+tells the user that there is no warranty for the work (except to the
+extent that warranties are provided), that licensees may convey the
+work under this License, and how to view a copy of this License.  If
+the interface presents a list of user commands or options, such as a
+menu, a prominent item in the list meets this criterion.
+
+  1. Source Code.
+
+  The "source code" for a work means the preferred form of the work
+for making modifications to it.  "Object code" means any non-source
+form of a work.
+
+  A "Standard Interface" means an interface that either is an official
+standard defined by a recognized standards body, or, in the case of
+interfaces specified for a particular programming language, one that
+is widely used among developers working in that language.
+
+  The "System Libraries" of an executable work include anything, other
+than the work as a whole, that (a) is included in the normal form of
+packaging a Major Component, but which is not part of that Major
+Component, and (b) serves only to enable use of the work with that
+Major Component, or to implement a Standard Interface for which an
+implementation is available to the public in source code form.  A
+"Major Component", in this context, means a major essential component
+(kernel, window system, and so on) of the specific operating system
+(if any) on which the executable work runs, or a compiler used to
+produce the work, or an object code interpreter used to run it.
+
+  The "Corresponding Source" for a work in object code form means all
+the source code needed to generate, install, and (for an executable
+work) run the object code and to modify the work, including scripts to
+control those activities.  However, it does not include the work's
+System Libraries, or general-purpose tools or generally available free
+programs which are used unmodified in performing those activities but
+which are not part of the work.  For example, Corresponding Source
+includes interface definition files associated with source files for
+the work, and the source code for shared libraries and dynamically
+linked subprograms that the work is specifically designed to require,
+such as by intimate data communication or control flow between those
+subprograms and other parts of the work.
+
+  The Corresponding Source need not include anything that users
+can regenerate automatically from other parts of the Corresponding
+Source.
+
+  The Corresponding Source for a work in source code form is that
+same work.
+
+  2. Basic Permissions.
+
+  All rights granted under this License are granted for the term of
+copyright on the Program, and are irrevocable provided the stated
+conditions are met.  This License explicitly affirms your unlimited
+permission to run the unmodified Program.  The output from running a
+covered work is covered by this License only if the output, given its
+content, constitutes a covered work.  This License acknowledges your
+rights of fair use or other equivalent, as provided by copyright law.
+
+  You may make, run and propagate covered works that you do not
+convey, without conditions so long as your license otherwise remains
+in force.  You may convey covered works to others for the sole purpose
+of having them make modifications exclusively for you, or provide you
+with facilities for running those works, provided that you comply with
+the terms of this License in conveying all material for which you do
+not control copyright.  Those thus making or running the covered works
+for you must do so exclusively on your behalf, under your direction
+and control, on terms that prohibit them from making any copies of
+your copyrighted material outside their relationship with you.
+
+  Conveying under any other circumstances is permitted solely under
+the conditions stated below.  Sublicensing is not allowed; section 10
+makes it unnecessary.
+
+  3. Protecting Users' Legal Rights From Anti-Circumvention Law.
+
+  No covered work shall be deemed part of an effective technological
+measure under any applicable law fulfilling obligations under article
+11 of the WIPO copyright treaty adopted on 20 December 1996, or
+similar laws prohibiting or restricting circumvention of such
+measures.
+
+  When you convey a covered work, you waive any legal power to forbid
+circumvention of technological measures to the extent such circumvention
+is effected by exercising rights under this License with respect to
+the covered work, and you disclaim any intention to limit operation or
+modification of the work as a means of enforcing, against the work's
+users, your or third parties' legal rights to forbid circumvention of
+technological measures.
+
+  4. Conveying Verbatim Copies.
+
+  You may convey verbatim copies of the Program's source code as you
+receive it, in any medium, provided that you conspicuously and
+appropriately publish on each copy an appropriate copyright notice;
+keep intact all notices stating that this License and any
+non-permissive terms added in accord with section 7 apply to the code;
+keep intact all notices of the absence of any warranty; and give all
+recipients a copy of this License along with the Program.
+
+  You may charge any price or no price for each copy that you convey,
+and you may offer support or warranty protection for a fee.
+
+  5. Conveying Modified Source Versions.
+
+  You may convey a work based on the Program, or the modifications to
+produce it from the Program, in the form of source code under the
+terms of section 4, provided that you also meet all of these conditions:
+
+    a) The work must carry prominent notices stating that you modified
+    it, and giving a relevant date.
+
+    b) The work must carry prominent notices stating that it is
+    released under this License and any conditions added under section
+    7.  This requirement modifies the requirement in section 4 to
+    "keep intact all notices".
+
+    c) You must license the entire work, as a whole, under this
+    License to anyone who comes into possession of a copy.  This
+    License will therefore apply, along with any applicable section 7
+    additional terms, to the whole of the work, and all its parts,
+    regardless of how they are packaged.  This License gives no
+    permission to license the work in any other way, but it does not
+    invalidate such permission if you have separately received it.
+
+    d) If the work has interactive user interfaces, each must display
+    Appropriate Legal Notices; however, if the Program has interactive
+    interfaces that do not display Appropriate Legal Notices, your
+    work need not make them do so.
+
+  A compilation of a covered work with other separate and independent
+works, which are not by their nature extensions of the covered work,
+and which are not combined with it such as to form a larger program,
+in or on a volume of a storage or distribution medium, is called an
+"aggregate" if the compilation and its resulting copyright are not
+used to limit the access or legal rights of the compilation's users
+beyond what the individual works permit.  Inclusion of a covered work
+in an aggregate does not cause this License to apply to the other
+parts of the aggregate.
+
+  6. Conveying Non-Source Forms.
+
+  You may convey a covered work in object code form under the terms
+of sections 4 and 5, provided that you also convey the
+machine-readable Corresponding Source under the terms of this License,
+in one of these ways:
+
+    a) Convey the object code in, or embodied in, a physical product
+    (including a physical distribution medium), accompanied by the
+    Corresponding Source fixed on a durable physical medium
+    customarily used for software interchange.
+
+    b) Convey the object code in, or embodied in, a physical product
+    (including a physical distribution medium), accompanied by a
+    written offer, valid for at least three years and valid for as
+    long as you offer spare parts or customer support for that product
+    model, to give anyone who possesses the object code either (1) a
+    copy of the Corresponding Source for all the software in the
+    product that is covered by this License, on a durable physical
+    medium customarily used for software interchange, for a price no
+    more than your reasonable cost of physically performing this
+    conveying of source, or (2) access to copy the
+    Corresponding Source from a network server at no charge.
+
+    c) Convey individual copies of the object code with a copy of the
+    written offer to provide the Corresponding Source.  This
+    alternative is allowed only occasionally and noncommercially, and
+    only if you received the object code with such an offer, in accord
+    with subsection 6b.
+
+    d) Convey the object code by offering access from a designated
+    place (gratis or for a charge), and offer equivalent access to the
+    Corresponding Source in the same way through the same place at no
+    further charge.  You need not require recipients to copy the
+    Corresponding Source along with the object code.  If the place to
+    copy the object code is a network server, the Corresponding Source
+    may be on a different server (operated by you or a third party)
+    that supports equivalent copying facilities, provided you maintain
+    clear directions next to the object code saying where to find the
+    Corresponding Source.  Regardless of what server hosts the
+    Corresponding Source, you remain obligated to ensure that it is
+    available for as long as needed to satisfy these requirements.
+
+    e) Convey the object code using peer-to-peer transmission, provided
+    you inform other peers where the object code and Corresponding
+    Source of the work are being offered to the general public at no
+    charge under subsection 6d.
+
+  A separable portion of the object code, whose source code is excluded
+from the Corresponding Source as a System Library, need not be
+included in conveying the object code work.
+
+  A "User Product" is either (1) a "consumer product", which means any
+tangible personal property which is normally used for personal, family,
+or household purposes, or (2) anything designed or sold for incorporation
+into a dwelling.  In determining whether a product is a consumer product,
+doubtful cases shall be resolved in favor of coverage.  For a particular
+product received by a particular user, "normally used" refers to a
+typical or common use of that class of product, regardless of the status
+of the particular user or of the way in which the particular user
+actually uses, or expects or is expected to use, the product.  A product
+is a consumer product regardless of whether the product has substantial
+commercial, industrial or non-consumer uses, unless such uses represent
+the only significant mode of use of the product.
+
+  "Installation Information" for a User Product means any methods,
+procedures, authorization keys, or other information required to install
+and execute modified versions of a covered work in that User Product from
+a modified version of its Corresponding Source.  The information must
+suffice to ensure that the continued functioning of the modified object
+code is in no case prevented or interfered with solely because
+modification has been made.
+
+  If you convey an object code work under this section in, or with, or
+specifically for use in, a User Product, and the conveying occurs as
+part of a transaction in which the right of possession and use of the
+User Product is transferred to the recipient in perpetuity or for a
+fixed term (regardless of how the transaction is characterized), the
+Corresponding Source conveyed under this section must be accompanied
+by the Installation Information.  But this requirement does not apply
+if neither you nor any third party retains the ability to install
+modified object code on the User Product (for example, the work has
+been installed in ROM).
+
+  The requirement to provide Installation Information does not include a
+requirement to continue to provide support service, warranty, or updates
+for a work that has been modified or installed by the recipient, or for
+the User Product in which it has been modified or installed.  Access to a
+network may be denied when the modification itself materially and
+adversely affects the operation of the network or violates the rules and
+protocols for communication across the network.
+
+  Corresponding Source conveyed, and Installation Information provided,
+in accord with this section must be in a format that is publicly
+documented (and with an implementation available to the public in
+source code form), and must require no special password or key for
+unpacking, reading or copying.
+
+  7. Additional Terms.
+
+  "Additional permissions" are terms that supplement the terms of this
+License by making exceptions from one or more of its conditions.
+Additional permissions that are applicable to the entire Program shall
+be treated as though they were included in this License, to the extent
+that they are valid under applicable law.  If additional permissions
+apply only to part of the Program, that part may be used separately
+under those permissions, but the entire Program remains governed by
+this License without regard to the additional permissions.
+
+  When you convey a copy of a covered work, you may at your option
+remove any additional permissions from that copy, or from any part of
+it.  (Additional permissions may be written to require their own
+removal in certain cases when you modify the work.)  You may place
+additional permissions on material, added by you to a covered work,
+for which you have or can give appropriate copyright permission.
+
+  Notwithstanding any other provision of this License, for material you
+add to a covered work, you may (if authorized by the copyright holders of
+that material) supplement the terms of this License with terms:
+
+    a) Disclaiming warranty or limiting liability differently from the
+    terms of sections 15 and 16 of this License; or
+
+    b) Requiring preservation of specified reasonable legal notices or
+    author attributions in that material or in the Appropriate Legal
+    Notices displayed by works containing it; or
+
+    c) Prohibiting misrepresentation of the origin of that material, or
+    requiring that modified versions of such material be marked in
+    reasonable ways as different from the original version; or
+
+    d) Limiting the use for publicity purposes of names of licensors or
+    authors of the material; or
+
+    e) Declining to grant rights under trademark law for use of some
+    trade names, trademarks, or service marks; or
+
+    f) Requiring indemnification of licensors and authors of that
+    material by anyone who conveys the material (or modified versions of
+    it) with contractual assumptions of liability to the recipient, for
+    any liability that these contractual assumptions directly impose on
+    those licensors and authors.
+
+  All other non-permissive additional terms are considered "further
+restrictions" within the meaning of section 10.  If the Program as you
+received it, or any part of it, contains a notice stating that it is
+governed by this License along with a term that is a further
+restriction, you may remove that term.  If a license document contains
+a further restriction but permits relicensing or conveying under this
+License, you may add to a covered work material governed by the terms
+of that license document, provided that the further restriction does
+not survive such relicensing or conveying.
+
+  If you add terms to a covered work in accord with this section, you
+must place, in the relevant source files, a statement of the
+additional terms that apply to those files, or a notice indicating
+where to find the applicable terms.
+
+  Additional terms, permissive or non-permissive, may be stated in the
+form of a separately written license, or stated as exceptions;
+the above requirements apply either way.
+
+  8. Termination.
+
+  You may not propagate or modify a covered work except as expressly
+provided under this License.  Any attempt otherwise to propagate or
+modify it is void, and will automatically terminate your rights under
+this License (including any patent licenses granted under the third
+paragraph of section 11).
+
+  However, if you cease all violation of this License, then your
+license from a particular copyright holder is reinstated (a)
+provisionally, unless and until the copyright holder explicitly and
+finally terminates your license, and (b) permanently, if the copyright
+holder fails to notify you of the violation by some reasonable means
+prior to 60 days after the cessation.
+
+  Moreover, your license from a particular copyright holder is
+reinstated permanently if the copyright holder notifies you of the
+violation by some reasonable means, this is the first time you have
+received notice of violation of this License (for any work) from that
+copyright holder, and you cure the violation prior to 30 days after
+your receipt of the notice.
+
+  Termination of your rights under this section does not terminate the
+licenses of parties who have received copies or rights from you under
+this License.  If your rights have been terminated and not permanently
+reinstated, you do not qualify to receive new licenses for the same
+material under section 10.
+
+  9. Acceptance Not Required for Having Copies.
+
+  You are not required to accept this License in order to receive or
+run a copy of the Program.  Ancillary propagation of a covered work
+occurring solely as a consequence of using peer-to-peer transmission
+to receive a copy likewise does not require acceptance.  However,
+nothing other than this License grants you permission to propagate or
+modify any covered work.  These actions infringe copyright if you do
+not accept this License.  Therefore, by modifying or propagating a
+covered work, you indicate your acceptance of this License to do so.
+
+  10. Automatic Licensing of Downstream Recipients.
+
+  Each time you convey a covered work, the recipient automatically
+receives a license from the original licensors, to run, modify and
+propagate that work, subject to this License.  You are not responsible
+for enforcing compliance by third parties with this License.
+
+  An "entity transaction" is a transaction transferring control of an
+organization, or substantially all assets of one, or subdividing an
+organization, or merging organizations.  If propagation of a covered
+work results from an entity transaction, each party to that
+transaction who receives a copy of the work also receives whatever
+licenses to the work the party's predecessor in interest had or could
+give under the previous paragraph, plus a right to possession of the
+Corresponding Source of the work from the predecessor in interest, if
+the predecessor has it or can get it with reasonable efforts.
+
+  You may not impose any further restrictions on the exercise of the
+rights granted or affirmed under this License.  For example, you may
+not impose a license fee, royalty, or other charge for exercise of
+rights granted under this License, and you may not initiate litigation
+(including a cross-claim or counterclaim in a lawsuit) alleging that
+any patent claim is infringed by making, using, selling, offering for
+sale, or importing the Program or any portion of it.
+
+  11. Patents.
+
+  A "contributor" is a copyright holder who authorizes use under this
+License of the Program or a work on which the Program is based.  The
+work thus licensed is called the contributor's "contributor version".
+
+  A contributor's "essential patent claims" are all patent claims
+owned or controlled by the contributor, whether already acquired or
+hereafter acquired, that would be infringed by some manner, permitted
+by this License, of making, using, or selling its contributor version,
+but do not include claims that would be infringed only as a
+consequence of further modification of the contributor version.  For
+purposes of this definition, "control" includes the right to grant
+patent sublicenses in a manner consistent with the requirements of
+this License.
+
+  Each contributor grants you a non-exclusive, worldwide, royalty-free
+patent license under the contributor's essential patent claims, to
+make, use, sell, offer for sale, import and otherwise run, modify and
+propagate the contents of its contributor version.
+
+  In the following three paragraphs, a "patent license" is any express
+agreement or commitment, however denominated, not to enforce a patent
+(such as an express permission to practice a patent or covenant not to
+sue for patent infringement).  To "grant" such a patent license to a
+party means to make such an agreement or commitment not to enforce a
+patent against the party.
+
+  If you convey a covered work, knowingly relying on a patent license,
+and the Corresponding Source of the work is not available for anyone
+to copy, free of charge and under the terms of this License, through a
+publicly available network server or other readily accessible means,
+then you must either (1) cause the Corresponding Source to be so
+available, or (2) arrange to deprive yourself of the benefit of the
+patent license for this particular work, or (3) arrange, in a manner
+consistent with the requirements of this License, to extend the patent
+license to downstream recipients.  "Knowingly relying" means you have
+actual knowledge that, but for the patent license, your conveying the
+covered work in a country, or your recipient's use of the covered work
+in a country, would infringe one or more identifiable patents in that
+country that you have reason to believe are valid.
+
+  If, pursuant to or in connection with a single transaction or
+arrangement, you convey, or propagate by procuring conveyance of, a
+covered work, and grant a patent license to some of the parties
+receiving the covered work authorizing them to use, propagate, modify
+or convey a specific copy of the covered work, then the patent license
+you grant is automatically extended to all recipients of the covered
+work and works based on it.
+
+  A patent license is "discriminatory" if it does not include within
+the scope of its coverage, prohibits the exercise of, or is
+conditioned on the non-exercise of one or more of the rights that are
+specifically granted under this License.  You may not convey a covered
+work if you are a party to an arrangement with a third party that is
+in the business of distributing software, under which you make payment
+to the third party based on the extent of your activity of conveying
+the work, and under which the third party grants, to any of the
+parties who would receive the covered work from you, a discriminatory
+patent license (a) in connection with copies of the covered work
+conveyed by you (or copies made from those copies), or (b) primarily
+for and in connection with specific products or compilations that
+contain the covered work, unless you entered into that arrangement,
+or that patent license was granted, prior to 28 March 2007.
+
+  Nothing in this License shall be construed as excluding or limiting
+any implied license or other defenses to infringement that may
+otherwise be available to you under applicable patent law.
+
+  12. No Surrender of Others' Freedom.
+
+  If conditions are imposed on you (whether by court order, agreement or
+otherwise) that contradict the conditions of this License, they do not
+excuse you from the conditions of this License.  If you cannot convey a
+covered work so as to satisfy simultaneously your obligations under this
+License and any other pertinent obligations, then as a consequence you may
+not convey it at all.  For example, if you agree to terms that obligate you
+to collect a royalty for further conveying from those to whom you convey
+the Program, the only way you could satisfy both those terms and this
+License would be to refrain entirely from conveying the Program.
+
+  13. Use with the GNU Affero General Public License.
+
+  Notwithstanding any other provision of this License, you have
+permission to link or combine any covered work with a work licensed
+under version 3 of the GNU Affero General Public License into a single
+combined work, and to convey the resulting work.  The terms of this
+License will continue to apply to the part which is the covered work,
+but the special requirements of the GNU Affero General Public License,
+section 13, concerning interaction through a network will apply to the
+combination as such.
+
+  14. Revised Versions of this License.
+
+  The Free Software Foundation may publish revised and/or new versions of
+the GNU General Public License from time to time.  Such new versions will
+be similar in spirit to the present version, but may differ in detail to
+address new problems or concerns.
+
+  Each version is given a distinguishing version number.  If the
+Program specifies that a certain numbered version of the GNU General
+Public License "or any later version" applies to it, you have the
+option of following the terms and conditions either of that numbered
+version or of any later version published by the Free Software
+Foundation.  If the Program does not specify a version number of the
+GNU General Public License, you may choose any version ever published
+by the Free Software Foundation.
+
+  If the Program specifies that a proxy can decide which future
+versions of the GNU General Public License can be used, that proxy's
+public statement of acceptance of a version permanently authorizes you
+to choose that version for the Program.
+
+  Later license versions may give you additional or different
+permissions.  However, no additional obligations are imposed on any
+author or copyright holder as a result of your choosing to follow a
+later version.
+
+  15. Disclaimer of Warranty.
+
+  THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY
+APPLICABLE LAW.  EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT
+HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY
+OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE.  THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM
+IS WITH YOU.  SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF
+ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+
+  16. Limitation of Liability.
+
+  IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MODIFIES AND/OR CONVEYS
+THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY
+GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE
+USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED TO LOSS OF
+DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD
+PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS),
+EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGES.
+
+  17. Interpretation of Sections 15 and 16.
+
+  If the disclaimer of warranty and limitation of liability provided
+above cannot be given local legal effect according to their terms,
+reviewing courts shall apply local law that most closely approximates
+an absolute waiver of all civil liability in connection with the
+Program, unless a warranty or assumption of liability accompanies a
+copy of the Program in return for a fee.
+
+                     END OF TERMS AND CONDITIONS
+
+            How to Apply These Terms to Your New Programs
+
+  If you develop a new program, and you want it to be of the greatest
+possible use to the public, the best way to achieve this is to make it
+free software which everyone can redistribute and change under these terms.
+
+  To do so, attach the following notices to the program.  It is safest
+to attach them to the start of each source file to most effectively
+state the exclusion of warranty; and each file should have at least
+the "copyright" line and a pointer to where the full notice is found.
+
+    <one line to give the program's name and a brief idea of what it does.>
+    Copyright (C) <year>  <name of author>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Also add information on how to contact you by electronic and paper mail.
+
+  If the program does terminal interaction, make it output a short
+notice like this when it starts in an interactive mode:
+
+    <program>  Copyright (C) <year>  <name of author>
+    This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+    This is free software, and you are welcome to redistribute it
+    under certain conditions; type `show c' for details.
+
+The hypothetical commands `show w' and `show c' should show the appropriate
+parts of the General Public License.  Of course, your program's commands
+might be different; for a GUI interface, you would use an "about box".
+
+  You should also get your employer (if you work as a programmer) or school,
+if any, to sign a "copyright disclaimer" for the program, if necessary.
+For more information on this, and how to apply and follow the GNU GPL, see
+<http://www.gnu.org/licenses/>.
+
+  The GNU General Public License does not permit incorporating your program
+into proprietary programs.  If your program is a subroutine library, you
+may consider it more useful to permit linking proprietary applications with
+the library.  If this is what you want to do, use the GNU Lesser General
+Public License instead of this License.  But first, please read
+<http://www.gnu.org/philosophy/why-not-lgpl.html>.
+
+Original file: de/COPYING_OASIS.txt
+
+OASIS distribution license agreement 0.1 from 2005-11-10
+
+Without any modifications this dictionary may be distributed with programs that
+support the OASIS Open Document Format for Office Applications and whose
+PRIMARY format for saving documents is the Open Document Format.
+
+This requires that all licenses and copyright files are also distributed together
+with the package the dictionary is shipped with.
+
+Any modifications of the dictionary files are not allowed for this
+agreement, modifications require the use of the GNU GENERAL PUBLIC LICENSE.
+
+If you have questions or don't get along with this, send me your
+comments/questions/ideas to Bjoern Jacke <bjoern@j3e.de>
+----- END THIRD-PARTY LICENSE: upstream:libreoffice-dictionaries_de_fixtures -----
+
+----- BEGIN THIRD-PARTY LICENSE: upstream:libreoffice-dictionaries_fr_fixtures -----
+Component: Unchanged French spelling regression dictionary, Classique 5.2
+Affected files: spec/dictionaries/fr.dic and fr.aff
+Source: https://github.com/pulsar-edit/node-spellchecker
+Inherited revision: 198bd4ba23984d80361323f24170707a87206e1b
+Matching upstream dictionary distribution: https://github.com/LibreOffice/dictionaries
+Upstream revision: be992a0b06f4cab782a967fd5187e114c53c9d4a (libreoffice-4.4.0.3)
+The fixtures match upstream fr_FR/fr.dic and fr_FR/fr.aff after newline normalization.
+License: Mozilla Public License version 2.0.
+
+Original file: fr_FR/fr.aff (license and author header)
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+# AFFIXES DU DICTIONNAIRE ORTHOGRAPHIQUE FRANÇAIS “CLASSIQUE” v5.2
+# par Olivier R. -- licence MPL 2.0
+# Généré le 19 09 2014 à 09:52
+# Pour améliorer le dictionnaire, allez sur http://www.dicollecte.org/
+
+Original file: fr_FR/README_fr.txt
+
+_______________________________________________________________________________
+
+   DICTIONNAIRES ORTHOGRAPHIQUES FRANÇAIS
+   version 5.2
+
+   Olivier R. - dicollecte<at>free<dot>fr
+   Dicollecte : http://www.dicollecte.org/
+
+   Licence :
+     MPL : Mozilla Public License
+     version 2.0  --  http://www.mozilla.org/MPL/2.0/
+
+   Ce dictionnaire ne peut fonctionner qu’avec un logiciel utilisant le
+   correcteur Hunspell : OpenOffice.org 3.2+, Firefox 4+, Thunderbird 5+
+
+   Principaux contributeurs :
+   - Jean-Luc T. ;
+   - Sylvain P. ;
+   - Laurent Dubois ;
+   - Pierre Poisson ;
+   - Dominique Pellé ;
+   - Pierre-Yves ;
+   - Pierre Choffardet ;
+   - Leywen ;
+   - Romain Muller et Serge Bibauw, de l’association RENOUVO, grâce à qui
+     la nouvelle orthographe et ses anciennes variantes ont pu être établies ;
+   - Chantal Contant, pour ses recherches sur la réforme de 1990 ;
+   - Benoît Sagot, qui nous a autorisé à comparer notre lexique avec Lefff,
+     ce qui a mis en évidence des dizaines d’erreurs d’étiquetage grammatical ;
+   - Philipp Burgess, pour la normalisation Unicode avec Hunspell.
+
+   Merci aussi à tous ceux qui ont apporté leur pierre à l’édifice.
+   http://www.dicollecte.org/members.php?prj=fr
+
+   Pour participer à l’amélioration du dictionnaire, allez sur :
+   http://www.dicollecte.org/home.php?prj=fr
+
+_______________________________________________________________________________
+
+   À propos des différents dictionnaires français
+_______________________________________________________________________________
+
+   En 1990, le Conseil supérieur à la langue française et l’Académie française
+   ont proposé une réforme de l’orthographe qui concerne plusieurs milliers de
+   mots. L’emploi des nouvelles graphies n’est pas obligatoire. Les anciennes
+   comme les nouvelles sont considérées comme correctes.
+
+   Pour en savoir plus sur la réforme de 1990 :
+   http://www.renouvo.org/regles.php
+   http://www.orthographe-recommandee.info/
+
+   Malgré les rectifications modestes apportées par cette réforme, la nouvelle
+   orthographe suscite beaucoup de polémiques. Afin de satisfaire les exigences
+   de chacun, quatre dictionnaires existent, respectant différemment cette
+   réforme.
+
+    Dictionnaire “Moderne”
+        Ce dictionnaire propose une sélection des graphies classiques et
+        réformées, suivant la lente évolution de l’orthographe actuelle. Ce
+        dictionnaire contient les graphies les moins polémiques de la réforme.
+
+    Dictionnaire “Classique”  [recommandé]
+        Ce dictionnaire est une extension du dictionnaire «Moderne» et propose
+        en sus des graphies alternatives, parfois encore très usitées, parfois
+        tombées en désuétude.
+
+    Dictionnaire “Réforme 1990”
+        Ce dictionnaire ne connaît que les graphies nouvelles des mots concernés
+        par la réforme de 1990.
+
+    Dictionnaire “Toutes variantes”
+        Ce dictionnaire contient les nouvelles et les anciennes graphies des
+        mots concernés par la réforme de 1990.
+
+Original file: Mozilla Public License version 2.0 (https://www.mozilla.org/en-US/MPL/2.0/)
+
+Mozilla Public License Version 2.0
+==================================
+
+1. Definitions
+--------------
+
+1.1. "Contributor"
+    means each individual or legal entity that creates, contributes to
+    the creation of, or owns Covered Software.
+
+1.2. "Contributor Version"
+    means the combination of the Contributions of others (if any) used
+    by a Contributor and that particular Contributor's Contribution.
+
+1.3. "Contribution"
+    means Covered Software of a particular Contributor.
+
+1.4. "Covered Software"
+    means Source Code Form to which the initial Contributor has attached
+    the notice in Exhibit A, the Executable Form of such Source Code
+    Form, and Modifications of such Source Code Form, in each case
+    including portions thereof.
+
+1.5. "Incompatible With Secondary Licenses"
+    means
+
+    (a) that the initial Contributor has attached the notice described
+        in Exhibit B to the Covered Software; or
+
+    (b) that the Covered Software was made available under the terms of
+        version 1.1 or earlier of the License, but not also under the
+        terms of a Secondary License.
+
+1.6. "Executable Form"
+    means any form of the work other than Source Code Form.
+
+1.7. "Larger Work"
+    means a work that combines Covered Software with other material, in
+    a separate file or files, that is not Covered Software.
+
+1.8. "License"
+    means this document.
+
+1.9. "Licensable"
+    means having the right to grant, to the maximum extent possible,
+    whether at the time of the initial grant or subsequently, any and
+    all of the rights conveyed by this License.
+
+1.10. "Modifications"
+    means any of the following:
+
+    (a) any file in Source Code Form that results from an addition to,
+        deletion from, or modification of the contents of Covered
+        Software; or
+
+    (b) any new file in Source Code Form that contains any Covered
+        Software.
+
+1.11. "Patent Claims" of a Contributor
+    means any patent claim(s), including without limitation, method,
+    process, and apparatus claims, in any patent Licensable by such
+    Contributor that would be infringed, but for the grant of the
+    License, by the making, using, selling, offering for sale, having
+    made, import, or transfer of either its Contributions or its
+    Contributor Version.
+
+1.12. "Secondary License"
+    means either the GNU General Public License, Version 2.0, the GNU
+    Lesser General Public License, Version 2.1, the GNU Affero General
+    Public License, Version 3.0, or any later versions of those
+    licenses.
+
+1.13. "Source Code Form"
+    means the form of the work preferred for making modifications.
+
+1.14. "You" (or "Your")
+    means an individual or a legal entity exercising rights under this
+    License. For legal entities, "You" includes any entity that
+    controls, is controlled by, or is under common control with You. For
+    purposes of this definition, "control" means (a) the power, direct
+    or indirect, to cause the direction or management of such entity,
+    whether by contract or otherwise, or (b) ownership of more than
+    fifty percent (50%) of the outstanding shares or beneficial
+    ownership of such entity.
+
+2. License Grants and Conditions
+--------------------------------
+
+2.1. Grants
+
+Each Contributor hereby grants You a world-wide, royalty-free,
+non-exclusive license:
+
+(a) under intellectual property rights (other than patent or trademark)
+    Licensable by such Contributor to use, reproduce, make available,
+    modify, display, perform, distribute, and otherwise exploit its
+    Contributions, either on an unmodified basis, with Modifications, or
+    as part of a Larger Work; and
+
+(b) under Patent Claims of such Contributor to make, use, sell, offer
+    for sale, have made, import, and otherwise transfer either its
+    Contributions or its Contributor Version.
+
+2.2. Effective Date
+
+The licenses granted in Section 2.1 with respect to any Contribution
+become effective for each Contribution on the date the Contributor first
+distributes such Contribution.
+
+2.3. Limitations on Grant Scope
+
+The licenses granted in this Section 2 are the only rights granted under
+this License. No additional rights or licenses will be implied from the
+distribution or licensing of Covered Software under this License.
+Notwithstanding Section 2.1(b) above, no patent license is granted by a
+Contributor:
+
+(a) for any code that a Contributor has removed from Covered Software;
+    or
+
+(b) for infringements caused by: (i) Your and any other third party's
+    modifications of Covered Software, or (ii) the combination of its
+    Contributions with other software (except as part of its Contributor
+    Version); or
+
+(c) under Patent Claims infringed by Covered Software in the absence of
+    its Contributions.
+
+This License does not grant any rights in the trademarks, service marks,
+or logos of any Contributor (except as may be necessary to comply with
+the notice requirements in Section 3.4).
+
+2.4. Subsequent Licenses
+
+No Contributor makes additional grants as a result of Your choice to
+distribute the Covered Software under a subsequent version of this
+License (see Section 10.2) or under the terms of a Secondary License (if
+permitted under the terms of Section 3.3).
+
+2.5. Representation
+
+Each Contributor represents that the Contributor believes its
+Contributions are its original creation(s) or it has sufficient rights
+to grant the rights to its Contributions conveyed by this License.
+
+2.6. Fair Use
+
+This License is not intended to limit any rights You have under
+applicable copyright doctrines of fair use, fair dealing, or other
+equivalents.
+
+2.7. Conditions
+
+Sections 3.1, 3.2, 3.3, and 3.4 are conditions of the licenses granted
+in Section 2.1.
+
+3. Responsibilities
+-------------------
+
+3.1. Distribution of Source Form
+
+All distribution of Covered Software in Source Code Form, including any
+Modifications that You create or to which You contribute, must be under
+the terms of this License. You must inform recipients that the Source
+Code Form of the Covered Software is governed by the terms of this
+License, and how they can obtain a copy of this License. You may not
+attempt to alter or restrict the recipients' rights in the Source Code
+Form.
+
+3.2. Distribution of Executable Form
+
+If You distribute Covered Software in Executable Form then:
+
+(a) such Covered Software must also be made available in Source Code
+    Form, as described in Section 3.1, and You must inform recipients of
+    the Executable Form how they can obtain a copy of such Source Code
+    Form by reasonable means in a timely manner, at a charge no more
+    than the cost of distribution to the recipient; and
+
+(b) You may distribute such Executable Form under the terms of this
+    License, or sublicense it under different terms, provided that the
+    license for the Executable Form does not attempt to limit or alter
+    the recipients' rights in the Source Code Form under this License.
+
+3.3. Distribution of a Larger Work
+
+You may create and distribute a Larger Work under terms of Your choice,
+provided that You also comply with the requirements of this License for
+the Covered Software. If the Larger Work is a combination of Covered
+Software with a work governed by one or more Secondary Licenses, and the
+Covered Software is not Incompatible With Secondary Licenses, this
+License permits You to additionally distribute such Covered Software
+under the terms of such Secondary License(s), so that the recipient of
+the Larger Work may, at their option, further distribute the Covered
+Software under the terms of either this License or such Secondary
+License(s).
+
+3.4. Notices
+
+You may not remove or alter the substance of any license notices
+(including copyright notices, patent notices, disclaimers of warranty,
+or limitations of liability) contained within the Source Code Form of
+the Covered Software, except that You may alter any license notices to
+the extent required to remedy known factual inaccuracies.
+
+3.5. Application of Additional Terms
+
+You may choose to offer, and to charge a fee for, warranty, support,
+indemnity or liability obligations to one or more recipients of Covered
+Software. However, You may do so only on Your own behalf, and not on
+behalf of any Contributor. You must make it absolutely clear that any
+such warranty, support, indemnity, or liability obligation is offered by
+You alone, and You hereby agree to indemnify every Contributor for any
+liability incurred by such Contributor as a result of warranty, support,
+indemnity or liability terms You offer. You may include additional
+disclaimers of warranty and limitations of liability specific to any
+jurisdiction.
+
+4. Inability to Comply Due to Statute or Regulation
+---------------------------------------------------
+
+If it is impossible for You to comply with any of the terms of this
+License with respect to some or all of the Covered Software due to
+statute, judicial order, or regulation then You must: (a) comply with
+the terms of this License to the maximum extent possible; and (b)
+describe the limitations and the code they affect. Such description must
+be placed in a text file included with all distributions of the Covered
+Software under this License. Except to the extent prohibited by statute
+or regulation, such description must be sufficiently detailed for a
+recipient of ordinary skill to be able to understand it.
+
+5. Termination
+--------------
+
+5.1. The rights granted under this License will terminate automatically
+if You fail to comply with any of its terms. However, if You become
+compliant, then the rights granted under this License from a particular
+Contributor are reinstated (a) provisionally, unless and until such
+Contributor explicitly and finally terminates Your grants, and (b) on an
+ongoing basis, if such Contributor fails to notify You of the
+non-compliance by some reasonable means prior to 60 days after You have
+come back into compliance. Moreover, Your grants from a particular
+Contributor are reinstated on an ongoing basis if such Contributor
+notifies You of the non-compliance by some reasonable means, this is the
+first time You have received notice of non-compliance with this License
+from such Contributor, and You become compliant prior to 30 days after
+Your receipt of the notice.
+
+5.2. If You initiate litigation against any entity by asserting a patent
+infringement claim (excluding declaratory judgment actions,
+counter-claims, and cross-claims) alleging that a Contributor Version
+directly or indirectly infringes any patent, then the rights granted to
+You by any and all Contributors for the Covered Software under Section
+2.1 of this License shall terminate.
+
+5.3. In the event of termination under Sections 5.1 or 5.2 above, all
+end user license agreements (excluding distributors and resellers) which
+have been validly granted by You or Your distributors under this License
+prior to termination shall survive termination.
+
+************************************************************************
+*                                                                      *
+*  6. Disclaimer of Warranty                                           *
+*  -------------------------                                           *
+*                                                                      *
+*  Covered Software is provided under this License on an "as is"       *
+*  basis, without warranty of any kind, either expressed, implied, or  *
+*  statutory, including, without limitation, warranties that the       *
+*  Covered Software is free of defects, merchantable, fit for a        *
+*  particular purpose or non-infringing. The entire risk as to the     *
+*  quality and performance of the Covered Software is with You.        *
+*  Should any Covered Software prove defective in any respect, You     *
+*  (not any Contributor) assume the cost of any necessary servicing,   *
+*  repair, or correction. This disclaimer of warranty constitutes an   *
+*  essential part of this License. No use of any Covered Software is   *
+*  authorized under this License except under this disclaimer.         *
+*                                                                      *
+************************************************************************
+
+************************************************************************
+*                                                                      *
+*  7. Limitation of Liability                                          *
+*  --------------------------                                          *
+*                                                                      *
+*  Under no circumstances and under no legal theory, whether tort      *
+*  (including negligence), contract, or otherwise, shall any           *
+*  Contributor, or anyone who distributes Covered Software as          *
+*  permitted above, be liable to You for any direct, indirect,         *
+*  special, incidental, or consequential damages of any character      *
+*  including, without limitation, damages for lost profits, loss of    *
+*  goodwill, work stoppage, computer failure or malfunction, or any    *
+*  and all other commercial damages or losses, even if such party      *
+*  shall have been informed of the possibility of such damages. This   *
+*  limitation of liability shall not apply to liability for death or   *
+*  personal injury resulting from such party's negligence to the       *
+*  extent applicable law prohibits such limitation. Some               *
+*  jurisdictions do not allow the exclusion or limitation of           *
+*  incidental or consequential damages, so this exclusion and          *
+*  limitation may not apply to You.                                    *
+*                                                                      *
+************************************************************************
+
+8. Litigation
+-------------
+
+Any litigation relating to this License may be brought only in the
+courts of a jurisdiction where the defendant maintains its principal
+place of business and such litigation shall be governed by laws of that
+jurisdiction, without reference to its conflict-of-law provisions.
+Nothing in this Section shall prevent a party's ability to bring
+cross-claims or counter-claims.
+
+9. Miscellaneous
+----------------
+
+This License represents the complete agreement concerning the subject
+matter hereof. If any provision of this License is held to be
+unenforceable, such provision shall be reformed only to the extent
+necessary to make it enforceable. Any law or regulation which provides
+that the language of a contract shall be construed against the drafter
+shall not be used to construe this License against a Contributor.
+
+10. Versions of the License
+---------------------------
+
+10.1. New Versions
+
+Mozilla Foundation is the license steward. Except as provided in Section
+10.3, no one other than the license steward has the right to modify or
+publish new versions of this License. Each version will be given a
+distinguishing version number.
+
+10.2. Effect of New Versions
+
+You may distribute the Covered Software under the terms of the version
+of the License under which You originally received the Covered Software,
+or under the terms of any subsequent version published by the license
+steward.
+
+10.3. Modified Versions
+
+If you create software not governed by this License, and you want to
+create a new license for such software, you may create and use a
+modified version of this License if you rename the license and remove
+any references to the name of the license steward (except to note that
+such modified license differs from this License).
+
+10.4. Distributing Source Code Form that is Incompatible With Secondary
+Licenses
+
+If You choose to distribute Source Code Form that is Incompatible With
+Secondary Licenses under the terms of this version of the License, the
+notice described in Exhibit B of this License must be attached.
+
+Exhibit A - Source Code Form License Notice
+-------------------------------------------
+
+  This Source Code Form is subject to the terms of the Mozilla Public
+  License, v. 2.0. If a copy of the MPL was not distributed with this
+  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+If it is not possible or desirable to put the notice in a particular
+file, then You may include the notice in a location (such as a LICENSE
+file in a relevant directory) where a recipient would be likely to look
+for such a notice.
+
+You may add additional accurate notices of copyright ownership.
+
+Exhibit B - "Incompatible With Secondary Licenses" Notice
+---------------------------------------------------------
+
+  This Source Code Form is "Incompatible With Secondary Licenses", as
+  defined by the Mozilla Public License, v. 2.0.
+----- END THIRD-PARTY LICENSE: upstream:libreoffice-dictionaries_fr_fixtures -----
+
+----- BEGIN THIRD-PARTY LICENSE: upstream:libreoffice-dictionaries_hyphenation_fixtures -----
+Component: Unchanged French and German hyphenation regression fixtures
+Affected files: spec/dictionaries/hyph_fr.dic and hyph_de_DE.dic
+Source: https://github.com/pulsar-edit/node-spellchecker
+Inherited revision: 198bd4ba23984d80361323f24170707a87206e1b
+Matching upstream dictionary distribution: https://github.com/LibreOffice/dictionaries
+Upstream revision: be992a0b06f4cab782a967fd5187e114c53c9d4a (libreoffice-4.4.0.3)
+Both fixtures match their upstream files after newline normalization. The full source credits and notices for the derived TeX patterns are retained below. The GNU LGPL version 2.1 full text is reproduced in the Hunspell section above; the GNU Library GPL version 2 and referenced LaTeX Project Public License are also reproduced below.
+
+Original file: de/hyph_de_DE.dic (copyright and license header)
+
+ISO8859-1
+####################################################################################
+# This is the hyphenation file "hyph_de_DE.dic" of the German dictionary           #
+# according to the reform of 2006-08-01	(i.e. reformed or new spelling)            #
+#                                                                                  #
+# Language: German (de DE)                                                         #
+#                                                                                  #
+# Version:  2013-12-06                                                             #
+#           Enhanced blacklist to improve the hyphenation module by Karl Zeiler    #
+#                                                                                  #
+# Origin:   Based on the TeX hyphenation tables	"dehyphn.tex", revision level 31.  #
+#           http://www.ctan.org/tex-archive/language/hyphenation/dehyphn.tex       #
+#           The TeX hyphenation tables are released under the LaTeX Project        #
+#           Public License (LPPL)                                                  #
+#                                                                                  #
+# License:  OpenOffice.org Adaptions of this package are licensed under the        #
+#           GNU Lesser General Public License (LGPL 2 or later) and are under      #
+#           Copyright by                                                           #
+#                                                                                  #
+# Authors:  conversion author: Marco Huggenberger <marco@by-night.ch>              #
+#           revised conversion and extensions: Daniel Naber <naber@danielnaber.de> #
+#           improvements: Karl Zeiler <karl.zeiler@t-online.de>                    #
+#                                                                                  #
+# Please note, this dictionary is based on syllable matching patterns              #
+# and thus should be suitable under other variations of German                     #
+#                                                                                  #
+# HYPH de DE hyph_de_DE                                                            #
+# HYPH de AT hyph_de_AT                                                            #
+# HYPH de CH hyph_de_CH                                                            #
+####################################################################################
+
+Original file: de/README_hyph_de.txt
+
+Hyphenation dictionary "hyph_de_DE.dic"
+---------------------------------------
+
+Language: German (de DE)
+		  according to the reform of 2006-08-01	(i.e. reformed or new spelling)
+
+Version:  2013-12-06
+          Enhanced blacklist to improve the hyphenation module by Karl Zeiler
+
+Origin:   Based on the TeX hyphenation tables "dehyphn.tex", revision level 31.
+          http://www.ctan.org/tex-archive/language/hyphenation/dehyphn.tex
+		  The TeX hyphenation tables are released under the LaTeX Project
+		  Public License (LPPL)
+
+License:  OpenOffice.org Adaptions of this package are licensed under the
+          GNU Lesser General Public License (LGPL 2 or later) and are under
+		  Copyright by
+
+Author:   conversion author: Marco Huggenberger <marco@by-night.ch>
+          revised conversion and extensions: Daniel Naber <naber@danielnaber.de>
+		  improvements: Karl Zeiler <karl.zeiler@t-online.de>
+
+Note:	  This dictionary is based on syllable matching patterns
+		  and thus should be suitable under other variations of German:
+		  HYPH de AT hyph_de_AT
+		  HYPH de CH hyph_de_CH
+
+
+Trennmuster (hyph_de_DE.dic)
+----------------------------
+
+Die Trennmuster (hyph_de_DE.dic) basieren auf den TeX Trennmustern
+"dehyphn.tex", revision level 31.
+Lizenz der Trennmuster: LPPL. Die Anpassung der Trennmuster an
+den in OpenOffice.org benutzten "ALTLinux LibHnj Hyphenator" wurde
+mit dem Script substrings.pl durchgeführt, das unter
+http://lingucomponent.openoffice.org/hyphenator.html als Teil der
+Datei altlinux_Hyph.zip heruntergeladen werden kann.
+Die Original-Trennmuster können hier heruntergeladen werden:
+http://www.ctan.org/tex-archive/language/hyphenation/dehyphn.tex
+
+Original file: dehyphn.tex (revision level 31, 2001-05-07; inherited TeX pattern copyright and permission notice)
+Source: https://mirrors.ctan.org/language/hyphenation/dehyph/dehyphn.tex
+Source file SHA-256: 0bf281fd020e40ec2ae81a6bf819f2451e8cfd027e04f99c101c3da5c97b9300
+
+% This is `dehyphn.tex', revision level 31
+%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% dehyphn   --  TeX-Trennmuster fuer die
+%               neue deutsche Rechtschreibung
+%
+%               TeX hyphenation patterns for the
+%               new German orthography
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% Copyright (C) 1988,1991 Rechenzentrum der Ruhr-Universitaet Bochum
+%               [german hyphen patterns]
+% Copyright (C) 1993,1994,1999 Bernd Raichle/DANTE e.V.
+%               [macros, adaption for TeX 2]
+% Copyright (C) 1998--2001 Walter Schmidt
+%               [adaption to new German orthography]
+%
+% -----------------------------------------------------------------
+% IMPORTANT NOTICE:
+%
+% This program can be redistributed and/or modified under the terms
+% of the LaTeX Project Public License Distributed from CTAN
+% archives in directory macros/latex/base/lppl.txt; either
+% version 1 of the License, or any later version.
+% -----------------------------------------------------------------
+%
+%
+% For use with TeX generated by
+%
+%          Norbert Schwarz
+%          Rechenzentrum Ruhr-Universitaet Bochum
+%          Universitaetsstrasse 150
+%          D-44721 Bochum, Germany
+%
+%
+% Adaption of these patterns for TeX, Version 2.x and 3.x and
+% all fonts in T1/`Cork'/EC/DC and/or OT1/CM encoding
+% (ghyph31.tex/dehypht.tex) by
+%
+%          Bernd Raichle
+%          Stettener Str. 73
+%          D-73732 Esslingen, Germany
+%   Email: raichle@Informatik.Uni-Stuttgart.DE
+%
+%
+% Adapted to new German orthography (gnhyph01.tex/dehyphn.tex) by
+%
+%          Walter Schmidt
+%          Schornbaumstr. 2
+%          D-91052 Erlangen, Germany
+%   Email: was@VR-Web.de
+%
+% ***   Please, send error reports to the latter address only!   ***
+% ***                                                            ***
+% ***   Please, do _not_ report errors occuring in conjunction   ***
+% ***   with the traditional german hyphenation patterns         ***
+% ***   dehypht.tex or ghyph31.tex, too.                         ***
+%
+%
+% Additional documentation can be found near the end of this file.
+%
+% -----------------------------------------------------------------
+%
+
+Original file: fr_FR/README_hyph_fr.txt
+
+_____________________________________________________________________________
+
+  Motifs de division des mots pour le français (fr)
+  Version 3.0
+
+  Licence : GNU LGPL.
+
+  Origine : Basé sur les motifs de division de TeX *hyph-fr.tex*,
+            version renommée (juin 2008) du fichier *frhyph.tex* (V2.12, 2002/12/11)
+            pour la cohérence avec d'autres fichiers de motifs de division
+            de la collection hyph-utf8. Voir http://tug.org/tex-hyphen
+            pour plus d'informations.
+            Les motifs de division de TeX sont publiés sous la licence LaTeX
+            Project Public License (LPPL)  --  http://www.latex-project.org/lppl.txt
+
+  Licence : Les adaptations pour OpenOffice.org sont publiées sous la licence
+            GNU Lesser General Public License (LGPL)
+            version 2.1 ou supérieure  --  http://www.gnu.org/licenses/
+
+  Auteurs :
+            3.0     Marc Lodewijck <mlodewijck@gmail.com>
+            2.0     Paul Pichaureau <paul.pichaureau@alcandre.net>
+            1.0     Blaise Drayer <blaise@drayer.ch>
+
+  Journal :
+            3.0     Nouvelle version révisée et augmentée :
+                      +  Conversion au format de codage Unicode UTF-8
+                      +  Traitement des noms composés à trait d'union
+                      +  Redressement de motifs altérés
+            2.0     Traitement des mots avec apostrophe
+            1.0     Première conversion
+
+  Ce dictionnaire devrait être conforme à toutes les variantes régionales du
+  français.
+
+_____________________________________________________________________
+
+  French word hyphenation patterns
+  Version 3.0
+
+  Language: French (fr).
+
+  License:  GNU LGPL.
+
+  Origin:   Based on the TeX hyphenation tables *hyph-fr.tex*,
+            renamed (June 2008) from *frhyph.tex* (V2.12, 2002/12/11)
+            for consistency with other files with hyphenation patterns
+            in hyph-utf8 package. See http://tug.org/tex-hyphen for more details.
+            The TeX hyphenation tables are released under the LaTeX Project
+            Public License (LPPL)  --  http://www.latex-project.org/lppl.txt
+
+  License:  OpenOffice.org adaptions of this package are licensed under the
+            GNU Lesser General Public License (LGPL)
+            version 2.1 or higher  --  http://www.gnu.org/licenses/
+
+  Authors:
+            3.0     Marc Lodewijck <mlodewijck@gmail.com>
+            2.0     Paul Pichaureau <paul.pichaureau@alcandre.net>
+            1.0     Blaise Drayer <blaise@drayer.ch>
+
+  Log:
+            3.0     New revised and expanded version:
+                      +  Conversion to UTF-8 Unicode encoding
+                      +  Processing of hyphenated compounds
+                      +  Correction of altered patterns
+            2.0     Fix for words with apostrophe
+            1.0     First conversion
+
+  This dictionary is based on syllable matching patterns and therefore should
+  be usable under other variations of French.
+
+Original file: fr_FR/hyph-fr.tex (source author credits and permission notice)
+
+% This file is part of hyph-utf8 package and resulted from
+% semi-manual conversions of hyphenation patterns into UTF-8 in June 2008.
+%
+% Source: frhyph.tex <2006-10-20>
+% Author: R. Bastian, D. Flipo, B. Gaulle <cesure-l at gutenberg.eu.org>
+%
+% The above mentioned file should become obsolete,
+% and the author of the original file should preferaby modify this file instead.
+%
+% Modificatios were needed in order to support native UTF-8 engines,
+% but functionality (hopefully) didn't change in any way, at least not intentionally.
+% This file is no longer stand-alone; at least for 8-bit engines
+% you probably want to use loadhyph-foo.tex (which will load this file) instead.
+%
+% Modifications were done by Jonathan Kew, Mojca Miklavec & Arthur Reutenauer
+% with help & support from:
+% - Karl Berry, who gave us free hands and all resources
+% - Taco Hoekwater, with useful macros
+% - Hans Hagen, who did the unicodifisation of patterns already long before
+%               and helped with testing, suggestions and bug reports
+% - Norbert Preining, who tested & integrated patterns into TeX Live
+%
+% However, the "copyright/copyleft" owner of patterns remains the original author.
+%
+% The copyright statement of this file is thus:
+%
+%    Do with this file whatever needs to be done in future for the sake of
+%    "a better world" as long as you respect the copyright of original file.
+%    If you're the original author of patterns or taking over a new revolution,
+%    plese remove all of the TUG comments & credits that we added here -
+%    you are the Queen / the King, we are only the servants.
+%
+% If you want to change this file, rather than uploading directly to CTAN,
+% we would be grateful if you could send it to us (http://tug.org/tex-hyphen)
+% or ask for credentials for SVN repository and commit it yourself;
+% we will then upload the whole "package" to CTAN.
+%
+% Before a new "pattern-revolution" starts,
+% please try to follow some guidelines if possible:
+%
+% - \lccode is *forbidden*, and I really mean it
+% - all the patterns should be in UTF-8
+% - the only "allowed" TeX commands in this file are: \patterns, \hyphenation,
+%   and if you really cannot do without, also \input and \message
+% - in particular, please no \catcode or \lccode changes,
+%   they belong to loadhyph-foo.tex,
+%   and no \lefthyphenmin and \righthyphenmin,
+%   they have no influence here and belong elsewhere
+% - \begingroup and/or \endinput is not needed
+% - feel free to do whatever you want inside comments
+%
+% We know that TeX is extremely powerful, but give a stupid parser
+% at least a chance to read your patterns.
+%
+% For more unformation see
+%
+%    http://tug.org/tex-hyphen
+%
+%------------------------------------------------------------------------------
+%
+% French hyphenation patterns
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This file is available for free and can used and redistributed
+% asis for free. Modified versions should have another name.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \message{frhyph.tex - French hyphenation patterns (V2.12) <2002/12/11>}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%          *BEFORE* using this file *PLEASE* run checksum on it:           %
+%                       checksum -v frhyph.tex                             %
+% to make sure that it hasn't been damaged.                                %
+% Then if you notice anything wrong in french hyphenation please report to %
+% R. Bastian, D. Flipo, B. Gaulle at the email address:                    %
+%                                              cesure-l@gutenberg.eu.org   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%      checksum        = "37208 1458 3078 34821"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% The most famous good guys who worked hard to obtain something usable.
+% Jacques Desarmenien, Universite de Strasbourg :
+%          -  << how to run TeX in a French environment: hyphenation, fonts,
+%             typography. >> in Tugboat, 5 (1984) 91-102. and TeX85 conference
+%          -  << La division par ordinateur des mots francais :
+%             application a TeX >> in TSI vol. 5 No 4, 1986 (C) AFCET-
+%                                                             Gauthier-Villars
+% Norman Buckle, UQAH (nb; many additions)
+% Michael Ferguson, INRS-Telecommunications (mjf) June 1988
+% Justin Bur, Universite de Montreal (jbb; checked against original list)
+%                    all patterns including apostrophe missing from nb list
+% after that, GUTenberg  and specially Daniel Flipo and Bernard Gaulle
+% did their best effort to improve the list of patterns.
+%
+% -----------------------------------------------------------------
+%
+% Adaption of these patterns for
+%  - TeX Version 3.x and MLTeX 3.x (2.x)
+% and
+%  - all fonts in T1/`Cork' and/or CM/OT1 encoding
+% by Bernd Raichle 1996/08/28 (using ideas from `ghyph31.tex'
+% as of 1994-02-13 maintained by Bernd Raichle).
+% (An adaption for the old MLTeX 2.x exists but can not be
+% tested in lack of an executable.)
+%
+% -----------------------------------------------------------------
+%
+
+Original file: de/COPYING_LGPL_v2.0.txt (GNU Library GPL version 2)
+
+                  GNU LIBRARY GENERAL PUBLIC LICENSE
+                       Version 2, June 1991
+
+ Copyright (C) 1991 Free Software Foundation, Inc.
+ 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
+[This is the first released version of the library GPL.  It is
+ numbered 2 because it goes with version 2 of the ordinary GPL.]
+
+                            Preamble
+
+  The licenses for most software are designed to take away your
+freedom to share and change it.  By contrast, the GNU General Public
+Licenses are intended to guarantee your freedom to share and change
+free software--to make sure the software is free for all its users.
+
+  This license, the Library General Public License, applies to some
+specially designated Free Software Foundation software, and to any
+other libraries whose authors decide to use it.  You can use it for
+your libraries, too.
+
+  When we speak of free software, we are referring to freedom, not
+price.  Our General Public Licenses are designed to make sure that you
+have the freedom to distribute copies of free software (and charge for
+this service if you wish), that you receive source code or can get it
+if you want it, that you can change the software or use pieces of it
+in new free programs; and that you know you can do these things.
+
+  To protect your rights, we need to make restrictions that forbid
+anyone to deny you these rights or to ask you to surrender the rights.
+These restrictions translate to certain responsibilities for you if
+you distribute copies of the library, or if you modify it.
+
+  For example, if you distribute copies of the library, whether gratis
+or for a fee, you must give the recipients all the rights that we gave
+you.  You must make sure that they, too, receive or can get the source
+code.  If you link a program with the library, you must provide
+complete object files to the recipients so that they can relink them
+with the library, after making changes to the library and recompiling
+it.  And you must show them these terms so they know their rights.
+
+  Our method of protecting your rights has two steps: (1) copyright
+the library, and (2) offer you this license which gives you legal
+permission to copy, distribute and/or modify the library.
+
+  Also, for each distributor's protection, we want to make certain
+that everyone understands that there is no warranty for this free
+library.  If the library is modified by someone else and passed on, we
+want its recipients to know that what they have is not the original
+version, so that any problems introduced by others will not reflect on
+the original authors' reputations.
+
+  Finally, any free program is threatened constantly by software
+patents.  We wish to avoid the danger that companies distributing free
+software will individually obtain patent licenses, thus in effect
+transforming the program into proprietary software.  To prevent this,
+we have made it clear that any patent must be licensed for everyone's
+free use or not licensed at all.
+
+  Most GNU software, including some libraries, is covered by the ordinary
+GNU General Public License, which was designed for utility programs.  This
+license, the GNU Library General Public License, applies to certain
+designated libraries.  This license is quite different from the ordinary
+one; be sure to read it in full, and don't assume that anything in it is
+the same as in the ordinary license.
+
+  The reason we have a separate public license for some libraries is that
+they blur the distinction we usually make between modifying or adding to a
+program and simply using it.  Linking a program with a library, without
+changing the library, is in some sense simply using the library, and is
+analogous to running a utility program or application program.  However, in
+a textual and legal sense, the linked executable is a combined work, a
+derivative of the original library, and the ordinary General Public License
+treats it as such.
+
+  Because of this blurred distinction, using the ordinary General
+Public License for libraries did not effectively promote software
+sharing, because most developers did not use the libraries.  We
+concluded that weaker conditions might promote sharing better.
+
+  However, unrestricted linking of non-free programs would deprive the
+users of those programs of all benefit from the free status of the
+libraries themselves.  This Library General Public License is intended to
+permit developers of non-free programs to use free libraries, while
+preserving your freedom as a user of such programs to change the free
+libraries that are incorporated in them.  (We have not seen how to achieve
+this as regards changes in header files, but we have achieved it as regards
+changes in the actual functions of the Library.)  The hope is that this
+will lead to faster development of free libraries.
+
+  The precise terms and conditions for copying, distribution and
+modification follow.  Pay close attention to the difference between a
+"work based on the library" and a "work that uses the library".  The
+former contains code derived from the library, while the latter only
+works together with the library.
+
+  Note that it is possible for a library to be covered by the ordinary
+General Public License rather than by this special one.
+
+                  GNU LIBRARY GENERAL PUBLIC LICENSE
+   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+
+  0. This License Agreement applies to any software library which
+contains a notice placed by the copyright holder or other authorized
+party saying it may be distributed under the terms of this Library
+General Public License (also called "this License").  Each licensee is
+addressed as "you".
+
+  A "library" means a collection of software functions and/or data
+prepared so as to be conveniently linked with application programs
+(which use some of those functions and data) to form executables.
+
+  The "Library", below, refers to any such software library or work
+which has been distributed under these terms.  A "work based on the
+Library" means either the Library or any derivative work under
+copyright law: that is to say, a work containing the Library or a
+portion of it, either verbatim or with modifications and/or translated
+straightforwardly into another language.  (Hereinafter, translation is
+included without limitation in the term "modification".)
+
+  "Source code" for a work means the preferred form of the work for
+making modifications to it.  For a library, complete source code means
+all the source code for all modules it contains, plus any associated
+interface definition files, plus the scripts used to control compilation
+and installation of the library.
+
+  Activities other than copying, distribution and modification are not
+covered by this License; they are outside its scope.  The act of
+running a program using the Library is not restricted, and output from
+such a program is covered only if its contents constitute a work based
+on the Library (independent of the use of the Library in a tool for
+writing it).  Whether that is true depends on what the Library does
+and what the program that uses the Library does.
+
+  1. You may copy and distribute verbatim copies of the Library's
+complete source code as you receive it, in any medium, provided that
+you conspicuously and appropriately publish on each copy an
+appropriate copyright notice and disclaimer of warranty; keep intact
+all the notices that refer to this License and to the absence of any
+warranty; and distribute a copy of this License along with the
+Library.
+
+  You may charge a fee for the physical act of transferring a copy,
+and you may at your option offer warranty protection in exchange for a
+fee.
+
+  2. You may modify your copy or copies of the Library or any portion
+of it, thus forming a work based on the Library, and copy and
+distribute such modifications or work under the terms of Section 1
+above, provided that you also meet all of these conditions:
+
+    a) The modified work must itself be a software library.
+
+    b) You must cause the files modified to carry prominent notices
+    stating that you changed the files and the date of any change.
+
+    c) You must cause the whole of the work to be licensed at no
+    charge to all third parties under the terms of this License.
+
+    d) If a facility in the modified Library refers to a function or a
+    table of data to be supplied by an application program that uses
+    the facility, other than as an argument passed when the facility
+    is invoked, then you must make a good faith effort to ensure that,
+    in the event an application does not supply such function or
+    table, the facility still operates, and performs whatever part of
+    its purpose remains meaningful.
+
+    (For example, a function in a library to compute square roots has
+    a purpose that is entirely well-defined independent of the
+    application.  Therefore, Subsection 2d requires that any
+    application-supplied function or table used by this function must
+    be optional: if the application does not supply it, the square
+    root function must still compute square roots.)
+
+These requirements apply to the modified work as a whole.  If
+identifiable sections of that work are not derived from the Library,
+and can be reasonably considered independent and separate works in
+themselves, then this License, and its terms, do not apply to those
+sections when you distribute them as separate works.  But when you
+distribute the same sections as part of a whole which is a work based
+on the Library, the distribution of the whole must be on the terms of
+this License, whose permissions for other licensees extend to the
+entire whole, and thus to each and every part regardless of who wrote
+it.
+
+Thus, it is not the intent of this section to claim rights or contest
+your rights to work written entirely by you; rather, the intent is to
+exercise the right to control the distribution of derivative or
+collective works based on the Library.
+
+In addition, mere aggregation of another work not based on the Library
+with the Library (or with a work based on the Library) on a volume of
+a storage or distribution medium does not bring the other work under
+the scope of this License.
+
+  3. You may opt to apply the terms of the ordinary GNU General Public
+License instead of this License to a given copy of the Library.  To do
+this, you must alter all the notices that refer to this License, so
+that they refer to the ordinary GNU General Public License, version 2,
+instead of to this License.  (If a newer version than version 2 of the
+ordinary GNU General Public License has appeared, then you can specify
+that version instead if you wish.)  Do not make any other change in
+these notices.
+
+  Once this change is made in a given copy, it is irreversible for
+that copy, so the ordinary GNU General Public License applies to all
+subsequent copies and derivative works made from that copy.
+
+  This option is useful when you wish to copy part of the code of
+the Library into a program that is not a library.
+
+  4. You may copy and distribute the Library (or a portion or
+derivative of it, under Section 2) in object code or executable form
+under the terms of Sections 1 and 2 above provided that you accompany
+it with the complete corresponding machine-readable source code, which
+must be distributed under the terms of Sections 1 and 2 above on a
+medium customarily used for software interchange.
+
+  If distribution of object code is made by offering access to copy
+from a designated place, then offering equivalent access to copy the
+source code from the same place satisfies the requirement to
+distribute the source code, even though third parties are not
+compelled to copy the source along with the object code.
+
+  5. A program that contains no derivative of any portion of the
+Library, but is designed to work with the Library by being compiled or
+linked with it, is called a "work that uses the Library".  Such a
+work, in isolation, is not a derivative work of the Library, and
+therefore falls outside the scope of this License.
+
+  However, linking a "work that uses the Library" with the Library
+creates an executable that is a derivative of the Library (because it
+contains portions of the Library), rather than a "work that uses the
+library".  The executable is therefore covered by this License.
+Section 6 states terms for distribution of such executables.
+
+  When a "work that uses the Library" uses material from a header file
+that is part of the Library, the object code for the work may be a
+derivative work of the Library even though the source code is not.
+Whether this is true is especially significant if the work can be
+linked without the Library, or if the work is itself a library.  The
+threshold for this to be true is not precisely defined by law.
+
+  If such an object file uses only numerical parameters, data
+structure layouts and accessors, and small macros and small inline
+functions (ten lines or less in length), then the use of the object
+file is unrestricted, regardless of whether it is legally a derivative
+work.  (Executables containing this object code plus portions of the
+Library will still fall under Section 6.)
+
+  Otherwise, if the work is a derivative of the Library, you may
+distribute the object code for the work under the terms of Section 6.
+Any executables containing that work also fall under Section 6,
+whether or not they are linked directly with the Library itself.
+
+  6. As an exception to the Sections above, you may also compile or
+link a "work that uses the Library" with the Library to produce a
+work containing portions of the Library, and distribute that work
+under terms of your choice, provided that the terms permit
+modification of the work for the customer's own use and reverse
+engineering for debugging such modifications.
+
+  You must give prominent notice with each copy of the work that the
+Library is used in it and that the Library and its use are covered by
+this License.  You must supply a copy of this License.  If the work
+during execution displays copyright notices, you must include the
+copyright notice for the Library among them, as well as a reference
+directing the user to the copy of this License.  Also, you must do one
+of these things:
+
+    a) Accompany the work with the complete corresponding
+    machine-readable source code for the Library including whatever
+    changes were used in the work (which must be distributed under
+    Sections 1 and 2 above); and, if the work is an executable linked
+    with the Library, with the complete machine-readable "work that
+    uses the Library", as object code and/or source code, so that the
+    user can modify the Library and then relink to produce a modified
+    executable containing the modified Library.  (It is understood
+    that the user who changes the contents of definitions files in the
+    Library will not necessarily be able to recompile the application
+    to use the modified definitions.)
+
+    b) Accompany the work with a written offer, valid for at
+    least three years, to give the same user the materials
+    specified in Subsection 6a, above, for a charge no more
+    than the cost of performing this distribution.
+
+    c) If distribution of the work is made by offering access to copy
+    from a designated place, offer equivalent access to copy the above
+    specified materials from the same place.
+
+    d) Verify that the user has already received a copy of these
+    materials or that you have already sent this user a copy.
+
+  For an executable, the required form of the "work that uses the
+Library" must include any data and utility programs needed for
+reproducing the executable from it.  However, as a special exception,
+the source code distributed need not include anything that is normally
+distributed (in either source or binary form) with the major
+components (compiler, kernel, and so on) of the operating system on
+which the executable runs, unless that component itself accompanies
+the executable.
+
+  It may happen that this requirement contradicts the license
+restrictions of other proprietary libraries that do not normally
+accompany the operating system.  Such a contradiction means you cannot
+use both them and the Library together in an executable that you
+distribute.
+
+  7. You may place library facilities that are a work based on the
+Library side-by-side in a single library together with other library
+facilities not covered by this License, and distribute such a combined
+library, provided that the separate distribution of the work based on
+the Library and of the other library facilities is otherwise
+permitted, and provided that you do these two things:
+
+    a) Accompany the combined library with a copy of the same work
+    based on the Library, uncombined with any other library
+    facilities.  This must be distributed under the terms of the
+    Sections above.
+
+    b) Give prominent notice with the combined library of the fact
+    that part of it is a work based on the Library, and explaining
+    where to find the accompanying uncombined form of the same work.
+
+  8. You may not copy, modify, sublicense, link with, or distribute
+the Library except as expressly provided under this License.  Any
+attempt otherwise to copy, modify, sublicense, link with, or
+distribute the Library is void, and will automatically terminate your
+rights under this License.  However, parties who have received copies,
+or rights, from you under this License will not have their licenses
+terminated so long as such parties remain in full compliance.
+
+  9. You are not required to accept this License, since you have not
+signed it.  However, nothing else grants you permission to modify or
+distribute the Library or its derivative works.  These actions are
+prohibited by law if you do not accept this License.  Therefore, by
+modifying or distributing the Library (or any work based on the
+Library), you indicate your acceptance of this License to do so, and
+all its terms and conditions for copying, distributing or modifying
+the Library or works based on it.
+
+  10. Each time you redistribute the Library (or any work based on the
+Library), the recipient automatically receives a license from the
+original licensor to copy, distribute, link with or modify the Library
+subject to these terms and conditions.  You may not impose any further
+restrictions on the recipients' exercise of the rights granted herein.
+You are not responsible for enforcing compliance by third parties to
+this License.
+
+  11. If, as a consequence of a court judgment or allegation of patent
+infringement or for any other reason (not limited to patent issues),
+conditions are imposed on you (whether by court order, agreement or
+otherwise) that contradict the conditions of this License, they do not
+excuse you from the conditions of this License.  If you cannot
+distribute so as to satisfy simultaneously your obligations under this
+License and any other pertinent obligations, then as a consequence you
+may not distribute the Library at all.  For example, if a patent
+license would not permit royalty-free redistribution of the Library by
+all those who receive copies directly or indirectly through you, then
+the only way you could satisfy both it and this License would be to
+refrain entirely from distribution of the Library.
+
+If any portion of this section is held invalid or unenforceable under any
+particular circumstance, the balance of the section is intended to apply,
+and the section as a whole is intended to apply in other circumstances.
+
+It is not the purpose of this section to induce you to infringe any
+patents or other property right claims or to contest validity of any
+such claims; this section has the sole purpose of protecting the
+integrity of the free software distribution system which is
+implemented by public license practices.  Many people have made
+generous contributions to the wide range of software distributed
+through that system in reliance on consistent application of that
+system; it is up to the author/donor to decide if he or she is willing
+to distribute software through any other system and a licensee cannot
+impose that choice.
+
+This section is intended to make thoroughly clear what is believed to
+be a consequence of the rest of this License.
+
+  12. If the distribution and/or use of the Library is restricted in
+certain countries either by patents or by copyrighted interfaces, the
+original copyright holder who places the Library under this License may add
+an explicit geographical distribution limitation excluding those countries,
+so that distribution is permitted only in or among countries not thus
+excluded.  In such case, this License incorporates the limitation as if
+written in the body of this License.
+
+  13. The Free Software Foundation may publish revised and/or new
+versions of the Library General Public License from time to time.
+Such new versions will be similar in spirit to the present version,
+but may differ in detail to address new problems or concerns.
+
+Each version is given a distinguishing version number.  If the Library
+specifies a version number of this License which applies to it and
+"any later version", you have the option of following the terms and
+conditions either of that version or of any later version published by
+the Free Software Foundation.  If the Library does not specify a
+license version number, you may choose any version ever published by
+the Free Software Foundation.
+
+  14. If you wish to incorporate parts of the Library into other free
+programs whose distribution conditions are incompatible with these,
+write to the author to ask for permission.  For software which is
+copyrighted by the Free Software Foundation, write to the Free
+Software Foundation; we sometimes make exceptions for this.  Our
+decision will be guided by the two goals of preserving the free status
+of all derivatives of our free software and of promoting the sharing
+and reuse of software generally.
+
+                            NO WARRANTY
+
+  15. BECAUSE THE LIBRARY IS LICENSED FREE OF CHARGE, THERE IS NO
+WARRANTY FOR THE LIBRARY, TO THE EXTENT PERMITTED BY APPLICABLE LAW.
+EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR
+OTHER PARTIES PROVIDE THE LIBRARY "AS IS" WITHOUT WARRANTY OF ANY
+KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE.  THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE
+LIBRARY IS WITH YOU.  SHOULD THE LIBRARY PROVE DEFECTIVE, YOU ASSUME
+THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+
+  16. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN
+WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY
+AND/OR REDISTRIBUTE THE LIBRARY AS PERMITTED ABOVE, BE LIABLE TO YOU
+FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR
+CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE
+LIBRARY (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING
+RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
+FAILURE OF THE LIBRARY TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
+SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
+DAMAGES.
+
+                     END OF TERMS AND CONDITIONS
+
+           How to Apply These Terms to Your New Libraries
+
+  If you develop a new library, and you want it to be of the greatest
+possible use to the public, we recommend making it free software that
+everyone can redistribute and change.  You can do so by permitting
+redistribution under these terms (or, alternatively, under the terms of the
+ordinary General Public License).
+
+  To apply these terms, attach the following notices to the library.  It is
+safest to attach them to the start of each source file to most effectively
+convey the exclusion of warranty; and each file should have at least the
+"copyright" line and a pointer to where the full notice is found.
+
+    <one line to give the library's name and a brief idea of what it does.>
+    Copyright (C) <year>  <name of author>
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Library General Public
+    License as published by the Free Software Foundation; either
+    version 2 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Library General Public License for more details.
+
+    You should have received a copy of the GNU Library General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+Also add information on how to contact you by electronic and paper mail.
+
+You should also get your employer (if you work as a programmer) or your
+school, if any, to sign a "copyright disclaimer" for the library, if
+necessary.  Here is a sample; alter the names:
+
+  Yoyodyne, Inc., hereby disclaims all copyright interest in the
+  library `Frob' (a library for tweaking knobs) written by James Random Hacker.
+
+  <signature of Ty Coon>, 1 April 1990
+  Ty Coon, President of Vice
+
+That's all there is to it!
+
+Original file: LaTeX Project Public License version 1.3c (https://www.latex-project.org/lppl/lppl-1-3c.txt)
+
+The LaTeX Project Public License
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+LPPL Version 1.3c  2008-05-04
+
+Copyright 1999 2002-2008 LaTeX3 Project
+    Everyone is allowed to distribute verbatim copies of this
+    license document, but modification of it is not allowed.
+
+
+PREAMBLE
+========
+
+The LaTeX Project Public License (LPPL) is the primary license under
+which the LaTeX kernel and the base LaTeX packages are distributed.
+
+You may use this license for any work of which you hold the copyright
+and which you wish to distribute.  This license may be particularly
+suitable if your work is TeX-related (such as a LaTeX package), but
+it is written in such a way that you can use it even if your work is
+unrelated to TeX.
+
+The section `WHETHER AND HOW TO DISTRIBUTE WORKS UNDER THIS LICENSE',
+below, gives instructions, examples, and recommendations for authors
+who are considering distributing their works under this license.
+
+This license gives conditions under which a work may be distributed
+and modified, as well as conditions under which modified versions of
+that work may be distributed.
+
+We, the LaTeX3 Project, believe that the conditions below give you
+the freedom to make and distribute modified versions of your work
+that conform with whatever technical specifications you wish while
+maintaining the availability, integrity, and reliability of
+that work.  If you do not see how to achieve your goal while
+meeting these conditions, then read the document `cfgguide.tex'
+and `modguide.tex' in the base LaTeX distribution for suggestions.
+
+
+DEFINITIONS
+===========
+
+In this license document the following terms are used:
+
+   `Work'
+    Any work being distributed under this License.
+
+   `Derived Work'
+    Any work that under any applicable law is derived from the Work.
+
+   `Modification'
+    Any procedure that produces a Derived Work under any applicable
+    law -- for example, the production of a file containing an
+    original file associated with the Work or a significant portion of
+    such a file, either verbatim or with modifications and/or
+    translated into another language.
+
+   `Modify'
+    To apply any procedure that produces a Derived Work under any
+    applicable law.
+
+   `Distribution'
+    Making copies of the Work available from one person to another, in
+    whole or in part.  Distribution includes (but is not limited to)
+    making any electronic components of the Work accessible by
+    file transfer protocols such as FTP or HTTP or by shared file
+    systems such as Sun's Network File System (NFS).
+
+   `Compiled Work'
+    A version of the Work that has been processed into a form where it
+    is directly usable on a computer system.  This processing may
+    include using installation facilities provided by the Work,
+    transformations of the Work, copying of components of the Work, or
+    other activities.  Note that modification of any installation
+    facilities provided by the Work constitutes modification of the Work.
+
+   `Current Maintainer'
+    A person or persons nominated as such within the Work.  If there is
+    no such explicit nomination then it is the `Copyright Holder' under
+    any applicable law.
+
+   `Base Interpreter'
+    A program or process that is normally needed for running or
+    interpreting a part or the whole of the Work.
+
+    A Base Interpreter may depend on external components but these
+    are not considered part of the Base Interpreter provided that each
+    external component clearly identifies itself whenever it is used
+    interactively.  Unless explicitly specified when applying the
+    license to the Work, the only applicable Base Interpreter is a
+    `LaTeX-Format' or in the case of files belonging to the
+    `LaTeX-format' a program implementing the `TeX language'.
+
+
+
+CONDITIONS ON DISTRIBUTION AND MODIFICATION
+===========================================
+
+1.  Activities other than distribution and/or modification of the Work
+are not covered by this license; they are outside its scope.  In
+particular, the act of running the Work is not restricted and no
+requirements are made concerning any offers of support for the Work.
+
+2.  You may distribute a complete, unmodified copy of the Work as you
+received it.  Distribution of only part of the Work is considered
+modification of the Work, and no right to distribute such a Derived
+Work may be assumed under the terms of this clause.
+
+3.  You may distribute a Compiled Work that has been generated from a
+complete, unmodified copy of the Work as distributed under Clause 2
+above, as long as that Compiled Work is distributed in such a way that
+the recipients may install the Compiled Work on their system exactly
+as it would have been installed if they generated a Compiled Work
+directly from the Work.
+
+4.  If you are the Current Maintainer of the Work, you may, without
+restriction, modify the Work, thus creating a Derived Work.  You may
+also distribute the Derived Work without restriction, including
+Compiled Works generated from the Derived Work.  Derived Works
+distributed in this manner by the Current Maintainer are considered to
+be updated versions of the Work.
+
+5.  If you are not the Current Maintainer of the Work, you may modify
+your copy of the Work, thus creating a Derived Work based on the Work,
+and compile this Derived Work, thus creating a Compiled Work based on
+the Derived Work.
+
+6.  If you are not the Current Maintainer of the Work, you may
+distribute a Derived Work provided the following conditions are met
+for every component of the Work unless that component clearly states
+in the copyright notice that it is exempt from that condition.  Only
+the Current Maintainer is allowed to add such statements of exemption
+to a component of the Work.
+
+  a. If a component of this Derived Work can be a direct replacement
+     for a component of the Work when that component is used with the
+     Base Interpreter, then, wherever this component of the Work
+     identifies itself to the user when used interactively with that
+     Base Interpreter, the replacement component of this Derived Work
+     clearly and unambiguously identifies itself as a modified version
+     of this component to the user when used interactively with that
+     Base Interpreter.
+
+  b. Every component of the Derived Work contains prominent notices
+     detailing the nature of the changes to that component, or a
+     prominent reference to another file that is distributed as part
+     of the Derived Work and that contains a complete and accurate log
+     of the changes.
+
+  c. No information in the Derived Work implies that any persons,
+     including (but not limited to) the authors of the original version
+     of the Work, provide any support, including (but not limited to)
+     the reporting and handling of errors, to recipients of the
+     Derived Work unless those persons have stated explicitly that
+     they do provide such support for the Derived Work.
+
+  d. You distribute at least one of the following with the Derived Work:
+
+       1. A complete, unmodified copy of the Work;
+          if your distribution of a modified component is made by
+          offering access to copy the modified component from a
+          designated place, then offering equivalent access to copy
+          the Work from the same or some similar place meets this
+          condition, even though third parties are not compelled to
+          copy the Work along with the modified component;
+
+       2. Information that is sufficient to obtain a complete,
+          unmodified copy of the Work.
+
+7.  If you are not the Current Maintainer of the Work, you may
+distribute a Compiled Work generated from a Derived Work, as long as
+the Derived Work is distributed to all recipients of the Compiled
+Work, and as long as the conditions of Clause 6, above, are met with
+regard to the Derived Work.
+
+8.  The conditions above are not intended to prohibit, and hence do not
+apply to, the modification, by any method, of any component so that it
+becomes identical to an updated version of that component of the Work as
+it is distributed by the Current Maintainer under Clause 4, above.
+
+9.  Distribution of the Work or any Derived Work in an alternative
+format, where the Work or that Derived Work (in whole or in part) is
+then produced by applying some process to that format, does not relax or
+nullify any sections of this license as they pertain to the results of
+applying that process.
+
+10. a. A Derived Work may be distributed under a different license
+       provided that license itself honors the conditions listed in
+       Clause 6 above, in regard to the Work, though it does not have
+       to honor the rest of the conditions in this license.
+
+    b. If a Derived Work is distributed under a different license, that
+       Derived Work must provide sufficient documentation as part of
+       itself to allow each recipient of that Derived Work to honor the
+       restrictions in Clause 6 above, concerning changes from the Work.
+
+11. This license places no restrictions on works that are unrelated to
+the Work, nor does this license place any restrictions on aggregating
+such works with the Work by any means.
+
+12.  Nothing in this license is intended to, or may be used to, prevent
+complete compliance by all parties with all applicable laws.
+
+
+NO WARRANTY
+===========
+
+There is no warranty for the Work.  Except when otherwise stated in
+writing, the Copyright Holder provides the Work `as is', without
+warranty of any kind, either expressed or implied, including, but not
+limited to, the implied warranties of merchantability and fitness for a
+particular purpose.  The entire risk as to the quality and performance
+of the Work is with you.  Should the Work prove defective, you assume
+the cost of all necessary servicing, repair, or correction.
+
+In no event unless required by applicable law or agreed to in writing
+will The Copyright Holder, or any author named in the components of the
+Work, or any other party who may distribute and/or modify the Work as
+permitted above, be liable to you for damages, including any general,
+special, incidental or consequential damages arising out of any use of
+the Work or out of inability to use the Work (including, but not limited
+to, loss of data, data being rendered inaccurate, or losses sustained by
+anyone as a result of any failure of the Work to operate with any other
+programs), even if the Copyright Holder or said author or said other
+party has been advised of the possibility of such damages.
+
+
+MAINTENANCE OF THE WORK
+=======================
+
+The Work has the status `author-maintained' if the Copyright Holder
+explicitly and prominently states near the primary copyright notice in
+the Work that the Work can only be maintained by the Copyright Holder
+or simply that it is `author-maintained'.
+
+The Work has the status `maintained' if there is a Current Maintainer
+who has indicated in the Work that they are willing to receive error
+reports for the Work (for example, by supplying a valid e-mail
+address). It is not required for the Current Maintainer to acknowledge
+or act upon these error reports.
+
+The Work changes from status `maintained' to `unmaintained' if there
+is no Current Maintainer, or the person stated to be Current
+Maintainer of the work cannot be reached through the indicated means
+of communication for a period of six months, and there are no other
+significant signs of active maintenance.
+
+You can become the Current Maintainer of the Work by agreement with
+any existing Current Maintainer to take over this role.
+
+If the Work is unmaintained, you can become the Current Maintainer of
+the Work through the following steps:
+
+ 1.  Make a reasonable attempt to trace the Current Maintainer (and
+     the Copyright Holder, if the two differ) through the means of
+     an Internet or similar search.
+
+ 2.  If this search is successful, then enquire whether the Work
+     is still maintained.
+
+  a. If it is being maintained, then ask the Current Maintainer
+     to update their communication data within one month.
+
+  b. If the search is unsuccessful or no action to resume active
+     maintenance is taken by the Current Maintainer, then announce
+     within the pertinent community your intention to take over
+     maintenance.  (If the Work is a LaTeX work, this could be
+     done, for example, by posting to comp.text.tex.)
+
+ 3a. If the Current Maintainer is reachable and agrees to pass
+     maintenance of the Work to you, then this takes effect
+     immediately upon announcement.
+
+  b. If the Current Maintainer is not reachable and the Copyright
+     Holder agrees that maintenance of the Work be passed to you,
+     then this takes effect immediately upon announcement.
+
+ 4.  If you make an `intention announcement' as described in 2b. above
+     and after three months your intention is challenged neither by
+     the Current Maintainer nor by the Copyright Holder nor by other
+     people, then you may arrange for the Work to be changed so as
+     to name you as the (new) Current Maintainer.
+
+ 5.  If the previously unreachable Current Maintainer becomes
+     reachable once more within three months of a change completed
+     under the terms of 3b) or 4), then that Current Maintainer must
+     become or remain the Current Maintainer upon request provided
+     they then update their communication data within one month.
+
+A change in the Current Maintainer does not, of itself, alter the fact
+that the Work is distributed under the LPPL license.
+
+If you become the Current Maintainer of the Work, you should
+immediately provide, within the Work, a prominent and unambiguous
+statement of your status as Current Maintainer.  You should also
+announce your new status to the same pertinent community as
+in 2b) above.
+
+
+WHETHER AND HOW TO DISTRIBUTE WORKS UNDER THIS LICENSE
+======================================================
+
+This section contains important instructions, examples, and
+recommendations for authors who are considering distributing their
+works under this license.  These authors are addressed as `you' in
+this section.
+
+Choosing This License or Another License
+----------------------------------------
+
+If for any part of your work you want or need to use *distribution*
+conditions that differ significantly from those in this license, then
+do not refer to this license anywhere in your work but, instead,
+distribute your work under a different license.  You may use the text
+of this license as a model for your own license, but your license
+should not refer to the LPPL or otherwise give the impression that
+your work is distributed under the LPPL.
+
+The document `modguide.tex' in the base LaTeX distribution explains
+the motivation behind the conditions of this license.  It explains,
+for example, why distributing LaTeX under the GNU General Public
+License (GPL) was considered inappropriate.  Even if your work is
+unrelated to LaTeX, the discussion in `modguide.tex' may still be
+relevant, and authors intending to distribute their works under any
+license are encouraged to read it.
+
+A Recommendation on Modification Without Distribution
+-----------------------------------------------------
+
+It is wise never to modify a component of the Work, even for your own
+personal use, without also meeting the above conditions for
+distributing the modified component.  While you might intend that such
+modifications will never be distributed, often this will happen by
+accident -- you may forget that you have modified that component; or
+it may not occur to you when allowing others to access the modified
+version that you are thus distributing it and violating the conditions
+of this license in ways that could have legal implications and, worse,
+cause problems for the community.  It is therefore usually in your
+best interest to keep your copy of the Work identical with the public
+one.  Many works provide ways to control the behavior of that work
+without altering any of its licensed components.
+
+How to Use This License
+-----------------------
+
+To use this license, place in each of the components of your work both
+an explicit copyright notice including your name and the year the work
+was authored and/or last substantially modified.  Include also a
+statement that the distribution and/or modification of that
+component is constrained by the conditions in this license.
+
+Here is an example of such a notice and statement:
+
+  %% pig.dtx
+  %% Copyright 2008 M. Y. Name
+  %
+  % This work may be distributed and/or modified under the
+  % conditions of the LaTeX Project Public License, either version 1.3
+  % of this license or (at your option) any later version.
+  % The latest version of this license is in
+  %   https://www.latex-project.org/lppl.txt
+  % and version 1.3c or later is part of all distributions of LaTeX
+  % version 2008 or later.
+  %
+  % This work has the LPPL maintenance status `maintained'.
+  %
+  % The Current Maintainer of this work is M. Y. Name.
+  %
+  % This work consists of the files pig.dtx and pig.ins
+  % and the derived file pig.sty.
+
+Given such a notice and statement in a file, the conditions
+given in this license document would apply, with the `Work' referring
+to the three files `pig.dtx', `pig.ins', and `pig.sty' (the last being
+generated from `pig.dtx' using `pig.ins'), the `Base Interpreter'
+referring to any `LaTeX-Format', and both `Copyright Holder' and
+`Current Maintainer' referring to the person `M. Y. Name'.
+
+If you do not want the Maintenance section of LPPL to apply to your
+Work, change `maintained' above into `author-maintained'.
+However, we recommend that you use `maintained', as the Maintenance
+section was added in order to ensure that your Work remains useful to
+the community even when you can no longer maintain and support it
+yourself.
+
+Derived Works That Are Not Replacements
+---------------------------------------
+
+Several clauses of the LPPL specify means to provide reliability and
+stability for the user community. They therefore concern themselves
+with the case that a Derived Work is intended to be used as a
+(compatible or incompatible) replacement of the original Work. If
+this is not the case (e.g., if a few lines of code are reused for a
+completely different task), then clauses 6b and 6d shall not apply.
+
+
+Important Recommendations
+-------------------------
+
+ Defining What Constitutes the Work
+
+   The LPPL requires that distributions of the Work contain all the
+   files of the Work.  It is therefore important that you provide a
+   way for the licensee to determine which files constitute the Work.
+   This could, for example, be achieved by explicitly listing all the
+   files of the Work near the copyright notice of each file or by
+   using a line such as:
+
+    % This work consists of all files listed in manifest.txt.
+
+   in that place.  In the absence of an unequivocal list it might be
+   impossible for the licensee to determine what is considered by you
+   to comprise the Work and, in such a case, the licensee would be
+   entitled to make reasonable conjectures as to which files comprise
+   the Work.
+----- END THIRD-PARTY LICENSE: upstream:libreoffice-dictionaries_hyphenation_fixtures -----

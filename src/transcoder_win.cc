@@ -1,10 +1,11 @@
 #include <vector>
 #include <string>
+#include <cstring>
+#include <climits>
 
 #include <windows.h>
 #include <stdlib.h>
 #include "transcoder.h"
-#include "buffers.h"
 
 namespace spellchecker {
 
@@ -42,7 +43,8 @@ UINT GetCodePage(const char *dictionary_encoding) {
   // Convert into a normalized form. We have to do this because humans are so
   // inconsistent with their encoding lines and we want to make this as
   // tolerant as possible.
-  char *encoding = new char[strlen(dictionary_encoding)+1];
+  std::vector<char> encoding_buffer(strlen(dictionary_encoding) + 1);
+  char *encoding = encoding_buffer.data();
   toAsciiLowerAndRemoveNonAlphanumeric(dictionary_encoding, encoding);
 
   // The translation of code pages comes from:
@@ -124,7 +126,7 @@ UINT GetCodePage(const char *dictionary_encoding) {
     return 57002;
   }
 
-  return -1;
+  return static_cast<UINT>(-1);
 }
 
 Transcoder* NewUTF16ToUTF8Transcoder() {
@@ -132,9 +134,17 @@ Transcoder* NewUTF16ToUTF8Transcoder() {
 }
 
 Transcoder* NewTranscoder8to8(const char *from_encoding, const char *to_encoding) {
+  const UINT from_code_page = GetCodePage(from_encoding);
+  const UINT to_code_page = GetCodePage(to_encoding);
+  if (from_code_page == static_cast<UINT>(-1) ||
+      to_code_page == static_cast<UINT>(-1) ||
+      !IsValidCodePage(from_code_page) || !IsValidCodePage(to_code_page)) {
+    return NULL;
+  }
+
   Transcoder *result = new Transcoder();
-  result->from_code_page = GetCodePage(from_encoding);
-  result->to_code_page = GetCodePage(to_encoding);
+  result->from_code_page = from_code_page;
+  result->to_code_page = to_code_page;
   return result;
 }
 
@@ -143,43 +153,67 @@ void FreeTranscoder(Transcoder *transcoder) {
 }
 
 bool TranscodeUTF16ToUTF8(const Transcoder *transcoder, char *out, size_t out_length, const uint16_t *in, size_t in_length) {
-  int length = WideCharToMultiByte(CP_UTF8, 0, reinterpret_cast<const wchar_t *>(in), in_length, out, out_length, NULL, NULL);
-  out[length] = '\0';
+  if (!out || out_length == 0) return false;
+  out[0] = '\0';
+  if (in_length == 0) return true;
+  if (!in || out_length == 1 || in_length > INT_MAX || out_length - 1 > INT_MAX) return false;
 
-  // Make sure the transcoded length doesn't exceed our buffers.
-  return strlen(out) <= MAX_UTF8_BUFFER;
+  const int length = WideCharToMultiByte(
+      CP_UTF8, WC_ERR_INVALID_CHARS, reinterpret_cast<const wchar_t *>(in),
+      static_cast<int>(in_length), out, static_cast<int>(out_length - 1), NULL, NULL);
+  if (length == 0) {
+    out[0] = '\0';
+    return false;
+  }
+  out[length] = '\0';
+  return true;
 }
 
 bool Transcode8to8(const Transcoder *transcoder, char *out, size_t out_length, const char *in, size_t in_length) {
-  // If the transcoder is NULL, then we just copy the input buffer into the
-  // output buffer and return the results without transcoding. We assume that
-  // the callers had made sure the word is not longer than the output buffer.
+  if (!out || out_length == 0) return false;
+  out[0] = '\0';
+  if (in_length == 0) return true;
+  if (!in || out_length == 1) return false;
+
+  // A missing transcoder denotes a dictionary that already uses UTF-8.
   if (!transcoder) {
-    // Copy the string and add the terminating character.
+    if (in_length >= out_length) return false;
     std::memcpy(out, in, in_length);
     out[in_length] = '\0';
-  } else {
-    // There is no easy way to convert from these two formats, so we convert from
-    // the input format into UTF-16 (wstring) first which appears to be the "right"
-    // way of doing this.
-    std::vector<wchar_t> utf16_buffer(256);
-    int utf16_length;
-
-    if (transcoder->from_code_page < 0) {
-      return false;
-    }
-
-    utf16_length = MultiByteToWideChar(transcoder->from_code_page, 0, in, in_length, (LPWSTR)utf16_buffer.data(), utf16_buffer.size());
-
-    // From the UTF-16 string, we convert it into our new page.
-    // With the outgoing format, we need to convert it into something from the
-    // wstring.
-    int length = WideCharToMultiByte(transcoder->to_code_page, 0, reinterpret_cast<const wchar_t *>(utf16_buffer.data()), utf16_length, out, out_length, NULL, NULL);
-    out[length] = '\0';
+    return true;
   }
 
-  // Make sure the transcoded length doesn't exceed our buffers.
-  return strlen(out) <= MAX_UTF8_BUFFER;
+  if (in_length > INT_MAX || out_length - 1 > INT_MAX) return false;
+
+  // Query the intermediate size instead of assuming that every input fits in
+  // 256 UTF-16 code units. Suggestions can exceed the input word limit.
+  const DWORD from_flags = transcoder->from_code_page == CP_UTF8 ? MB_ERR_INVALID_CHARS : 0;
+  const int utf16_length = MultiByteToWideChar(
+      transcoder->from_code_page, from_flags, in, static_cast<int>(in_length), NULL, 0);
+  if (utf16_length == 0) return false;
+
+  std::vector<wchar_t> utf16_buffer(utf16_length);
+  if (MultiByteToWideChar(transcoder->from_code_page, from_flags, in,
+                         static_cast<int>(in_length), utf16_buffer.data(), utf16_length) == 0) {
+    return false;
+  }
+
+  const bool to_utf8 = transcoder->to_code_page == CP_UTF8;
+  // ISCII (57002) requires zero flags; the other supported legacy code pages
+  // can reject best-fit substitutions as well as default-character loss.
+  const DWORD to_flags = to_utf8 ? WC_ERR_INVALID_CHARS :
+      (transcoder->to_code_page == 57002 ? 0 : WC_NO_BEST_FIT_CHARS);
+  BOOL used_default = FALSE;
+  const int length = WideCharToMultiByte(
+      transcoder->to_code_page, to_flags, utf16_buffer.data(), utf16_length,
+      out, static_cast<int>(out_length - 1), NULL, to_utf8 ? NULL : &used_default);
+  if (length == 0 || used_default) {
+    out[0] = '\0';
+    return false;
+  }
+
+  out[length] = '\0';
+  return true;
 }
 
 }  // namespace spellchecker
