@@ -603,18 +603,22 @@ for (i = 0, len = ref.length; i < len; i++) {
             return;
           }
           expect(this.fixture.setDictionary("de_DE_frami", dictionaryDirectory)).toBe(true);
+          expect(this.fixture.isMisspelled("Nacht")).toBe(false);
           correction = ["Acht", "Macht", "Acht"][spellIndex];
           corrections = this.fixture.getCorrectionsForMisspelling("Nacht");
           expect(corrections.length).toBeGreaterThan(0);
-          return expect(corrections[0]).toEqual(correction);
+          expect(corrections).toContain(correction);
+          return expect(this.fixture.isMisspelled(correction)).toBe(false);
         });
         it("returns an array of possible corrections for a correct Latin German word with UTF-8 file", function () {
           var correction, corrections;
           expect(this.fixture.setDictionary("de_DE", dictionaryDirectory)).toBe(true);
+          expect(this.fixture.isMisspelled("Nacht")).toBe(false);
           correction = ["Acht", "Macht", "Acht"][spellIndex];
           corrections = this.fixture.getCorrectionsForMisspelling("Nacht");
           expect(corrections.length).toBeGreaterThan(0);
-          return expect(corrections[0]).toEqual(correction);
+          expect(corrections).toContain(correction);
+          return expect(this.fixture.isMisspelled(correction)).toBe(false);
         });
         it("returns an array of possible corrections for a incorrect Latin German word with ISO8859-1 file", function () {
           var correction, corrections;
@@ -623,24 +627,22 @@ for (i = 0, len = ref.length; i < len; i++) {
             return;
           }
           expect(this.fixture.setDictionary("de_DE_frami", dictionaryDirectory)).toBe(true);
-          correction = ["Acht", "Nicht", "Acht"][spellIndex];
-          corrections = this.fixture.getCorrectionsForMisspelling("Nacht");
+          expect(this.fixture.isMisspelled("Nachtt")).toBe(true);
+          correction = "Nacht";
+          corrections = this.fixture.getCorrectionsForMisspelling("Nachtt");
           expect(corrections.length).toBeGreaterThan(0);
-          return expect(corrections[0]).toEqual(correction);
+          expect(corrections).toContain(correction);
+          return expect(this.fixture.isMisspelled(correction)).toBe(false);
         });
         it("returns an array of possible corrections for a incorrect Latin German word with UTF-8 file", function () {
           var correction, corrections;
           expect(this.fixture.setDictionary("de_DE", dictionaryDirectory)).toBe(true);
-          correction = ["Acht", "SEE BELOW", "Acht"][spellIndex];
-          corrections = this.fixture.getCorrectionsForMisspelling("Nacht");
+          expect(this.fixture.isMisspelled("Nachtt")).toBe(true);
+          correction = "Nacht";
+          corrections = this.fixture.getCorrectionsForMisspelling("Nachtt");
           expect(corrections.length).toBeGreaterThan(0);
-          if (spellType === "mac") {
-            // For some reason, the CI build will produce inconsistent results on
-            // the Mac based on some external factor.
-            return expect(corrections[0] === "Nicht" || corrections[0] === "Macht").toEqual(true);
-          } else {
-            return expect(corrections[0]).toEqual(correction);
-          }
+          expect(corrections).toContain(correction);
+          return expect(this.fixture.isMisspelled(correction)).toBe(false);
         });
         it("returns an array of possible corrections for correct Unicode German word with ISO8859-1 file", function () {
           var correction, corrections;
@@ -689,10 +691,12 @@ for (i = 0, len = ref.length; i < len; i++) {
         it("returns an array of possible corrections for correct Unicode French word", function () {
           var correction, corrections;
           expect(this.fixture.setDictionary("fr", dictionaryDirectory)).toBe(true);
+          expect(this.fixture.isMisspelled("Française")).toBe(false);
           correction = ["Françoise", "Françoise", "française"][spellIndex];
           corrections = this.fixture.getCorrectionsForMisspelling("Française");
           expect(corrections.length).toBeGreaterThan(0);
-          return expect(corrections[0]).toEqual(correction);
+          expect(corrections).toContain(correction);
+          return expect(this.fixture.isMisspelled(correction)).toBe(false);
         });
         return it("returns an array of possible corrections for incorrect Unicode French word", function () {
           var correction, corrections;

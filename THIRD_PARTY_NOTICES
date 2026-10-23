@@ -1860,375 +1860,40 @@ Issue 60240 - add arginine, histidine, monovalent, polymorphism, pyroelectric, p
 Issue 25797 - add proven, advisor, etc.
 ----- END THIRD-PARTY LICENSE: retained:legacy-production_en_US_2007 -----
 
------ BEGIN THIRD-PARTY LICENSE: upstream:libreoffice-dictionaries_en_US_fixtures -----
-Component: Unchanged English spelling and morphological regression dictionaries
+----- BEGIN THIRD-PARTY LICENSE: upstream:en-wl_wordlist_en_US_fixtures -----
+Component: English spelling regression dictionary, standard size 60
 Affected files: spec/dictionaries/en_US.dic and en_US.aff
-Source: https://github.com/pulsar-edit/node-spellchecker
-Inherited revision: 198bd4ba23984d80361323f24170707a87206e1b
-Matching upstream dictionary distribution: https://github.com/LibreOffice/dictionaries
-Upstream revision: be992a0b06f4cab782a967fd5187e114c53c9d4a (libreoffice-4.4.0.3)
-The upstream en/en_US.dic and en/en_US.aff match the retained fixtures after newline normalization. This older dictionary retains the SCOWL, WordNet, Ispell and phonetic-rule notices below. The GNU LGPL version 2.1 full text is reproduced in the Hunspell section above.
-
-Original file: en/README_en_US.txt
-
-Wordlist en_US spelling and morphological dictionary for OpenOffice.org
-Version 2008-12-18
-
-Based on Wordlist Hunspell dictionaries version 2008-12-05
-and Wordlist POS and AGID data created by Kevin Atkinson
-and released on http://wordlist.sourceforge.net.
-
-Other fixes:
-
-OOo Issue 48060 - add numbers with affixes by COMPOUNDRULE (1st, 111th, 1990s etc.)
-New REP items (better suggestions for accented words and a few mistakes)
-OOo Issue 63541 - remove *dessicated, *dessication
-
-LÃ¡szlÃ³ NÃ©meth <nemeth at OO.o>
-
-Original license:
-
-2008-12-05 Release
-
-README file for en_US and en_CA Hunspell dictionaries
-
-These dictionaries are created using the speller/make-hunspell-dict
-dictionary in SCOWL, SVN revision 74.
-
-The NOSUGGEST flag was added to certain taboo words.  While I made an
-honest attempt to flag the strongest taboo words with the NOSUGGEST
-flag, I MAKE NO GUARANTEE THAT I FLAGGED EVERY POSSIBLE TABOO WORD.
-The list was originally derived from Németh László, however I removed
-some words which, while being considered taboo by some dictionaries,
-are not really considered swear words in today's society.
-
-You can find SCOWL and friend at http://wordlist.sourceforge.net/.
-Bug reports should go to the Issue Tracker found on the previously
-mentioned web site.  General discussion should go to the
-wordlist-devel at sourceforge net mailing list.
-
-COPYRIGHT, SOURCES, and CREDITS:
-
-The en_US and en_CA dictionaries come directly from SCOWL (up to level
-60) and is thus under the same copyright of SCOWL.  The affix file is
-a heavily modified version of the original english.aff file which was
-released as part of Geoff Kuenning's Ispell and as such is covered by
-his BSD license.  Part of SCOWL is also based on Ispell thus the
-Ispell copyright is included with the SCOWL copyright.
-
-The collective work is Copyright 2000-2007 by Kevin Atkinson as well
-as any of the copyrights mentioned below:
-
-  Copyright 2000-2007 by Kevin Atkinson
-
-  Permission to use, copy, modify, distribute and sell these word
-  lists, the associated scripts, the output created from the scripts,
-  and its documentation for any purpose is hereby granted without fee,
-  provided that the above copyright notice appears in all copies and
-  that both that copyright notice and this permission notice appear in
-  supporting documentation. Kevin Atkinson makes no representations
-  about the suitability of this array for any purpose. It is provided
-  "as is" without express or implied warranty.
-
-Alan Beale <biljir@pobox.com> also deserves special credit as he has,
-in addition to providing the 12Dicts package and being a major
-contributor to the ENABLE word list, given me an incredible amount of
-feedback and created a number of special lists (those found in the
-Supplement) in order to help improve the overall quality of SCOWL.
-
-The 10 level includes the 1000 most common English words (according to
-the Moby (TM) Words II [MWords] package), a subset of the 1000 most
-common words on the Internet (again, according to Moby Words II), and
-frequently class 16 from Brian Kelk's "UK English Wordlist
-with Frequency Classification".
-
-The MWords package was explicitly placed in the public domain:
-
-    The Moby lexicon project is complete and has
-    been place into the public domain. Use, sell,
-    rework, excerpt and use in any way on any platform.
-
-    Placing this material on internal or public servers is
-    also encouraged. The compiler is not aware of any
-    export restrictions so freely distribute world-wide.
-
-    You can verify the public domain status by contacting
-
-    Grady Ward
-    3449 Martha Ct.
-    Arcata, CA  95521-4884
-
-    grady@netcom.com
-    grady@northcoast.com
-
-The "UK English Wordlist With Frequency Classification" is also in the
-Public Domain:
-
-  Date: Sat, 08 Jul 2000 20:27:21 +0100
-  From: Brian Kelk <Brian.Kelk@cl.cam.ac.uk>
-
-  > I was wondering what the copyright status of your "UK English
-  > Wordlist With Frequency Classification" word list as it seems to
-  > be lacking any copyright notice.
-
-  There were many many sources in total, but any text marked
-  "copyright" was avoided. Locally-written documentation was one
-  source. An earlier version of the list resided in a filespace called
-  PUBLIC on the University mainframe, because it was considered public
-  domain.
-
-  Date: Tue, 11 Jul 2000 19:31:34 +0100
-
-  > So are you saying your word list is also in the public domain?
-
-  That is the intention.
-
-The 20 level includes frequency classes 7-15 from Brian's word list.
-
-The 35 level includes frequency classes 2-6 and words appearing in at
-least 11 of 12 dictionaries as indicated in the 12Dicts package.  All
-words from the 12Dicts package have had likely inflections added via
-my inflection database.
-
-The 12Dicts package and Supplement is in the Public Domain.
-
-The WordNet database, which was used in the creation of the
-Inflections database, is under the following copyright:
-
-  This software and database is being provided to you, the LICENSEE,
-  by Princeton University under the following license.  By obtaining,
-  using and/or copying this software and database, you agree that you
-  have read, understood, and will comply with these terms and
-  conditions.:
-
-  Permission to use, copy, modify and distribute this software and
-  database and its documentation for any purpose and without fee or
-  royalty is hereby granted, provided that you agree to comply with
-  the following copyright notice and statements, including the
-  disclaimer, and that the same appear on ALL copies of the software,
-  database and documentation, including modifications that you make
-  for internal use or for distribution.
-
-  WordNet 1.6 Copyright 1997 by Princeton University.  All rights
-  reserved.
-
-  THIS SOFTWARE AND DATABASE IS PROVIDED "AS IS" AND PRINCETON
-  UNIVERSITY MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR
-  IMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, PRINCETON
-  UNIVERSITY MAKES NO REPRESENTATIONS OR WARRANTIES OF MERCHANT-
-  ABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE
-  LICENSED SOFTWARE, DATABASE OR DOCUMENTATION WILL NOT INFRINGE ANY
-  THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS.
-
-  The name of Princeton University or Princeton may not be used in
-  advertising or publicity pertaining to distribution of the software
-  and/or database.  Title to copyright in this software, database and
-  any associated documentation shall at all times remain with
-  Princeton University and LICENSEE agrees to preserve same.
-
-The 40 level includes words from Alan's 3esl list found in version 4.0
-of his 12dicts package.  Like his other stuff the 3esl list is also in the
-public domain.
-
-The 50 level includes Brian's frequency class 1, words words appearing
-in at least 5 of 12 of the dictionaries as indicated in the 12Dicts
-package, and uppercase words in at least 4 of the previous 12
-dictionaries.  A decent number of proper names is also included: The
-top 1000 male, female, and Last names from the 1990 Census report; a
-list of names sent to me by Alan Beale; and a few names that I added
-myself.  Finally a small list of abbreviations not commonly found in
-other word lists is included.
-
-The name files form the Census report is a government document which I
-don't think can be copyrighted.
-
-The file special-jargon.50 uses common.lst and word.lst from the
-"Unofficial Jargon File Word Lists" which is derived from "The Jargon
-File".  All of which is in the Public Domain.  This file also contain
-a few extra UNIX terms which are found in the file "unix-terms" in the
-special/ directory.
-
-The 55 level includes words from Alan's 2of4brif list found in version
-4.0 of his 12dicts package.  Like his other stuff the 2of4brif is also
-in the public domain.
-
-The 60 level includes Brian's frequency class 0 and all words
-appearing in at least 2 of the 12 dictionaries as indicated by the
-12Dicts package.  A large number of names are also included: The 4,946
-female names and the 3,897 male names from the MWords package.
-
-The 70 level includes the 74,550 common dictionary words and the
-21,986 names list from the MWords package The common dictionary words,
-like those from the 12Dicts package, have had all likely inflections
-added.  The 70 level also included the 5desk list from version 4.0 of
-the 12Dics package which is the public domain
-
-The 80 level includes the ENABLE word list, all the lists in the
-ENABLE supplement package (except for ABLE), the "UK Advanced Cryptics
-Dictionary" (UKACD), the list of signature words in from YAWL package,
-and the 10,196 places list from the MWords package.
-
-The ENABLE package, mainted by M\Cooper <thegrendel@theriver.com>,
-is in the Public Domain:
-
-  The ENABLE master word list, WORD.LST, is herewith formally released
-  into the Public Domain. Anyone is free to use it or distribute it in
-  any manner they see fit. No fee or registration is required for its
-  use nor are "contributions" solicited (if you feel you absolutely
-  must contribute something for your own peace of mind, the authors of
-  the ENABLE list ask that you make a donation on their behalf to your
-  favorite charity). This word list is our gift to the Scrabble
-  community, as an alternate to "official" word lists. Game designers
-  may feel free to incorporate the WORD.LST into their games. Please
-  mention the source and credit us as originators of the list. Note
-  that if you, as a game designer, use the WORD.LST in your product,
-  you may still copyright and protect your product, but you may *not*
-  legally copyright or in any way restrict redistribution of the
-  WORD.LST portion of your product. This *may* under law restrict your
-  rights to restrict your users' rights, but that is only fair.
-
-UKACD, by J Ross Beresford <ross@bryson.demon.co.uk>, is under the
-following copyright:
-
-  Copyright (c) J Ross Beresford 1993-1999. All Rights Reserved.
-
-  The following restriction is placed on the use of this publication:
-  if The UK Advanced Cryptics Dictionary is used in a software package
-  or redistributed in any form, the copyright notice must be
-  prominently displayed and the text of this document must be included
-  verbatim.
-
-  There are no other restrictions: I would like to see the list
-  distributed as widely as possible.
-
-The 95 level includes the 354,984 single words and 256,772 compound
-words from the MWords package, ABLE.LST from the ENABLE Supplement,
-and some additional words found in my part-of-speech database that
-were not found anywhere else.
-
-Accent information was taken from UKACD.
-
-My VARCON package was used to create the American, British, and
-Canadian word list.
-
-Since the original word lists used used in the VARCON package came
-from the Ispell distribution they are under the Ispell copyright:
-
-  Copyright 1993, Geoff Kuenning, Granada Hills, CA
-  All rights reserved.
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions
-  are met:
-
-  1. Redistributions of source code must retain the above copyright
-     notice, this list of conditions and the following disclaimer.
-  2. Redistributions in binary form must reproduce the above copyright
-     notice, this list of conditions and the following disclaimer in the
-     documentation and/or other materials provided with the distribution.
-  3. All modifications to the source code must be clearly marked as
-     such.  Binary redistributions based on modified source code
-     must be clearly marked as modified versions in the documentation
-     and/or other materials provided with the distribution.
-  (clause 4 removed with permission from Geoff Kuenning)
-  5. The name of Geoff Kuenning may not be used to endorse or promote
-     products derived from this software without specific prior
-     written permission.
-
-  THIS SOFTWARE IS PROVIDED BY GEOFF KUENNING AND CONTRIBUTORS ``AS
-  IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-  FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL GEOFF
-  KUENNING OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-  POSSIBILITY OF SUCH DAMAGE.
-
-Original file: en/en_US.aff (PHONE rule copyright and license block)
-
-#   PHONEtic_english.h - #PHONEtic transformation rules for use with #PHONEtic.c
-#   Copyright (C) 2000 Björn Jacke
-#
-#   This rule set is based on Lawrence Phillips original metaPHONE
-#   algorithm with modifications made by Michael Kuhn in his
-#   C implantation, more modifications by Björn Jacke when
-#   converting the algorithm to a rule set and minor
-#   touch ups by Kevin Atkinson
-#
-#   This library is free software; you can redistribute it and/or
-#   modify it under the terms of the GNU Lesser General Public
-#   License version 2.1 as published by the Free Software Foundation;
-#
-#   This library is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-#   Lesser General Public License for more details.
-#
-#   You should have received a copy of the GNU Lesser General Public
-#   License along with this library; if not, write to the Free Software
-#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
-#   Björn Jacke may be reached by email at bjoern.jacke@gmx.de
-#
-#   Changelog:
-#
-#   2000-01-05  Björn Jacke <bjoern.jacke@gmx.de>
-#               - first version with translation rules derived from
-#                 metaPHONE.cc distributed with aspell 0.28.3
-#               - "TH" is now representated as "@" because "0" is a
-#                 meta character
-#               - removed TH(!vowel) --> T; always use TH --> # instead
-#               - dropped "^AE" -> "E" (redundant)
-#               - "ing" is transformed to "N", not "NK"
-#               - "SCH(EO)" transforms to "SK" now
-#               - added R --> SILENT if (after a vowel) and no (vowel or
-#                 "y" follows) like in "Marcy" or "abort"
-#               - H is SILENT in RH at beginning of words
-#               - H is SILENT if vowel leads and "Y" follows
-#               - some ".OUGH.."  --> ...F exceptions added
-#               - "^V" transforms to "W"
-#   2000-01-07  Kevin Atkinson <kevinatk@home.com>
-#               Converted from header to data file.
-#
-#   2007-08-23  László Németh <nemeth AT OOo>
-#               Add PHONE header and #PHONE keywords
-#
-#   2010-03-09  László Németh <nemeth AT OOo>
-#               Temporarily removing acuted character É
-#               because of the missing UTF-8 support
-#
-# version 1.1
-
-# Documentation: http://aspell.net/man-html/PHONEtic-Code.html
------ END THIRD-PARTY LICENSE: upstream:libreoffice-dictionaries_en_US_fixtures -----
+Source: https://github.com/en-wl/wordlist
+Revision: 7e99edab8e32f9f9ea2b15f249ca8d4d67237410 (rel-2026.02.25)
+Archive: https://github.com/en-wl/wordlist/releases/download/rel-2026.02.25/hunspell-en_US-2026.02.25.zip
+
+This matched affix/dictionary pair is byte-for-byte identical to the production pair in vendor/hunspell_dictionaries/. The full upstream README, SCOWLv2 permission, source credits and Ispell affix license are reproduced in the upstream:en-wl_wordlist_en_US section above and apply equally to these regression fixtures.
+----- END THIRD-PARTY LICENSE: upstream:en-wl_wordlist_en_US_fixtures -----
 
 ----- BEGIN THIRD-PARTY LICENSE: upstream:libreoffice-dictionaries_de_fixtures -----
-Component: Unchanged German spelling regression dictionaries
+Component: German spelling regression dictionaries, igerman98 20161207 + frami 20170109
 Affected files: spec/dictionaries/de_DE_frami.dic, de_DE_frami.aff, de_DE.dic and de_DE.aff
-Source: https://github.com/pulsar-edit/node-spellchecker
-Inherited revision: 198bd4ba23984d80361323f24170707a87206e1b
-Matching upstream dictionary distribution: https://github.com/LibreOffice/dictionaries
-Upstream revision: be992a0b06f4cab782a967fd5187e114c53c9d4a (libreoffice-4.4.0.3)
-Dictionary version: 20131206+frami20131206. The _frami fixtures match the upstream ISO-8859-1 pair after newline normalization. The de_DE pair is the UTF-8 conversion used by the tests (the affix SET directive identifies that encoding).
-The GNU GPL version 2 full text is reproduced in the Hunspell section above; the alternative GNU GPL version 3 and OASIS distribution agreement are preserved below.
+Source: https://github.com/LibreOffice/dictionaries
+Revision: 8050ba0dbe0762855390e28bd5bc58f285ece20e (libreoffice-26.8.2.2)
+Original source paths: de/de_DE_frami.dic and de/de_DE_frami.aff
+License: GPL-2.0-only OR GPL-3.0-only.
+The _frami files are the unchanged upstream ISO-8859-1 pair. The de_DE pair is a local encoding conversion: decode each source file as ISO-8859-1 and encode as UTF-8 without BOM; change only the affix SET ISO8859-1 directive to SET UTF-8. The source content and all copyright notices are otherwise preserved.
+The full GNU GPL version 2 is reproduced in the Hunspell section above; the complete alternative GNU GPL version 3 follows.
 
 Original file: de/de_DE_frami.dic (copyright and license header)
 
 #	This is the dictionary file of the de_DE Hunspell dictionary
 #	derived from the igerman98 dictionary
 #
-#	Version: 20131206+frami20131206 (build 20131206)
+#	Version: 20161207+frami20170109
 #
-#	Copyright (C) 1998-2013
-#	Bjoern Jacke <bjoern@j3e.de>,
-#	for the addon: Franz Michael Baumann <fm.baumann@uni-muenster.de>
+#	Copyright (C) 1998-2017
+#	Björn Jacke <bjoern@j3e.de>,
+#	for the addon:
+#   Franz Michael Baumann <f.m.baumann@smail.uni-koeln.de
 #
-#	License: GPLv2, GPLv3 or OASIS distribution license agreement There
-#	should be a copy of all of this licenses included with every distribution
+#	License: GPLv2, GPLv3
+#	There should be a copy of all of this licenses included with every distribution
 #	of this dictionary. Modified versions using the GPL may only include the
 #	GPL. This dictionary is compiled from igerman98. For the purpose of the
 #	GPL modifications of this dictionary should be made public as a patch
@@ -2239,11 +1904,11 @@ Original file: de/de_DE_frami.aff (copyright and license header)
 # this is the affix file of the de_DE Hunspell dictionary
 # derived from the igerman98 dictionary
 #
-# Version: 20131206+frami20131206 (build 20131206)
+# Version: 20161207+frami20170109
 #
-# Copyright (C) 1998-2013 Bjoern Jacke <bjoern@j3e.de>
+# Copyright (C) 1998-2016 Björn Jacke <bjoern@j3e.de>
 #
-# License: GPLv2, GPLv3 or OASIS distribution license agreement
+# License: GPLv2, GPLv3
 # There should be a copy of both of this licenses included
 # with every distribution of this dictionary. Modified
 # versions using the GPL may only include the GPL
@@ -2255,18 +1920,18 @@ alle Wörter des Basiswörterbuchs, zusätzlich jedoch etliche, die entweder
 im Basiswörterbuch noch fehlen oder die nicht unbedingt zum Kernwortschatz
 des Deutschen gehören. Die zusätzlichen Aufnahmen sind ungeprüft.
 Dieses Wörterbuch basiert auf dem igerman98 Ispell-Wörterbuch, zu finden
-unter http://www.j3e.de/ispell/igerman98/ .
+unter https://www.j3e.de/ispell/igerman98/ .
 
 Das Wörterbuch und alle enthaltenen Wortlisten sind lizenziert unter der
-GNU GPL, Version 2.
+GNU GPL, Version 2 oder 3.
 Fehlermeldungen oder Ergänzungswünsche können gemailt werden an:
-Franz Michael Baumann <frami.baumann@web.de>
+Franz Michael Baumann <fm.baumann@uni-muenster.de>
 
 Autor des Grundwörterbuchs:
 Bjoern Jacke <bjoern@j3e.de>
 
 Autor der Erweiterung
-Franz Michael Baumann <frami.baumann@web.de>
+Franz Michael Baumann <fm.baumann@uni-muenster.de>
 
 Original file: de/COPYING_GPLv3
 
@@ -2944,55 +2609,38 @@ may consider it more useful to permit linking proprietary applications with
 the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 <http://www.gnu.org/philosophy/why-not-lgpl.html>.
-
-Original file: de/COPYING_OASIS.txt
-
-OASIS distribution license agreement 0.1 from 2005-11-10
-
-Without any modifications this dictionary may be distributed with programs that
-support the OASIS Open Document Format for Office Applications and whose
-PRIMARY format for saving documents is the Open Document Format.
-
-This requires that all licenses and copyright files are also distributed together
-with the package the dictionary is shipped with.
-
-Any modifications of the dictionary files are not allowed for this
-agreement, modifications require the use of the GNU GENERAL PUBLIC LICENSE.
-
-If you have questions or don't get along with this, send me your
-comments/questions/ideas to Bjoern Jacke <bjoern@j3e.de>
 ----- END THIRD-PARTY LICENSE: upstream:libreoffice-dictionaries_de_fixtures -----
 
------ BEGIN THIRD-PARTY LICENSE: upstream:libreoffice-dictionaries_fr_fixtures -----
-Component: Unchanged French spelling regression dictionary, Classique 5.2
+----- BEGIN THIRD-PARTY LICENSE: upstream:grammalecte_fr_fixtures -----
+Component: French spelling regression dictionary, Classique 7.7 (2025-12-15)
 Affected files: spec/dictionaries/fr.dic and fr.aff
-Source: https://github.com/pulsar-edit/node-spellchecker
-Inherited revision: 198bd4ba23984d80361323f24170707a87206e1b
-Matching upstream dictionary distribution: https://github.com/LibreOffice/dictionaries
-Upstream revision: be992a0b06f4cab782a967fd5187e114c53c9d4a (libreoffice-4.4.0.3)
-The fixtures match upstream fr_FR/fr.dic and fr_FR/fr.aff after newline normalization.
+Source: https://www.grammalecte.net/
+Release: Hunspell French dictionaries 7.7
+Archive: https://www.grammalecte.net/dic/hunspell-french-dictionaries-v7.7.zip
+Archive SHA-256: 44314d992f94b4658c31a86ef2351724a43067531b0af3643f91bf0220eee616
+Original source paths: fr-classique.dic and fr-classique.aff
+The matched Classique pair is imported byte-for-byte, retaining the existing fixture basenames fr.dic and fr.aff.
 License: Mozilla Public License version 2.0.
 
-Original file: fr_FR/fr.aff (license and author header)
+Original file: fr-classique.aff (license and author header)
 
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-# AFFIXES DU DICTIONNAIRE ORTHOGRAPHIQUE FRANÇAIS “CLASSIQUE” v5.2
+# AFFIXES DU DICTIONNAIRE ORTHOGRAPHIQUE FRANÇAIS “CLASSIQUE” v7.7
 # par Olivier R. -- licence MPL 2.0
-# Généré le 19 09 2014 à 09:52
-# Pour améliorer le dictionnaire, allez sur http://www.dicollecte.org/
+# Pour améliorer le dictionnaire, allez sur https://grammalecte.net/
 
-Original file: fr_FR/README_fr.txt
+Original file: README_dict_fr.txt
 
 _______________________________________________________________________________
 
    DICTIONNAIRES ORTHOGRAPHIQUES FRANÇAIS
-   version 5.2
+   version 7.7
 
-   Olivier R. - dicollecte<at>free<dot>fr
-   Dicollecte : http://www.dicollecte.org/
+   Olivier R.
+   https://grammalecte.net/
 
    Licence :
      MPL : Mozilla Public License
@@ -3005,8 +2653,8 @@ _______________________________________________________________________________
    - Jean-Luc T. ;
    - Sylvain P. ;
    - Laurent Dubois ;
-   - Pierre Poisson ;
    - Dominique Pellé ;
+   - Pierre Poisson ;
    - Pierre-Yves ;
    - Pierre Choffardet ;
    - Leywen ;
@@ -3018,10 +2666,10 @@ _______________________________________________________________________________
    - Philipp Burgess, pour la normalisation Unicode avec Hunspell.
 
    Merci aussi à tous ceux qui ont apporté leur pierre à l’édifice.
-   http://www.dicollecte.org/members.php?prj=fr
+   https://grammalecte.net/members.php?prj=fr
 
    Pour participer à l’amélioration du dictionnaire, allez sur :
-   http://www.dicollecte.org/home.php?prj=fr
+   https://grammalecte.net/home.php?prj=fr
 
 _______________________________________________________________________________
 
@@ -3042,15 +2690,9 @@ _______________________________________________________________________________
    de chacun, quatre dictionnaires existent, respectant différemment cette
    réforme.
 
-    Dictionnaire “Moderne”
-        Ce dictionnaire propose une sélection des graphies classiques et
-        réformées, suivant la lente évolution de l’orthographe actuelle. Ce
-        dictionnaire contient les graphies les moins polémiques de la réforme.
-
     Dictionnaire “Classique”  [recommandé]
-        Ce dictionnaire est une extension du dictionnaire «Moderne» et propose
-        en sus des graphies alternatives, parfois encore très usitées, parfois
-        tombées en désuétude.
+        Ce dictionnaire propose l’orthographe usuelle du français, avec en sus
+        quelques graphies nouvelles rectifiant les incohérences passées.
 
     Dictionnaire “Réforme 1990”
         Ce dictionnaire ne connaît que les graphies nouvelles des mots concernés
@@ -3435,16 +3077,17 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
 
   This Source Code Form is "Incompatible With Secondary Licenses", as
   defined by the Mozilla Public License, v. 2.0.
------ END THIRD-PARTY LICENSE: upstream:libreoffice-dictionaries_fr_fixtures -----
+----- END THIRD-PARTY LICENSE: upstream:grammalecte_fr_fixtures -----
 
 ----- BEGIN THIRD-PARTY LICENSE: upstream:libreoffice-dictionaries_hyphenation_fixtures -----
-Component: Unchanged French and German hyphenation regression fixtures
+Component: French and German hyphenation regression fixtures
 Affected files: spec/dictionaries/hyph_fr.dic and hyph_de_DE.dic
-Source: https://github.com/pulsar-edit/node-spellchecker
-Inherited revision: 198bd4ba23984d80361323f24170707a87206e1b
-Matching upstream dictionary distribution: https://github.com/LibreOffice/dictionaries
-Upstream revision: be992a0b06f4cab782a967fd5187e114c53c9d4a (libreoffice-4.4.0.3)
-Both fixtures match their upstream files after newline normalization. The full source credits and notices for the derived TeX patterns are retained below. The GNU LGPL version 2.1 full text is reproduced in the Hunspell section above; the GNU Library GPL version 2 and referenced LaTeX Project Public License are also reproduced below.
+Source: https://github.com/LibreOffice/dictionaries
+Revision: 8050ba0dbe0762855390e28bd5bc58f285ece20e (libreoffice-26.8.2.2)
+Original source paths: fr_FR/dictionaries/hyph_fr.dic and de/hyph_de_DE.dic
+Versions: French 4.0 (2021-11-06); German 2017-01-12.
+Both fixture files are imported byte-for-byte. The German adaptation is GNU LGPL version 2 or later over LPPL version 1 or later TeX patterns. The French adaptation is GNU LGPL version 2.1 or later over the MIT-licensed hyph-fr.tex source; the original French copyright holders relicensed that source as of 2016-03-20, as documented in the upstream README.
+The full GNU LGPL version 2.1 is reproduced in the Hunspell section above. The GNU Library GPL version 2, LaTeX Project Public License version 1.3c and original MIT notice are retained below with the corresponding source credits.
 
 Original file: de/hyph_de_DE.dic (copyright and license header)
 
@@ -3455,8 +3098,9 @@ ISO8859-1
 #                                                                                  #
 # Language: German (de DE)                                                         #
 #                                                                                  #
-# Version:  2013-12-06                                                             #
-#           Enhanced blacklist to improve the hyphenation module by Karl Zeiler    #
+# Version:  2017-01-12                                                             #
+#           New: using the COMPOUND feature for improved hyphenation               #
+#           New: list with over 69,000 words and compounds by Karl Zeiler          #
 #                                                                                  #
 # Origin:   Based on the TeX hyphenation tables	"dehyphn.tex", revision level 31.  #
 #           http://www.ctan.org/tex-archive/language/hyphenation/dehyphn.tex       #
@@ -3468,7 +3112,7 @@ ISO8859-1
 #           Copyright by                                                           #
 #                                                                                  #
 # Authors:  conversion author: Marco Huggenberger <marco@by-night.ch>              #
-#           revised conversion and extensions: Daniel Naber <naber@danielnaber.de> #
+#           revised conversion: Daniel Naber <naber@danielnaber.de>                #
 #           improvements: Karl Zeiler <karl.zeiler@t-online.de>                    #
 #                                                                                  #
 # Please note, this dictionary is based on syllable matching patterns              #
@@ -3487,8 +3131,9 @@ Hyphenation dictionary "hyph_de_DE.dic"
 Language: German (de DE)
 		  according to the reform of 2006-08-01	(i.e. reformed or new spelling)
 
-Version:  2013-12-06
-          Enhanced blacklist to improve the hyphenation module by Karl Zeiler
+Version:  2017-01-12
+          New: using the COMPOUND feature for improved hyphenation
+		  New: list with over 69,000 words and compounds by Karl Zeiler
 
 Origin:   Based on the TeX hyphenation tables "dehyphn.tex", revision level 31.
           http://www.ctan.org/tex-archive/language/hyphenation/dehyphn.tex
@@ -3517,10 +3162,10 @@ Die Trennmuster (hyph_de_DE.dic) basieren auf den TeX Trennmustern
 Lizenz der Trennmuster: LPPL. Die Anpassung der Trennmuster an
 den in OpenOffice.org benutzten "ALTLinux LibHnj Hyphenator" wurde
 mit dem Script substrings.pl durchgeführt, das unter
-http://lingucomponent.openoffice.org/hyphenator.html als Teil der
-Datei altlinux_Hyph.zip heruntergeladen werden kann.
+https://www.openoffice.org/lingucomponent/hyphenator.html als Teil
+der Datei altlinux_Hyph.zip heruntergeladen werden kann.
 Die Original-Trennmuster können hier heruntergeladen werden:
-http://www.ctan.org/tex-archive/language/hyphenation/dehyphn.tex
+https://www.ctan.org/tex-archive/language/hyphenation/dehyphn.tex
 
 Original file: dehyphn.tex (revision level 31, 2001-05-07; inherited TeX pattern copyright and permission notice)
 Source: https://mirrors.ctan.org/language/hyphenation/dehyph/dehyphn.tex
@@ -3591,158 +3236,128 @@ Source file SHA-256: 0bf281fd020e40ec2ae81a6bf819f2451e8cfd027e04f99c101c3da5c97
 % -----------------------------------------------------------------
 %
 
-Original file: fr_FR/README_hyph_fr.txt
+Original file: fr_FR/dictionaries/README_hyph_fr.txt
 
-_____________________________________________________________________________
+_______________________________________________________________________________
 
   Motifs de division des mots pour le français (fr)
-  Version 3.0
+  Version 4.0 (2021-11-06)
 
-  Licence : GNU LGPL.
+  Licence :
+        GNU LGPL
 
-  Origine : Basé sur les motifs de division de TeX *hyph-fr.tex*,
-            version renommée (juin 2008) du fichier *frhyph.tex* (V2.12, 2002/12/11)
-            pour la cohérence avec d'autres fichiers de motifs de division
-            de la collection hyph-utf8. Voir http://tug.org/tex-hyphen
-            pour plus d'informations.
-            Les motifs de division de TeX sont publiés sous la licence LaTeX
-            Project Public License (LPPL)  --  http://www.latex-project.org/lppl.txt
+  Origine :
+        Basé sur le fichier des motifs de division de TeX *hyph-fr.tex*,
+        version renommée, en juin 2008, du fichier *frhyph.tex* (V2.12,
+        2002/12/11) pour la cohérence avec d'autres fichiers de motifs
+        de division de la collection hyph-utf8. Pour plus d'informations,
+        voyez sous ce lien : https://ctan.org/tex-archive/language/hyph-utf8.
+        Initialement distribué sous la licence LPPL (LaTeX Project Public
+        License), le fichier *hyph-fr.tex* (v2.12) a été distribué sous
+        la licence MIT (https://opensource.org/licenses/MIT) à compter
+        du 20 mars 2016.
 
-  Licence : Les adaptations pour OpenOffice.org sont publiées sous la licence
-            GNU Lesser General Public License (LGPL)
-            version 2.1 ou supérieure  --  http://www.gnu.org/licenses/
+  Licence :
+        Les adaptations pour LibreOffice et OpenOffice sont publiées sous la
+        licence GNU Lesser General Public License (LGPL) version 2.1 ou
+        supérieure.
+        Voir sous ce lien: http://www.gnu.org/licenses/
 
   Auteurs :
-            3.0     Marc Lodewijck <mlodewijck@gmail.com>
-            2.0     Paul Pichaureau <paul.pichaureau@alcandre.net>
-            1.0     Blaise Drayer <blaise@drayer.ch>
+        3.0-4.0   Marc Lodewijck <mlodewijck@gmail.com>
+        2.0       Paul Pichaureau <paul.pichaureau@alcandre.net>
+        1.0       Blaise Drayer <blaise@drayer.ch>
 
   Journal :
-            3.0     Nouvelle version révisée et augmentée :
-                      +  Conversion au format de codage Unicode UTF-8
-                      +  Traitement des noms composés à trait d'union
-                      +  Redressement de motifs altérés
-            2.0     Traitement des mots avec apostrophe
-            1.0     Première conversion
+        4.0       Adaptation des motifs avec trait d'union, ajout de motifs,
+                  suppression des mots-clefs COMPOUNDLEFTHYPHENMIN
+                  et COMPOUNDRIGHTHYPHENMIN (inutilisés)
+        3.0.1     Correction : COUMPOUNDLEFTHYPHENMIN -> COMPOUNDLEFTHYPHENMIN
+        3.0       Nouvelle version révisée et augmentée :
+                  + Conversion au format UTF-8
+                  + Traitement des noms composés à trait d'union
+                  + Redressement de motifs altérés
+        2.0       Traitement des mots avec apostrophe
+        1.0       Première conversion
 
-  Ce dictionnaire devrait être conforme à toutes les variantes régionales du
-  français.
+  Ce dictionnaire convient pour toutes les variétés régionales du français.
 
-_____________________________________________________________________
+_______________________________________________________________________________
 
-  French word hyphenation patterns
-  Version 3.0
+  Hyphenation patterns for French
+  Version 4.0 (2021-11-06)
 
-  Language: French (fr).
+  Language:
+        French (fr)
 
-  License:  GNU LGPL.
+  License:
+        GNU LGPL
 
-  Origin:   Based on the TeX hyphenation tables *hyph-fr.tex*,
-            renamed (June 2008) from *frhyph.tex* (V2.12, 2002/12/11)
-            for consistency with other files with hyphenation patterns
-            in hyph-utf8 package. See http://tug.org/tex-hyphen for more details.
-            The TeX hyphenation tables are released under the LaTeX Project
-            Public License (LPPL)  --  http://www.latex-project.org/lppl.txt
+  Origin:
+        Based on the TeX hyphenation file *hyph-fr.tex*, renamed (June 2008)
+        from *frhyph.tex* (V2.12, 2002/12/11) for consistency with other files
+        in the hyph-utf8 package. For more details, see at the following link:
+        https://ctan.org/tex-archive/language/hyph-utf8. Initially released
+        under the LPPL license (LaTeX Project Public License), the file
+        *hyph-fr.tex* (v2.12) has been released, as of March 20, 2016, under
+        the MIT license (https://opensource.org/licenses/MIT).
 
-  License:  OpenOffice.org adaptions of this package are licensed under the
-            GNU Lesser General Public License (LGPL)
-            version 2.1 or higher  --  http://www.gnu.org/licenses/
+  License:
+        LibreOffice and OpenOffice adaptions of this package are licensed under
+        the GNU Lesser General Public License (LGPL) version 2.1 or higher.
+        See at this link: http://www.gnu.org/licenses/
 
   Authors:
-            3.0     Marc Lodewijck <mlodewijck@gmail.com>
-            2.0     Paul Pichaureau <paul.pichaureau@alcandre.net>
-            1.0     Blaise Drayer <blaise@drayer.ch>
+        3.0-4.0   Marc Lodewijck <mlodewijck@gmail.com>
+        2.0       Paul Pichaureau <paul.pichaureau@alcandre.net>
+        1.0       Blaise Drayer <blaise@drayer.ch>
 
   Log:
-            3.0     New revised and expanded version:
-                      +  Conversion to UTF-8 Unicode encoding
-                      +  Processing of hyphenated compounds
-                      +  Correction of altered patterns
-            2.0     Fix for words with apostrophe
-            1.0     First conversion
+        4.0       Adjustments to patterns with a hyphen, addition of new
+                  patterns, and deletion of the COMPOUNDLEFTHYPHENMIN and
+                  COMPOUNDRIGHTHYPHENMIN keywords (unused)
+        3.0.1     Typo fix: COUMPOUNDLEFTHYPHENMIN -> COMPOUNDLEFTHYPHENMIN
+        3.0       New revised and expanded version:
+                  + Conversion to UTF-8 encoding
+                  + Processing of hyphenated compounds
+                  + Correction of altered patterns
+        2.0       Fix for words with apostrophe
+        1.0       First conversion
 
-  This dictionary is based on syllable matching patterns and therefore should
-  be usable under other variations of French.
+  This dictionary is suitable for all regional varieties of French.
 
-Original file: fr_FR/hyph-fr.tex (source author credits and permission notice)
+Original file: fr_FR/dictionaries/hyph-fr.tex (original author credits and full MIT permission)
 
-% This file is part of hyph-utf8 package and resulted from
-% semi-manual conversions of hyphenation patterns into UTF-8 in June 2008.
+% copyright: Daniel Flipo, Bernard Gaulle 1994-2002
+% title: French hyphenation patterns
+% version: V2.12 2002/12/11
+% notice: >
+%     This file is part of the hyph-utf8 package.
+%     See http://www.hyphenation.org for more information.
+% licence:
+%     name: MIT
+%     url: https://opensource.org/licenses/MIT
+%     text: >
+%         Permission is hereby granted, free of charge, to any person obtaining
+%         a copy of this software and associated documentation files (the
+%         "Software"), to deal in the Software without restriction, including
+%         without limitation the rights to use, copy, modify, merge, publish,
+%         distribute, sublicense, and/or sell copies of the Software, and to
+%         permit persons to whom the Software is furnished to do so, subject to
+%         the following conditions:
 %
-% Source: frhyph.tex <2006-10-20>
-% Author: R. Bastian, D. Flipo, B. Gaulle <cesure-l at gutenberg.eu.org>
+%         The above copyright notice and this permission notice shall be
+%         included in all copies or substantial portions of the Software.
 %
-% The above mentioned file should become obsolete,
-% and the author of the original file should preferaby modify this file instead.
-%
-% Modificatios were needed in order to support native UTF-8 engines,
-% but functionality (hopefully) didn't change in any way, at least not intentionally.
-% This file is no longer stand-alone; at least for 8-bit engines
-% you probably want to use loadhyph-foo.tex (which will load this file) instead.
-%
-% Modifications were done by Jonathan Kew, Mojca Miklavec & Arthur Reutenauer
-% with help & support from:
-% - Karl Berry, who gave us free hands and all resources
-% - Taco Hoekwater, with useful macros
-% - Hans Hagen, who did the unicodifisation of patterns already long before
-%               and helped with testing, suggestions and bug reports
-% - Norbert Preining, who tested & integrated patterns into TeX Live
-%
-% However, the "copyright/copyleft" owner of patterns remains the original author.
-%
-% The copyright statement of this file is thus:
-%
-%    Do with this file whatever needs to be done in future for the sake of
-%    "a better world" as long as you respect the copyright of original file.
-%    If you're the original author of patterns or taking over a new revolution,
-%    plese remove all of the TUG comments & credits that we added here -
-%    you are the Queen / the King, we are only the servants.
-%
-% If you want to change this file, rather than uploading directly to CTAN,
-% we would be grateful if you could send it to us (http://tug.org/tex-hyphen)
-% or ask for credentials for SVN repository and commit it yourself;
-% we will then upload the whole "package" to CTAN.
-%
-% Before a new "pattern-revolution" starts,
-% please try to follow some guidelines if possible:
-%
-% - \lccode is *forbidden*, and I really mean it
-% - all the patterns should be in UTF-8
-% - the only "allowed" TeX commands in this file are: \patterns, \hyphenation,
-%   and if you really cannot do without, also \input and \message
-% - in particular, please no \catcode or \lccode changes,
-%   they belong to loadhyph-foo.tex,
-%   and no \lefthyphenmin and \righthyphenmin,
-%   they have no influence here and belong elsewhere
-% - \begingroup and/or \endinput is not needed
-% - feel free to do whatever you want inside comments
-%
-% We know that TeX is extremely powerful, but give a stupid parser
-% at least a chance to read your patterns.
-%
-% For more unformation see
-%
-%    http://tug.org/tex-hyphen
-%
-%------------------------------------------------------------------------------
-%
-% French hyphenation patterns
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This file is available for free and can used and redistributed
-% asis for free. Modified versions should have another name.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \message{frhyph.tex - French hyphenation patterns (V2.12) <2002/12/11>}
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%          *BEFORE* using this file *PLEASE* run checksum on it:           %
-%                       checksum -v frhyph.tex                             %
-% to make sure that it hasn't been damaged.                                %
-% Then if you notice anything wrong in french hyphenation please report to %
-% R. Bastian, D. Flipo, B. Gaulle at the email address:                    %
-%                                              cesure-l@gutenberg.eu.org   %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%      checksum        = "37208 1458 3078 34821"
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%         THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+%         EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+%         MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+%         NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+%         BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+%         ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+%         CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+%         SOFTWARE.
+% ==========================================
 %%%%%%%% The most famous good guys who worked hard to obtain something usable.
 % Jacques Desarmenien, Universite de Strasbourg :
 %          -  << how to run TeX in a French environment: hyphenation, fonts,
@@ -3757,18 +3372,6 @@ Original file: fr_FR/hyph-fr.tex (source author credits and permission notice)
 % after that, GUTenberg  and specially Daniel Flipo and Bernard Gaulle
 % did their best effort to improve the list of patterns.
 %
-% -----------------------------------------------------------------
-%
-% Adaption of these patterns for
-%  - TeX Version 3.x and MLTeX 3.x (2.x)
-% and
-%  - all fonts in T1/`Cork' and/or CM/OT1 encoding
-% by Bernd Raichle 1996/08/28 (using ideas from `ghyph31.tex'
-% as of 1994-02-13 maintained by Bernd Raichle).
-% (An adaption for the old MLTeX 2.x exists but can not be
-% tested in lack of an executable.)
-%
-% -----------------------------------------------------------------
 %
 
 Original file: de/COPYING_LGPL_v2.0.txt (GNU Library GPL version 2)

@@ -12,7 +12,7 @@ describe("vendored source provenance", () => {
       for (const [file, expected] of Object.entries(source.sha256)) {
         const actual = crypto
           .createHash("sha256")
-          .update(fs.readFileSync(path.join(vendor, file)))
+          .update(fs.readFileSync(path.join(vendor, source.root || ".", file)))
           .digest("hex");
         expect(actual).withContext(file).toBe(expected);
       }

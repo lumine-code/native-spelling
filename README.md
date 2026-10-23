@@ -24,7 +24,9 @@ The package builds from source during installation and requires a C++20 toolchai
 
 ## Bundled sources
 
-The portable backend uses [Hunspell 1.7.5](https://github.com/hunspell/hunspell/releases/tag/v1.7.5) and the standard American English dictionary from [SCOWL 2026.02.25](https://github.com/en-wl/wordlist/releases/tag/rel-2026.02.25). The engine and the matched `en_US.aff`/`en_US.dic` pair are vendored separately; their revisions and SHA-256 checksums are recorded in `vendor/sources.json`. The older dictionaries under `spec/dictionaries` remain test fixtures for legacy encodings and behavior.
+The portable backend uses [Hunspell 1.7.5](https://github.com/hunspell/hunspell/releases/tag/v1.7.5) and the standard American English dictionary from [SCOWL 2026.02.25](https://github.com/en-wl/wordlist/releases/tag/rel-2026.02.25). The engine and the matched `en_US.aff`/`en_US.dic` pair are vendored separately; their revisions and SHA-256 checksums are recorded in `vendor/sources.json`.
+
+The English test fixture uses the same release as the bundled dictionary. German fixtures use igerman98 20161207 with frami 20170109 in both the original ISO-8859-1 encoding and a documented UTF-8 conversion; French fixtures use Grammalecte Classique 7.7. The retained German and French hyphenation fixtures come from the stable LibreOffice 26.8.2.2 sources. `vendor/sources.json` records every test dictionary's source, version, derivation and checksum, and `THIRD_PARTY_NOTICES` retains the applicable upstream notices.
 
 Run `npm run build`, `npm test`, and `npm run test:memory` after changing the bundled sources. The standalone memory harness checks the native backend with AddressSanitizer; on Linux it also enables UndefinedBehaviorSanitizer and leak detection. It requires a compiler with sanitizer support, including the C++ AddressSanitizer component on Windows.
 

@@ -64,5 +64,89 @@
       "hunspell_dictionaries/en_US.dic": "ab012ae86ce4b46b60db5b150869288de9c4a87bc747911764e582125b1b961e",
       "hunspell_dictionaries/README.txt": "d63c711523fc9504fb71e1278489c6d7bb8cafcba75158c107cd17844955470f"
     }
+  },
+  "en_US_fixtures": {
+    "version": "2026.02.25",
+    "source": "https://github.com/en-wl/wordlist",
+    "tag": "rel-2026.02.25",
+    "revision": "7e99edab8e32f9f9ea2b15f249ca8d4d67237410",
+    "archive": "https://github.com/en-wl/wordlist/releases/download/rel-2026.02.25/hunspell-en_US-2026.02.25.zip",
+    "archiveSha256": "ac8e73310e951d88c52c2cf2ba54ceaca34f8486a81630ac8a75dc5f931179f9",
+    "root": "..",
+    "encoding": "UTF-8",
+    "derivation": "Byte-for-byte copies of the bundled en_US.aff and en_US.dic pair.",
+    "sha256": {
+      "spec/dictionaries/en_US.aff": "526e1dc32d1c0e8806dd72809c017b5546f2104b08b9424a4c47311aca526cca",
+      "spec/dictionaries/en_US.dic": "ab012ae86ce4b46b60db5b150869288de9c4a87bc747911764e582125b1b961e"
+    }
+  },
+  "de_DE_fixtures": {
+    "version": "20161207+frami20170109",
+    "source": "https://github.com/LibreOffice/dictionaries",
+    "tag": "libreoffice-26.8.2.2",
+    "revision": "8050ba0dbe0762855390e28bd5bc58f285ece20e",
+    "sourcePaths": [
+      "de/de_DE_frami.aff",
+      "de/de_DE_frami.dic"
+    ],
+    "encodings": [
+      "ISO-8859-1",
+      "UTF-8"
+    ],
+    "root": "..",
+    "derivation": "The de_DE_frami pair is copied byte-for-byte. Decode each source file with ISO-8859-1 and encode as UTF-8 without BOM to produce the de_DE pair; replace only the affix SET ISO8859-1 directive with SET UTF-8. Preserve all other text and line endings.",
+    "sha256": {
+      "spec/dictionaries/de_DE_frami.aff": "646bf3333ac69c23e9d794533ee5241d6f755c359e8fe10a648f87613743d594",
+      "spec/dictionaries/de_DE_frami.dic": "4ca3c958b0e5545910999bc246f668840bf8ede3df8e5e6790d05edd5a586c38",
+      "spec/dictionaries/de_DE.aff": "c7a7d49f73394c8ffd189e9ebec065ad63f6a3feb15417dbf90b2dc68760227e",
+      "spec/dictionaries/de_DE.dic": "98ebd2e9ff49dcac16316acaa47763768b25c378e66e8f6e5843138fe1482843"
+    }
+  },
+  "fr_fixtures": {
+    "version": "7.7",
+    "releaseDate": "2025-12-15",
+    "variant": "Classique",
+    "source": "https://www.grammalecte.net/",
+    "archive": "https://www.grammalecte.net/dic/hunspell-french-dictionaries-v7.7.zip",
+    "archiveSha256": "44314d992f94b4658c31a86ef2351724a43067531b0af3643f91bf0220eee616",
+    "sourcePaths": [
+      "fr-classique.aff",
+      "fr-classique.dic"
+    ],
+    "root": "..",
+    "encoding": "UTF-8",
+    "derivation": "Copy the matched fr-classique.aff/dic pair byte-for-byte, retaining fixture basenames fr.aff/dic.",
+    "sha256": {
+      "spec/dictionaries/fr.aff": "c176610cd5dc4846806a65ddd029f422d87978bf58f224aa44222662a16a2de5",
+      "spec/dictionaries/fr.dic": "b78a868e31dd6e373b6c3217969afb898a9acde828a5e7ef97308da42218c88c"
+    }
+  },
+  "hyph_de_DE_fixture": {
+    "version": "2017-01-12",
+    "contentDate": "2017-01-12",
+    "source": "https://github.com/LibreOffice/dictionaries",
+    "tag": "libreoffice-26.8.2.2",
+    "revision": "8050ba0dbe0762855390e28bd5bc58f285ece20e",
+    "sourcePath": "de/hyph_de_DE.dic",
+    "root": "..",
+    "encoding": "ISO-8859-1",
+    "derivation": "Copied byte-for-byte from the stable LibreOffice source tree.",
+    "sha256": {
+      "spec/dictionaries/hyph_de_DE.dic": "2e2f5ffea6bc53f67ffe8c076921c7b1b34a2ec2b9ec57a4608374bb65a1a1e1"
+    }
+  },
+  "hyph_fr_fixture": {
+    "version": "4.0",
+    "contentDate": "2021-11-06",
+    "source": "https://github.com/LibreOffice/dictionaries",
+    "tag": "libreoffice-26.8.2.2",
+    "revision": "8050ba0dbe0762855390e28bd5bc58f285ece20e",
+    "sourcePath": "fr_FR/dictionaries/hyph_fr.dic",
+    "root": "..",
+    "encoding": "UTF-8",
+    "derivation": "Copied byte-for-byte from the stable LibreOffice source tree.",
+    "sha256": {
+      "spec/dictionaries/hyph_fr.dic": "476ca60b958400c8b3fbe55764b4900df87acf60394ef62362705d9c701db191"
+    }
   }
 }
