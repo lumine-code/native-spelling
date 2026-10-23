@@ -3,12 +3,14 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <limits>
+#include <vector>
 #include "transcoder.h"
 
 namespace spellchecker {
 
 struct Transcoder {
   iconv_t conversion;
+  iconv_t reverse = (iconv_t)-1;
 };
 
 static int IsBigEndian(void) {
@@ -43,12 +45,25 @@ Transcoder *NewTranscoder8to8(const char *from_encoding, const char *to_encoding
 
   Transcoder *result = new Transcoder();
   result->conversion = conversion;
+  // Some system iconv implementations silently approximate characters and
+  // report success. Verify incoming UTF-8 identity after dictionary conversion.
+  // Legacy encodings may have equivalent byte forms, so only UTF-8 input needs
+  // this exact byte comparison.
+  if (strcmp(from_encoding, "UTF-8") == 0 || strcmp(from_encoding, "UTF8") == 0) {
+    result->reverse = iconv_open(from_encoding, to_encoding);
+    if (result->reverse == (iconv_t)-1) {
+      iconv_close(conversion);
+      delete result;
+      return NULL;
+    }
+  }
   return result;
 }
 
 void FreeTranscoder(Transcoder *transcoder) {
   if (!transcoder) return;
   iconv_close(transcoder->conversion);
+  if (transcoder->reverse != (iconv_t)-1) iconv_close(transcoder->reverse);
   delete transcoder;
 }
 
@@ -104,6 +119,7 @@ bool Transcode8to8(const Transcoder *transcoder, char *out, size_t out_length, c
     out[in_length] = '\0';
   } else {
     char *const output_start = out;
+    const size_t original_length = in_length;
     --out_length;
     if (iconv(transcoder->conversion, NULL, NULL, NULL, NULL) != 0) return false;
     size_t iconv_result = iconv(
@@ -125,6 +141,25 @@ bool Transcode8to8(const Transcoder *transcoder, char *out, size_t out_length, c
     }
 
     *out = '\0';
+
+    if (transcoder->reverse != (iconv_t)-1) {
+      std::vector<char> original(original_length + 1);
+      char* restored = original.data();
+      size_t capacity = original.size();
+      char* encoded = output_start;
+      size_t encoded_length = static_cast<size_t>(out - output_start);
+      const bool lossless =
+          iconv(transcoder->reverse, NULL, NULL, NULL, NULL) == 0 &&
+          iconv(transcoder->reverse, &encoded, &encoded_length, &restored, &capacity) == 0 &&
+          encoded_length == 0 &&
+          iconv(transcoder->reverse, NULL, NULL, &restored, &capacity) == 0 &&
+          static_cast<size_t>(restored - original.data()) == original_length &&
+          memcmp(original.data(), in, original_length) == 0;
+      if (!lossless) {
+        output_start[0] = '\0';
+        return false;
+      }
+    }
   }
 
   return true;
