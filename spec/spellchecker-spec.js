@@ -43,6 +43,15 @@ defaultLanguage = "en_US";
 
 dictionaryDirectory = path.join(__dirname, "dictionaries");
 
+// Exact alternatives use small authored fixtures so Hunspell's 100 ms wall
+// clock suggestion budget is independent of machine load. The large inherited
+// dictionaries still exercise misspellings, complete text and transcoding.
+function correctionDictionaryDirectory() {
+  return spellType === "hunspell"
+    ? path.join(__dirname, "fixtures", "correction-dictionaries")
+    : dictionaryDirectory;
+}
+
 // Because we are dealing with C++ and buffers, we want
 // to make sure the user doesn't pass in a string that
 // causes a buffer overrun. We limit our buffers to
@@ -602,7 +611,9 @@ for (i = 0, len = ref.length; i < len; i++) {
           if (spellType !== "hunspell") {
             return;
           }
-          expect(this.fixture.setDictionary("de_DE_frami", dictionaryDirectory)).toBe(true);
+          expect(this.fixture.setDictionary("de_DE_frami", correctionDictionaryDirectory())).toBe(
+            true,
+          );
           expect(this.fixture.isMisspelled("Nacht")).toBe(false);
           correction = ["Acht", "Macht", "Acht"][spellIndex];
           corrections = this.fixture.getCorrectionsForMisspelling("Nacht");
@@ -612,7 +623,7 @@ for (i = 0, len = ref.length; i < len; i++) {
         });
         it("returns an array of possible corrections for a correct Latin German word with UTF-8 file", function () {
           var correction, corrections;
-          expect(this.fixture.setDictionary("de_DE", dictionaryDirectory)).toBe(true);
+          expect(this.fixture.setDictionary("de_DE", correctionDictionaryDirectory())).toBe(true);
           expect(this.fixture.isMisspelled("Nacht")).toBe(false);
           correction = ["Acht", "Macht", "Acht"][spellIndex];
           corrections = this.fixture.getCorrectionsForMisspelling("Nacht");
@@ -650,7 +661,9 @@ for (i = 0, len = ref.length; i < len; i++) {
           if (spellType !== "hunspell") {
             return;
           }
-          expect(this.fixture.setDictionary("de_DE_frami", dictionaryDirectory)).toBe(true);
+          expect(this.fixture.setDictionary("de_DE_frami", correctionDictionaryDirectory())).toBe(
+            true,
+          );
           expect(this.fixture.isMisspelled("vermöchten")).toBe(false);
           correction = ["vermöchte", "vermochten", "vermochte"][spellIndex];
           corrections = this.fixture.getCorrectionsForMisspelling("vermöchten");
@@ -660,7 +673,7 @@ for (i = 0, len = ref.length; i < len; i++) {
         });
         it("returns an array of possible corrections for correct Unicode German word with UTF-8 file", function () {
           var correction, corrections;
-          expect(this.fixture.setDictionary("de_DE", dictionaryDirectory)).toBe(true);
+          expect(this.fixture.setDictionary("de_DE", correctionDictionaryDirectory())).toBe(true);
           expect(this.fixture.isMisspelled("vermöchten")).toBe(false);
           correction = ["vermöchte", "vermochten", "vermochte"][spellIndex];
           corrections = this.fixture.getCorrectionsForMisspelling("vermöchten");
@@ -689,14 +702,30 @@ for (i = 0, len = ref.length; i < len; i++) {
           return expect(corrections[0]).toEqual(correction);
         });
         it("returns an array of possible corrections for correct Unicode French word", function () {
-          var correction, corrections;
-          expect(this.fixture.setDictionary("fr", dictionaryDirectory)).toBe(true);
+          var corrections;
+          expect(this.fixture.setDictionary("fr", correctionDictionaryDirectory())).toBe(true);
           expect(this.fixture.isMisspelled("Française")).toBe(false);
-          correction = ["Françoise", "Françoise", "française"][spellIndex];
           corrections = this.fixture.getCorrectionsForMisspelling("Française");
+          expect(Array.isArray(corrections)).toBe(true);
           expect(corrections.length).toBeGreaterThan(0);
-          expect(corrections).toContain(correction);
-          return expect(this.fixture.isMisspelled(correction)).toBe(false);
+          for (const correction of corrections) {
+            expect(typeof correction).toBe("string");
+            expect(correction.length).toBeGreaterThan(0);
+            expect(Buffer.from(correction, "utf8").toString("utf8")).toBe(correction);
+            expect(correction).not.toContain("\ufffd");
+          }
+          if (spellType === "hunspell") {
+            // Fixture dictionaries have deterministic alternatives. Native
+            // dictionaries own their suggestions and can change with the OS.
+            expect(corrections).toContain("Françoise");
+            expect(this.fixture.isMisspelled("Françoise")).toBe(false);
+          }
+          return expect(
+            corrections.some(
+              (correction) =>
+                /\P{ASCII}/u.test(correction) && !this.fixture.isMisspelled(correction),
+            ),
+          ).toBe(true);
         });
         return it("returns an array of possible corrections for incorrect Unicode French word", function () {
           var correction, corrections;

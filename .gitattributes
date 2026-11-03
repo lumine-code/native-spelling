@@ -7,3 +7,4 @@
 vendor/hunspell/** -text
 vendor/hunspell_dictionaries/* -text
 spec/dictionaries/* -text
+spec/fixtures/correction-dictionaries/* -text
